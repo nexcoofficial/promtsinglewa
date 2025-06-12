@@ -1,512 +1,1217 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buat Website Jualan - Generator Toko Online</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': '#ee5a24',
-                        'primary-dark': '#d84d1b',
-                        'gradient-start': '#ee5a24',
-                        'gradient-end': '#ff6b6b',
-                    },
-                    fontFamily: {
-                        'sans': ['Nunito', 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    <style type="text/css">
-        .bg-gradient-custom {
-            background-image: linear-gradient(135deg, #ee5a24 0%, #ff6b6b 100%);
-        }
-        .bg-gradient-custom:hover {
-            background-image: linear-gradient(135deg, #d84d1b 0%, #f55e5e 100%);
-        }
-        .border-custom {
-            border-color: #ee5a24;
-        }
-        .gallery-main {
-            height: 500px;
-            object-fit: cover;
-        }
-        .thumb {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-        .thumb:hover, .thumb.active {
-            border-color: #ee5a24;
-        }
-        .price-tag {
-            font-size: 2.25rem;
-            font-weight: 700;
-            color: #ee5a24;
-        }
-        .feature-badge {
-            background-color: rgba(238, 90, 36, 0.1);
-            color: #ee5a24;
-        }
-        .sticky-gallery {
-            position: sticky;
-            top: 100px;
-        }
-        .transition-custom {
-            transition: all 0.3s ease;
-        }
-        #loading-spinner {
-            display: none;
-        }
-        #result-section {
-            display: none;
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(238, 90, 36, 0.7);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #ee5a24;
-        }
-        @media (max-width: 768px) {
-            .gallery-main {
-                height: 300px;
-            }
-            .product-container {
-                grid-template-columns: 1fr;
-            }
-            .sticky-gallery {
-                position: static;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="E-commerce Website Generator Indonesia - Buat situs jualan profesional siap WhatsApp dalam 5 menit!">
+  <meta name="keywords" content="ecommerce, generator, website, Indonesia, WhatsApp, toko online, marketplace, jualan, dropship">
+  <meta property="og:title" content="E-commerce Website Generator Indonesia">
+  <meta property="og:description" content="Buat website jualan profesional siap WhatsApp dalam 5 menit!">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/891/891419.png">
+  <title>Generator Website Jualan • E-commerce One Product Indonesia</title>
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/891/891419.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --accent: linear-gradient(90deg, #ee5a24 0%, #ff6b6b 100%);
+      --white: #fff;
+      --shadow: 0 4px 18px rgba(44,44,84,0.08), 0 1.5px 6px rgba(44,44,84,0.03);
+      --radius: 18px;
+      --border: #ddd;
+      --text: #333;
+      --muted: #888;
+      --header-size: 2.1rem;
+      --subheader-size: 1.25rem;
+      --label-size: 1rem;
+      --body-size: 1rem;
+      --input-bg: #fafbfc;
+      --input-focus: #e2e6ff;
+      --error: #ff6b6b;
+      --success: #43c465;
+      --max-width: 1000px;
+      --transition: .15s cubic-bezier(.4,0,.2,1);
+      --orange: #ff6b6b;
+      --print-bg: #fff;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--gradient-bg);
+      min-height: 100vh;
+      color: var(--text);
+      scroll-behavior: smooth;
+    }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .container {
+      max-width: var(--max-width);
+      margin: 40px auto 32px auto;
+      padding: 0 16px;
+      width: 100%;
+    }
+    header {
+      margin-bottom: 24px;
+      color: var(--white);
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+    .logo {
+      background: var(--accent);
+      border-radius: 50%;
+      padding: 10px;
+      box-shadow: 0 2px 10px rgba(238,90,36,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+    }
+    .logo i {
+      font-size: 2rem;
+      color: #fff;
+    }
+    .header-texts h1 {
+      margin: 0;
+      font-size: var(--header-size);
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.2;
+    }
+    .header-texts h2 {
+      margin: 2px 0 0 0;
+      font-size: var(--subheader-size);
+      font-weight: 400;
+      opacity: .94;
+    }
+    .header-desc {
+      margin-top: 8px;
+      font-size: 1rem;
+      color: #eaeaea;
+      max-width: 680px;
+      font-weight: 400;
+      line-height: 1.7;
+    }
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 0;
+      margin-bottom: 32px;
+      overflow: hidden;
+      border: 1.5px solid #f3f2f7;
+    }
+    .card-header {
+      background: var(--accent);
+      padding: 16px 24px;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: .2px;
+      border-bottom: 1.5px solid #f3f2f7;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .card-header i {
+      font-size: 1.1em;
+      opacity: .93;
+    }
+    .card-body {
+      padding: 24px 24px 18px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .form-section-title {
+      font-size: 1.09rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--orange);
+      margin-bottom: 8px;
+      margin-top: 10px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 0;
+    }
+    @media (max-width: 768px) {
+      .header-content { flex-direction: column; gap: 15px;}
+      .container { padding: 0 5px;}
+      .form-row { grid-template-columns: 1fr; gap: 8px;}
+    }
+    label {
+      font-size: var(--label-size);
+      font-weight: 500;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #555;
+    }
+    .input-group {
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      position: relative;
+    }
+    .input-group .fa-solid, .input-group .fa-brands {
+      position: absolute;
+      left: 10px;
+      top: 38px;
+      color: #888;
+      font-size: 1.04em;
+      z-index: 2;
+    }
+    .input-group input,
+    .input-group textarea,
+    .input-group select {
+      font-size: 1rem;
+      border-radius: 9px;
+      border: 1.5px solid var(--border);
+      background: var(--input-bg);
+      padding: 9px 10px 9px 34px;
+      outline: none;
+      transition: border-color var(--transition), background var(--transition);
+      color: var(--text);
+      font-family: inherit;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 4px;
+      resize: none;
+    }
+    .input-group input:focus,
+    .input-group textarea:focus,
+    .input-group select:focus {
+      border-color: var(--input-focus);
+      background: #f3f7ff;
+    }
+    .input-group.has-error input,
+    .input-group.has-error textarea,
+    .input-group.has-error select {
+      border-color: var(--error);
+      background: #fff1f1;
+    }
+    .input-group .error-message {
+      color: var(--error);
+      font-size: 0.93em;
+      margin-top: 3px;
+      margin-left: 2px;
+      min-height: 18px;
+      display: block;
+    }
+    .input-group .hint {
+      font-size: .91em;
+      color: #999;
+      margin-top: 2px;
+      margin-left: 2px;
+      font-style: italic;
+      opacity: .93;
+    }
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 1em;
+    }
+    .checkbox-group input[type=checkbox] {
+      accent-color: #ff6b6b;
+      width: 18px; height: 18px;
+      margin-right: 2px;
+    }
+    .variant-fields {
+      display: none;
+      margin: 7px 0 0 0;
+      padding: 10px 18px;
+      background: #fff8f5;
+      border-radius: 10px;
+      border: 1px solid #ffd5c8;
+    }
+    .variant-fields.show {
+      display: block;
+      animation: fadeIn .18s;
+    }
+    @keyframes fadeIn {
+      from {opacity:0;}
+      to {opacity:1;}
+    }
+    .generate-btn {
+      margin: 18px 0 0 0;
+      width: 100%;
+      font-size: 1.16rem;
+      font-weight: 700;
+      padding: 16px 0;
+      border: none;
+      border-radius: 13px;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 2px 14px rgba(238,90,36,0.13);
+      transition: box-shadow var(--transition), background var(--transition);
+      letter-spacing: .2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+    .generate-btn:active {
+      background: linear-gradient(90deg,#ee5a24 60%, #f95e51 100%);
+      box-shadow: 0 1px 7px rgba(238,90,36,.12);
+    }
+    .loading-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(46, 34, 77, 0.28);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transition: opacity .26s;
+      opacity: 1;
+      pointer-events: all;
+      font-size: 1.12rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: .5px;
+    }
+    .loading-overlay.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .spinner {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 6px solid #fff;
+      border-top: 6px solid #ee5a24;
+      border-radius: 50%;
+      animation: spin 1.3s linear infinite;
+      margin-bottom: 22px;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    .result-section {
+      background: var(--white);
+      border-radius: var(--radius);
+      margin-bottom: 38px;
+      box-shadow: var(--shadow);
+      border: 1.5px solid #f3f2f7;
+      padding: 0;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .result-header {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      padding: 14px 24px;
+      font-size: 1.08rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1.5px solid #f3f2f7;
+    }
+    .result-actions {
+      display: flex;
+      gap: 14px;
+      padding: 16px 24px 10px 24px;
+      flex-wrap: wrap;
+    }
+    .result-actions button {
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.7em 1.3em;
+      border-radius: 8px;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition), box-shadow var(--transition);
+      box-shadow: 0 1.5px 7px rgba(238,90,36,0.11);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .result-actions button:active {
+      background: linear-gradient(90deg,#ee5a24 60%, #f95e51 100%);
+    }
+    .result-success {
+      padding: 18px 24px 0 24px;
+      color: var(--success);
+      font-size: 1.04em;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .code-output {
+      background: #251f3a;
+      color: #f8f8f8;
+      font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
+      font-size: 0.94em;
+      padding: 20px 24px 20px 24px;
+      overflow-x: auto;
+      border-radius: 0 0 var(--radius) var(--radius);
+      min-height: 220px;
+      max-height: 560px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+      white-space: pre;
+      outline: none;
+    }
+    .code-output:focus { box-shadow: 0 0 0 2px #ee5a24a8;}
+    .copied-message {
+      margin-left: 12px;
+      color: var(--success);
+      font-size: .98em;
+      font-weight: 500;
+      display: none;
+      align-items: center;
+      gap: 6px;
+    }
+    .copy-success.show { display: inline-flex;}
+    .footer {
+      width: 100%;
+      text-align: center;
+      color: #d7d7f7;
+      font-size: .99em;
+      margin: 0 0 22px 0;
+      letter-spacing: .1px;
+    }
+    .footer a {
+      color: #fff;
+      text-decoration: underline;
+      font-weight: 600;
+      opacity: .8;
+      transition: opacity .12s;
+    }
+    .footer a:hover { opacity:1;}
+    @media (max-width: 768px) {
+      .container { margin: 18px 0 15px 0;}
+      .result-header, .result-success, .result-actions, .code-output { padding-left: 10px; padding-right: 10px;}
+      .card-header, .card-body { padding-left: 10px; padding-right: 10px;}
+      .footer { font-size: .97em;}
+    }
+    @media (max-width: 450px) {
+      .container { padding: 0 2px;}
+      .header-content { gap: 10px;}
+      .header-texts h1 { font-size: 1.38rem;}
+      .logo { width: 44px; height: 44px;}
+    }
+    /* --- Print styles for generated site --- */
+    @media print {
+      body, html { background: var(--print-bg)!important; color: #222!important;}
+      .card, .result-section, .footer, .header-content, .card-header, .result-header { box-shadow: none!important; background: #fff!important;}
+      .result-actions, .generate-btn, .footer { display: none!important;}
+      .code-output { background: #fff!important; color: #222!important;}
+      .container { margin: 0!important; padding: 0!important;}
+    }
+  </style>
 </head>
-<body class="bg-gray-50 font-sans">
-    <!-- Generator Section -->
-    <div class="min-h-screen py-8 px-4">
-        <!-- Header -->
-        <header class="text-center mb-12">
-            <div class="bg-gradient-custom text-white p-1 rounded-xl max-w-fit mx-auto mb-4">
-                <i class="fas fa-store text-3xl mx-4 my-3"></i>
-            </div>
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Buat Website Jualan</h1>
-            <p class="text-gray-600 mt-2 max-w-2xl mx-auto">
-                Generator website toko online profesional dengan satu klik. Masukkan detail produk Anda dan dapatkan website siap pakai terintegrasi WhatsApp.
-            </p>
-        </header>
-        
-        <!-- Generator Form -->
-        <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div class="bg-gradient-custom text-white py-4 px-6">
-                <h2 class="text-xl font-bold"><i class="fas fa-pencil-alt mr-2"></i>Formulir Produk</h2>
-            </div>
-            
-            <form id="productForm" class="p-6">
-                <!-- Loading Indicator -->
-                <div id="loading-spinner" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div class="bg-white p-8 rounded-xl text-center">
-                        <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mx-auto"></div>
-                        <p class="mt-4 text-lg font-semibold">Membuat website...</p>
-                        <p class="text-gray-600">Silakan tunggu sebentar</p>
-                    </div>
-                </div>
-                
-                <!-- Section 1: Product Information -->
-                <div class="mb-10">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                        <span class="bg-primary text-white rounded-full h-8 w-8 flex items-center justify-center mr-2">1</span>
-                        Informasi Produk
-                    </h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-gray-700 mb-1" for="productName">Nama Produk *</label>
-                            <input type="text" id="productName" name="productName" required
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                   placeholder="Contoh: Smartwatch Terbaru Pro Max">
-                            <p class="text-red-500 text-sm mt-1 hidden" id="productNameError">Nama produk minimal 2 karakter</p>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-gray-700 mb-1" for="price">Harga Produk (Rp) *</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
-                                <input type="number" id="price" name="price" required min="1000"
-                                       class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                       placeholder="Contoh: 350000">
-                            </div>
-                            <p class="text-red-500 text-sm mt-1 hidden" id="priceError">Masukkan harga yang valid</p>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-gray-700 mb-1" for="whatsapp">Nomor WhatsApp *</label>
-                            <input type="text" id="whatsapp" name="whatsapp" required
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                   placeholder="Format: 6281xxxxxxxx">
-                            <p class="text-sm text-gray-500 mt-1">Contoh: 6281123456789</p>
-                            <p class="text-red-500 text-sm mt-1 hidden" id="whatsappError">Format nomor WhatsApp salah (6281xxxxxxxx)</p>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-gray-700 mb-1" for="description">Deskripsi Produk *</label>
-                            <textarea id="description" name="description" rows="4" required
-                                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                      placeholder="Jelaskan produk Anda secara detail..."></textarea>
-                            <p class="text-red-500 text-sm mt-1 hidden" id="descriptionError">Deskripsi minimal 10 karakter</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Section 2: Product Images -->
-                <div class="mb-10">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                        <span class="bg-primary text-white rounded-full h-8 w-8 flex items-center justify-center mr-2">2</span>
-                        Gambar Produk
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-gray-700 mb-1" for="image1">Gambar Utama *</label>
-                            <input type="url" id="image1" name="image1" required
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                   placeholder="URL gambar utama">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-1" for="image2">Gambar Sudut Alternatif *</label>
-                            <input type="url" id="image2" name="image2" required
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                   placeholder="URL gambar alternatif">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-1" for="image3">Gambar Detail Produk *</label>
-                            <input type="url" id="image3" name="image3" required
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                   placeholder="URL gambar detail">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-1" for="image4">Gambar Lifestyle *</label>
-                            <input type="url" id="image4" name="image4" required
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                   placeholder="URL gambar lifestyle">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-1" for="image5">Gambar Tambahan (Opsional)</label>
-                            <input type="url" id="image5" name="image5"
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                   placeholder="URL gambar tambahan">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-1" for="image6">Gambar Detail Tambahan (Opsional)</label>
-                            <input type="url" id="image6" name="image6"
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                   placeholder="URL gambar tambahan">
-                        </div>
-                    </div>
-                    <p id="imageError" class="text-red-500 text-sm mt-2 hidden">Minimal harus mengisi 4 gambar</p>
-                </div>
-                
-                <!-- Section 3: Product Variants -->
-                <div class="mb-10">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                        <span class="bg-primary text-white rounded-full h-8 w-8 flex items-center justify-center mr-2">3</span>
-                        Varian Produk
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="hasVariants" name="hasVariants" 
-                                   class="h-5 w-5 text-primary rounded focus:ring-primary">
-                            <label class="ml-2 text-gray-700" for="hasVariants">Produk ini memiliki varian</label>
-                        </div>
-                        
-                        <div id="variantOptions" class="hidden space-y-4 transition-custom">
-                            <div>
-                                <label class="block text-gray-700 mb-1" for="colors">Opsi Warna</label>
-                                <input type="text" id="colors" name="colors"
-                                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                       placeholder="Contoh: Merah, Biru, Hitam, Emas">
-                                <p class="text-sm text-gray-500 mt-1">Pisahkan dengan koma</p>
-                            </div>
-                            
-                            <div>
-                                <label class="block text-gray-700 mb-1" for="sizes">Opsi Ukuran</label>
-                                <input type="text" id="sizes" name="sizes"
-                                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                       placeholder="Contoh: S, M, L, XL">
-                                <p class="text-sm text-gray-500 mt-1">Pisahkan dengan koma</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Section 4: Store Information -->
-                <div class="mb-10">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                        <span class="bg-primary text-white rounded-full h-8 w-8 flex items-center justify-center mr-2">4</span>
-                        Informasi Toko
-                    </h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-gray-700 mb-1" for="storeName">Nama Toko/Merek *</label>
-                            <input type="text" id="storeName" name="storeName" required
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                   placeholder="Contoh: Toko Jaya Abadi">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-gray-700 mb-1" for="storePhone">Nomor Telepon Toko (Opsional)</label>
-                            <input type="tel" id="storePhone" name="storePhone"
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                   placeholder="Contoh: 0211234567">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-gray-700 mb-1" for="features">Fitur Produk *</label>
-                            <input type="text" id="features" name="features" required
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
-                                   placeholder="Contoh: Tahan Air, Baterai 30 Hari, GPS">
-                            <p class="text-sm text-gray-500 mt-1">Pisahkan dengan koma</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Generate Button -->
-                <div class="text-center mt-8">
-                    <button type="submit"
-                            class="bg-gradient-custom text-white font-bold py-4 px-8 rounded-full text-lg hover:shadow-xl transition-all duration-300">
-                        <i class="fas fa-bolt mr-2"></i>Generate Website
-                    </button>
-                </div>
-            </form>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <div class="logo">
+          <i class="fa-solid fa-cart-shopping"></i>
         </div>
-    </div>
-    
-    <!-- Results Section -->
-    <div id="result-section" class="py-8 px-4 bg-gray-50">
-        <div class="max-w-6xl mx-auto">
-            <!-- Success Message -->
-            <div class="bg-green-50 rounded-xl p-6 mb-8 flex flex-col items-center text-center">
-                <div class="bg-green-100 rounded-full p-4 mb-4">
-                    <i class="fas fa-check-circle text-green-600 text-4xl"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-gray-800">✅ Website Berhasil Dibuat!</h2>
-                <p class="text-gray-600 mt-2 max-w-2xl">
-                    Kode HTML siap di-copy di bawah ini. Website Anda siap untuk jualan langsung!
-                </p>
-                <div class="mt-4">
-                    <div class="flex flex-wrap justify-center gap-3">
-                        <button id="copyCodeBtn" class="bg-blue-100 text-blue-700 font-semibold py-2 px-6 rounded-full flex items-center hover:bg-blue-200 transition">
-                            <i class="far fa-copy mr-2"></i> Copy Code
-                        </button>
-                        <button id="downloadBtn" class="bg-green-100 text-green-700 font-semibold py-2 px-6 rounded-full flex items-center hover:bg-green-200 transition">
-                            <i class="fas fa-download mr-2"></i> Download HTML
-                        </button>
-                        <button id="previewBtn" class="bg-orange-100 text-orange-700 font-semibold py-2 px-6 rounded-full flex items-center hover:bg-orange-200 transition">
-                            <i class="fas fa-eye mr-2"></i> Preview Website
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Code Output -->
-            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                <div class="bg-gradient-custom text-white py-4 px-6">
-                    <h2 class="text-xl font-bold"><i class="fas fa-code mr-2"></i>Kode Website</h2>
-                </div>
-                
-                <div class="p-4 border-b">
-                    <p class="text-gray-600"><i class="fas fa-info-circle mr-2"></i>Copy seluruh kode di bawah dan simpan sebagai file .html</p>
-                </div>
-                
-                <div class="p-1 bg-gray-800">
-                    <textarea id="generatedCode" class="w-full h-64 font-mono text-sm bg-gray-900 text-gray-200 p-4 focus:outline-none border-0" readonly>
-                    </textarea>
-                </div>
-            </div>
+        <div class="header-texts">
+          <h1>Generator Website Jualan</h1>
+          <h2>Buat website e-commerce satu produk siap WhatsApp, <span style="color:#ffb04b;font-weight:600;">gratis</span>!</h2>
+          <div class="header-desc">
+            Isi data produk, <b>klik generate</b>, dapatkan kode website marketplace profesional siap <span style="color:#25D366;">WhatsApp</span> order. 100% mobile-friendly, cocok untuk bisnis Indonesia, dropshipper, reseller, UMKM.
+          </div>
         </div>
+      </div>
+    </header>
+
+    <section class="card" id="generatorCard">
+      <div class="card-header">
+        <i class="fa-solid fa-clipboard-list"></i>
+        Form Data Produk
+      </div>
+      <div class="card-body">
+        <form id="productForm" autocomplete="off" spellcheck="false" novalidate>
+          <!-- SECTION 1: Product Info -->
+          <div class="form-section-title"><i class="fa-solid fa-box"></i> Informasi Produk</div>
+          <div class="form-row">
+            <div class="input-group" id="group-productName">
+              <label for="productName"><i class="fa-solid fa-tag"></i> Nama Produk *</label>
+              <input id="productName" type="text" name="productName" required autocomplete="off" minlength="2" maxlength="48" placeholder="Contoh: Sepatu Sneakers Pria" />
+              <div class="error-message"></div>
+            </div>
+            <div class="input-group" id="group-price">
+              <label for="price"><i class="fa-solid fa-money-bill-wave"></i> Harga (Rp) *</label>
+              <input id="price" type="number" name="price" required min="1000" step="1" inputmode="numeric" placeholder="Contoh: 129000" />
+              <div class="error-message"></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="input-group" id="group-whatsapp">
+              <label for="whatsapp"><i class="fa-brands fa-whatsapp"></i> Nomor WhatsApp *</label>
+              <input id="whatsapp" type="text" name="whatsapp" required pattern="^628[1-9][0-9]{7,11}$" maxlength="15" placeholder="Contoh: 6281234567890" />
+              <div class="hint">Format: 6281xxxxxxxx (12-15 digit)</div>
+              <div class="error-message"></div>
+            </div>
+            <div class="input-group" id="group-description">
+              <label for="description"><i class="fa-solid fa-align-left"></i> Deskripsi Produk *</label>
+              <textarea id="description" name="description" required minlength="10" maxlength="700" rows="3" placeholder="Deskripsi lengkap produk..."></textarea>
+              <div class="error-message"></div>
+            </div>
+          </div>
+          <!-- SECTION 2: Product Images -->
+          <div class="form-section-title"><i class="fa-solid fa-image"></i> Gambar Produk</div>
+          <div class="form-row">
+            <div class="input-group" id="group-image1">
+              <label for="image1"><i class="fa-solid fa-image"></i> Gambar 1 (Utama) *</label>
+              <input id="image1" name="image1" type="url" required placeholder="URL gambar utama produk" />
+              <div class="error-message"></div>
+            </div>
+            <div class="input-group" id="group-image2">
+              <label for="image2"><i class="fa-solid fa-image"></i> Gambar 2 (Samping) *</label>
+              <input id="image2" name="image2" type="url" required placeholder="URL sudut lain" />
+              <div class="error-message"></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="input-group" id="group-image3">
+              <label for="image3"><i class="fa-solid fa-image"></i> Gambar 3 (Detail) *</label>
+              <input id="image3" name="image3" type="url" required placeholder="URL detail produk" />
+              <div class="error-message"></div>
+            </div>
+            <div class="input-group" id="group-image4">
+              <label for="image4"><i class="fa-solid fa-image"></i> Gambar 4 (Lifestyle) *</label>
+              <input id="image4" name="image4" type="url" required placeholder="URL lifestyle/real use" />
+              <div class="error-message"></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="input-group" id="group-image5">
+              <label for="image5"><i class="fa-solid fa-image"></i> Gambar 5 (Opsional)</label>
+              <input id="image5" name="image5" type="url" placeholder="URL sudut tambahan" />
+              <div class="error-message"></div>
+            </div>
+            <div class="input-group" id="group-image6">
+              <label for="image6"><i class="fa-solid fa-image"></i> Gambar 6 (Opsional)</label>
+              <input id="image6" name="image6" type="url" placeholder="URL detail tambahan" />
+              <div class="error-message"></div>
+            </div>
+          </div>
+          <!-- SECTION 3: Product Variants -->
+          <div class="form-section-title"><i class="fa-solid fa-palette"></i> Varian Produk</div>
+          <div class="form-row">
+            <div class="input-group">
+              <div class="checkbox-group">
+                <input id="hasVariants" type="checkbox" name="hasVariants" />
+                <label for="hasVariants" style="margin:0;">Produk punya varian warna/ukuran?</label>
+              </div>
+            </div>
+            <div></div>
+          </div>
+          <div class="form-row variant-fields" id="variantFields">
+            <div class="input-group" id="group-colors">
+              <label for="colors"><i class="fa-solid fa-eye-dropper"></i> Warna (pisahkan koma)</label>
+              <input id="colors" name="colors" type="text" placeholder="Contoh: Merah,Hitam,Putih" />
+              <div class="error-message"></div>
+            </div>
+            <div class="input-group" id="group-sizes">
+              <label for="sizes"><i class="fa-solid fa-ruler"></i> Ukuran (pisahkan koma)</label>
+              <input id="sizes" name="sizes" type="text" placeholder="Contoh: 39,40,41,42" />
+              <div class="error-message"></div>
+            </div>
+          </div>
+          <!-- SECTION 4: Store Info -->
+          <div class="form-section-title"><i class="fa-solid fa-store"></i> Informasi Toko / Brand</div>
+          <div class="form-row">
+            <div class="input-group" id="group-storeName">
+              <label for="storeName"><i class="fa-solid fa-store"></i> Nama Toko / Brand *</label>
+              <input id="storeName" name="storeName" type="text" required maxlength="40" placeholder="Contoh: Toko Sepatu Nusantara" />
+              <div class="error-message"></div>
+            </div>
+            <div class="input-group" id="group-storePhone">
+              <label for="storePhone"><i class="fa-solid fa-phone"></i> Nomor Telepon Toko</label>
+              <input id="storePhone" name="storePhone" type="text" maxlength="17" placeholder="Opsional (628xxx)" />
+              <div class="error-message"></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="input-group" id="group-features" style="grid-column: 1/3;">
+              <label for="features"><i class="fa-solid fa-star"></i> Fitur & Keunggulan (pisahkan koma)</label>
+              <input id="features" name="features" type="text" maxlength="100" placeholder="Contoh: Original,Bergaransi,Bisa COD,Gratis Ongkir" />
+              <div class="hint">Tampilkan keunggulan produk, misal: Garansi, Ready Stock, Original, dll</div>
+              <div class="error-message"></div>
+            </div>
+          </div>
+          <!-- GENERATE BUTTON -->
+          <button type="submit" class="generate-btn" id="generateBtn">
+            <span id="generateBtnText"><i class="fa-solid fa-bolt"></i> Generate Website</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- LOADING SPINNER -->
+    <div class="loading-overlay hide" id="loadingOverlay">
+      <div class="spinner"></div>
+      <div id="loadingText">Membuat website Anda...</div>
     </div>
-    
-    <!-- Footer -->
-    <footer class="py-6 text-center text-gray-600">
-        <p>© 2023 Generator Website Jualan. Dibuat dengan ❤️ untuk Indonesia</p>
+
+    <!-- RESULT SECTION -->
+    <section class="result-section" id="resultSection">
+      <div class="result-header"><i class="fa-solid fa-file-code"></i> Kode Website Siap Pakai</div>
+      <div class="result-success" id="resultSuccess">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>✅ Website berhasil dibuat! <span style="color:#ff9f43;">Copy kode HTML di bawah ini</span> atau download file-nya.<br>💾 Upload ke hosting Anda, <b>website siap jualan!</b></span>
+      </div>
+      <div class="result-actions">
+        <button id="copyCodeBtn"><i class="fa-solid fa-copy"></i> Copy Kode</button>
+        <span class="copied-message copy-success" id="copiedMessage"><i class="fa-solid fa-check"></i> Tersalin!</span>
+        <button id="downloadBtn"><i class="fa-solid fa-download"></i> Download HTML</button>
+        <button id="previewBtn"><i class="fa-solid fa-eye"></i> Preview</button>
+      </div>
+      <pre class="code-output" id="codeOutput" tabindex="0"></pre>
+    </section>
+
+    <footer class="footer">
+      Dibuat dengan <i class="fa-solid fa-heart" style="color:#ff6b6b;"></i> oleh <a href="https://github.com/nexcoofficial" target="_blank" rel="noopener">NexcoOfficial</a> — <span style="opacity:.6;">All rights reserved &copy; 2025</span>
     </footer>
-
-    <!-- JavaScript -->
-    <script>
-        // DOM Elements
-        const productForm = document.getElementById('productForm');
-        const hasVariants = document.getElementById('hasVariants');
-        const variantOptions = document.getElementById('variantOptions');
-        const loadingSpinner = document.getElementById('loading-spinner');
-        const resultSection = document.getElementById('result-section');
-        const generatedCode = document.getElementById('generatedCode');
-        const copyCodeBtn = document.getElementById('copyCodeBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const previewBtn = document.getElementById('previewBtn');
-
-        // Toggle Variant Options
-        hasVariants.addEventListener('change', function() {
-            variantOptions.classList.toggle('hidden', !this.checked);
-        });
-
-        // Indonesia Regions Data
-        const indonesiaRegions = {
-            "Jawa Barat": {
-                "Bandung": ["Cidadap", "Cicendo", "Coblong", "Bandung Wetan", "Sumur Bandung"],
-                "Bekasi": ["Bekasi Barat", "Bekasi Timur", "Bekasi Selatan", "Bekasi Utara"],
-                "Bogor": ["Bogor Tengah", "Bogor Utara", "Bogor Selatan", "Bogor Timur", "Bogor Barat"],
-                "Depok": ["Pancoran Mas", "Sukmajaya", "Sawangan", "Cipayung", "Beji"],
-                "Cimahi": ["Cimahi Selatan", "Cimahi Tengah", "Cimahi Utara"]
-            },
-            "DKI Jakarta": {
-                "Jakarta Pusat": ["Gambir", "Tanah Abang", "Menteng", "Senen", "Cempaka Putih"],
-                "Jakarta Selatan": ["Kebayoran Baru", "Tebet", "Setiabudi", "Mampang Prapatan", "Pasar Minggu"],
-                "Jakarta Timur": ["Matraman", "Pulogadung", "Jatinegara", "Duren Sawit", "Kramat Jati"],
-                "Jakarta Barat": ["Grogol Petamburan", "Taman Sari", "Tambora", "Kebon Jeruk", "Palmerah"],
-                "Jakarta Utara": ["Penjaringan", "Pademangan", "Tanjung Priok", "Koja", "Kelapa Gading"]
-            },
-            "Jawa Tengah": {
-                "Semarang": ["Semarang Tengah", "Semarang Utara", "Semarang Selatan", "Semarang Timur"],
-                "Solo": ["Laweyan", "Serengan", "Pasar Kliwon", "Jebres", "Banjarsari"],
-                "Yogyakarta": ["Gondokusuman", "Jetis", "Tegalrejo", "Umbulharjo", "Kotagede"]
-            },
-            "Jawa Timur": {
-                "Surabaya": ["Genteng", "Gubeng", "Tegalsari", "Wonokromo", "Sawahan"],
-                "Malang": ["Klojen", "Blimbing", "Kedungkandang", "Sukun", "Lowokwaru"],
-                "Sidoarjo": ["Sidoarjo", "Buduran", "Candi", "Porong", "Krembung"]
-            },
-            "Sumatera Utara": {
-                "Medan": ["Medan Kota", "Medan Barat", "Medan Timur", "Medan Utara", "Medan Selatan"],
-                "Binjai": ["Binjai Kota", "Binjai Barat", "Binjai Timur", "Binjai Utara", "Binjai Selatan"]
-            },
-            "Sumatera Selatan": {
-                "Palembang": ["Ilir Barat I", "Ilir Timur I", "Seberang Ulu I", "Kertapati", "Plaju"]
-            },
-            "Banten": {
-                "Tangerang": ["Tangerang Kota", "Cipondoh", "Karawaci", "Pinang", "Neglasari"],
-                "Serang": ["Serang Kota", "Kasemen", "Walantaka", "Curug", "Cipocok Jaya"]
-            },
-            "Kalimantan Timur": {
-                "Balikpapan": ["Balikpapan Kota", "Balikpapan Barat", "Balikpapan Timur", "Balikpapan Selatan"],
-                "Samarinda": ["Samarinda Kota", "Samarinda Ulu", "Samarinda Ilir", "Sungai Kunjang"]
-            },
-            "Sulawesi Selatan": {
-                "Makassar": ["Makassar", "Mariso", "Mamajang", "Tamalate", "Rappocini"]
-            },
-            "Bali": {
-                "Denpasar": ["Denpasar Barat", "Denpasar Timur", "Denpasar Selatan", "Denpasar Utara"],
-                "Badung": ["Mengwi", "Abiansemal", "Petang", "Kuta Utara", "Kuta Selatan"]
-            }
-        };
-        
-        // Format Rupiah
-        function formatRupiah(amount) {
-            return new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                maximumFractionDigits: 0
-            }).format(amount);
+  </div>
+  <script>
+    // --- Region Data for Indonesia ---
+    const indonesiaRegions = {
+      "Jawa Barat": {
+        "Bandung": ["Cidadap", "Cicendo", "Coblong", "Bandung Wetan", "Sumur Bandung"],
+        "Bekasi": ["Bekasi Barat", "Bekasi Timur", "Bekasi Selatan", "Bekasi Utara"],
+        "Bogor": ["Bogor Tengah", "Bogor Utara", "Bogor Selatan", "Bogor Timur", "Bogor Barat"],
+        "Depok": ["Pancoran Mas", "Sukmajaya", "Sawangan", "Cipayung", "Beji"],
+        "Cimahi": ["Cimahi Selatan", "Cimahi Tengah", "Cimahi Utara"]
+      },
+      "DKI Jakarta": {
+        "Jakarta Pusat": ["Gambir", "Tanah Abang", "Menteng", "Senen", "Cempaka Putih"],
+        "Jakarta Selatan": ["Kebayoran Baru", "Tebet", "Setiabudi", "Mampang Prapatan", "Pasar Minggu"],
+        "Jakarta Timur": ["Matraman", "Pulogadung", "Jatinegara", "Duren Sawit", "Kramat Jati"],
+        "Jakarta Barat": ["Grogol Petamburan", "Taman Sari", "Tambora", "Kebon Jeruk", "Palmerah"],
+        "Jakarta Utara": ["Penjaringan", "Pademangan", "Tanjung Priok", "Koja", "Kelapa Gading"]
+      },
+      "Jawa Tengah": {
+        "Semarang": ["Semarang Tengah", "Semarang Utara", "Semarang Selatan", "Semarang Timur"],
+        "Solo": ["Laweyan", "Serengan", "Pasar Kliwon", "Jebres", "Banjarsari"],
+        "Yogyakarta": ["Gondokusuman", "Jetis", "Tegalrejo", "Umbulharjo", "Kotagede"]
+      },
+      "Jawa Timur": {
+        "Surabaya": ["Genteng", "Gubeng", "Tegalsari", "Wonokromo", "Sawahan"],
+        "Malang": ["Klojen", "Blimbing", "Kedungkandang", "Sukun", "Lowokwaru"],
+        "Sidoarjo": ["Sidoarjo", "Buduran", "Candi", "Porong", "Krembung"]
+      },
+      "Sumatera Utara": {
+        "Medan": ["Medan Kota", "Medan Barat", "Medan Timur", "Medan Utara", "Medan Selatan"],
+        "Binjai": ["Binjai Kota", "Binjai Barat", "Binjai Timur", "Binjai Utara", "Binjai Selatan"]
+      },
+      "Sumatera Selatan": {
+        "Palembang": ["Ilir Barat I", "Ilir Timur I", "Seberang Ulu I", "Kertapati", "Plaju"]
+      },
+      "Banten": {
+        "Tangerang": ["Tangerang Kota", "Cipondoh", "Karawaci", "Pinang", "Neglasari"],
+        "Serang": ["Serang Kota", "Kasemen", "Walantaka", "Curug", "Cipocok Jaya"]
+      },
+      "Kalimantan Timur": {
+        "Balikpapan": ["Balikpapan Kota", "Balikpapan Barat", "Balikpapan Timur", "Balikpapan Selatan"],
+        "Samarinda": ["Samarinda Kota", "Samarinda Ulu", "Samarinda Ilir", "Sungai Kunjang"]
+      },
+      "Sulawesi Selatan": {
+        "Makassar": ["Makassar", "Mariso", "Mamajang", "Tamalate", "Rappocini"]
+      },
+      "Bali": {
+        "Denpasar": ["Denpasar Barat", "Denpasar Timur", "Denpasar Selatan", "Denpasar Utara"],
+        "Badung": ["Mengwi", "Abiansemal", "Petang", "Kuta Utara", "Kuta Selatan"]
+      }
+    };
+    // --- Form Elements ---
+    const productForm = document.getElementById('productForm');
+    const hasVariants = document.getElementById('hasVariants');
+    const variantFields = document.getElementById('variantFields');
+    const generateBtn = document.getElementById('generateBtn');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const resultSection = document.getElementById('resultSection');
+    const codeOutput = document.getElementById('codeOutput');
+    const copyCodeBtn = document.getElementById('copyCodeBtn');
+    const copiedMessage = document.getElementById('copiedMessage');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const previewBtn = document.getElementById('previewBtn');
+    // --- Form Validation Rules ---
+    const validationRules = {
+      productName: v => v.trim().length >= 2,
+      price: v => Number(v) > 0,
+      whatsapp: v => /^628[1-9][0-9]{7,11}$/.test(v),
+      description: v => v.trim().length >= 10,
+      images: arr => arr.filter(Boolean).length >= 4 && arr.slice(0,4).every(isValidUrl),
+      customerName: v => v.trim().length >= 2,
+      customerPhone: v => /^08[1-9][0-9]{8,11}$/.test(v),
+      customerAddress: v => v.trim().length >= 20,
+      province: v => !!v,
+      city: v => !!v,
+      district: v => !!v,
+      variants: (colors, sizes) => colors.length > 0 || sizes.length > 0
+    };
+    // --- Helper: URL validation ---
+    function isValidUrl(url) {
+      try { return (new URL(url)).protocol.startsWith('http'); }
+      catch { return false; }
+    }
+    // --- Toggle Variant Fields ---
+    function toggleVariantInputs() {
+      if (hasVariants.checked) {
+        variantFields.classList.add('show');
+      } else {
+        variantFields.classList.remove('show');
+        document.getElementById('colors').value = '';
+        document.getElementById('sizes').value = '';
+      }
+    }
+    hasVariants.addEventListener('change', toggleVariantInputs);
+    // --- Real-time Validation ---
+    [...productForm.querySelectorAll('input,textarea')].forEach(el=>{
+      el.addEventListener('input', () => validateFormField(el));
+    });
+    function validateFormField(el) {
+      const id = el.id;
+      let errMsg = '';
+      let val = el.value.trim();
+      if (id === 'productName' && !validationRules.productName(val)) errMsg = 'Minimal 2 karakter';
+      if (id === 'price' && !validationRules.price(val)) errMsg = 'Harga harus > 0';
+      if (id === 'whatsapp' && !validationRules.whatsapp(val)) errMsg = 'Format WA: 6281xxxxxxxx';
+      if (id === 'description' && !validationRules.description(val)) errMsg = 'Minimal 10 karakter';
+      if (/^image[1-6]$/.test(id) && val && !isValidUrl(val)) errMsg = 'Harus URL gambar valid!';
+      if (id === 'storeName' && val.length < 2) errMsg = 'Minimal 2 karakter';
+      if (id === 'features' && val.length && !/^[^,]+(,[^,]+)*$/.test(val)) errMsg = '';
+      setErrorFor(el, errMsg);
+    }
+    function setErrorFor(el, message) {
+      const group = el.closest('.input-group');
+      group.classList.toggle('has-error', !!message);
+      group.querySelector('.error-message').textContent = message;
+    }
+    // --- Main Form Validation on Submit ---
+    function validateForm(showAll=true) {
+      let isValid = true;
+      // SECTION 1
+      const productName = productForm.productName.value.trim();
+      const price = productForm.price.value.trim();
+      const whatsapp = productForm.whatsapp.value.trim();
+      const description = productForm.description.value.trim();
+      const images = [
+        productForm.image1.value.trim(),
+        productForm.image2.value.trim(),
+        productForm.image3.value.trim(),
+        productForm.image4.value.trim(),
+        productForm.image5.value.trim(),
+        productForm.image6.value.trim()
+      ];
+      // Images: at least 4 required, all must be valid URLs
+      if (!validationRules.images(images)) {
+        setErrorFor(productForm.image1, !isValidUrl(productForm.image1.value) ? 'URL gambar tidak valid' : '');
+        setErrorFor(productForm.image2, !isValidUrl(productForm.image2.value) ? 'URL gambar tidak valid' : '');
+        setErrorFor(productForm.image3, !isValidUrl(productForm.image3.value) ? 'URL gambar tidak valid' : '');
+        setErrorFor(productForm.image4, !isValidUrl(productForm.image4.value) ? 'URL gambar tidak valid' : '');
+        isValid = false;
+      }
+      // Product Info
+      if (!validationRules.productName(productName)) { setErrorFor(productForm.productName, 'Minimal 2 karakter'); isValid = false;}
+      else setErrorFor(productForm.productName, '');
+      if (!validationRules.price(price)) { setErrorFor(productForm.price, 'Harga harus > 0'); isValid = false;}
+      else setErrorFor(productForm.price, '');
+      if (!validationRules.whatsapp(whatsapp)) { setErrorFor(productForm.whatsapp, 'Format WA: 6281xxxxxxxx'); isValid = false;}
+      else setErrorFor(productForm.whatsapp, '');
+      if (!validationRules.description(description)) { setErrorFor(productForm.description, 'Minimal 10 karakter'); isValid = false;}
+      else setErrorFor(productForm.description, '');
+      // Variants
+      if (hasVariants.checked) {
+        const colors = productForm.colors.value.split(',').map(v=>v.trim()).filter(Boolean);
+        const sizes = productForm.sizes.value.split(',').map(v=>v.trim()).filter(Boolean);
+        if (!validationRules.variants(colors, sizes)) {
+          setErrorFor(productForm.colors, 'Isi minimal satu warna atau ukuran');
+          setErrorFor(productForm.sizes, 'Isi minimal satu warna atau ukuran');
+          isValid = false;
+        } else {
+          setErrorFor(productForm.colors, '');
+          setErrorFor(productForm.sizes, '');
         }
+      }
+      // Store Info
+      if (productForm.storeName.value.trim().length < 2) { setErrorFor(productForm.storeName, 'Minimal 2 karakter'); isValid = false;}
+      else setErrorFor(productForm.storeName, '');
+      // At least 4 images required
+      if ([productForm.image1,productForm.image2,productForm.image3,productForm.image4].some(i=>!isValidUrl(i.value))) isValid = false;
+      return isValid;
+    }
+    // --- Loading Overlay ---
+    function showLoading(show, text='Membuat website Anda...') {
+      loadingOverlay.classList.toggle('hide', !show);
+      document.getElementById('loadingText').textContent = text;
+    }
+    // --- Generate Website Handler ---
+    productForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (!validateForm(true)) return;
+      showLoading(true,'Membuat kode website...');
+      setTimeout(()=>{
+        generateWebsite();
+        showLoading(false);
+      },750); // Simulate loading
+    });
+    // --- Generate Website Code ---
+    function generateWebsite() {
+      const fd = new FormData(productForm);
+      const data = {};
+      for (let [k,v] of fd.entries()) data[k]=v.trim();
+      data.hasVariants = hasVariants.checked;
+      data.colors = data.colors ? data.colors.split(',').map(s=>s.trim()).filter(Boolean) : [];
+      data.sizes = data.sizes ? data.sizes.split(',').map(s=>s.trim()).filter(Boolean) : [];
+      data.images = [
+        data.image1, data.image2, data.image3, data.image4,
+        data.image5 || '', data.image6 || ''
+      ].filter(Boolean);
+      data.price = Number(data.price);
+      data.features = data.features ? data.features.split(',').map(s=>s.trim()).filter(Boolean) : [];
+      // --- Template Start ---
+      const code = generateMinifiedHtml(data);
+      codeOutput.textContent = code;
+      resultSection.style.display = 'flex';
+      setTimeout(()=>{ codeOutput.scrollIntoView({ behavior:'smooth' }); }, 200);
+    }
+    // --- Minify HTML Output ---
+    function minifyHtml(html) {
+      return html.replace(/>\s+</g,'><').replace(/\s{2,}/g,' ').replace(/<!--[\s\S]*?-->/g,'');
+    }
+    // --- HTML Generator for E-commerce Site ---
+    function generateMinifiedHtml(data) {
+      const {
+        productName, price, whatsapp, description, images, hasVariants,
+        colors, sizes, storeName, storePhone, features
+      } = data;
+      // --- SEO ---
+      const title = productName + ' | ' + storeName + ' - Toko Online';
+      const metaDesc = description.replace(/"/g,'&quot;').slice(0,200);
+      // --- Breadcrumb
+      const breadcrumb = `<nav class="breadcrumb"><a href="#"><i class="fa-solid fa-house"></i> Home</a> <span>&gt;</span> <span>${productName}</span></nav>`;
+      // --- Features List
+      const featuresHtml = features.length ? `<ul class="product-features">${features.map(f=>`<li><i class="fa-solid fa-check-circle"></i> ${escapeHtml(f)}</li>`).join('')}</ul>` : '';
+      // --- Variant Dropdowns
+      const variantHtml = hasVariants ? `
+      <div class="order-variants">
+        ${colors.length ? `<div class="input-group"><label for="orderColor"><i class="fa-solid fa-palette"></i> Pilih Warna</label>
+        <select id="orderColor" name="orderColor" required>
+           <option value="" disabled selected>Pilih warna</option>
+           ${colors.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('')}
+        </select></div>` : ''}
+        ${sizes.length ? `<div class="input-group"><label for="orderSize"><i class="fa-solid fa-ruler"></i> Pilih Ukuran</label>
+        <select id="orderSize" name="orderSize" required>
+          <option value="" disabled selected>Pilih ukuran</option>
+          ${sizes.map(s=>`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('')}
+        </select></div>` : ''}
+      </div>` : '';
+      // --- Gallery Thumbnails
+      const thumbnails = images.map((img,i)=>`<img src="${escapeHtml(img)}" alt="Gambar produk ${productName} #${i+1}" class="thumb" data-idx="${i}" loading="lazy" />`).join('');
+      // --- Contact Info
+      const storeContact = storePhone ? `
+        <div class="store-contact">
+          <i class="fa-solid fa-phone"></i> <a href="tel:${escapeHtml(storePhone)}">${escapeHtml(storePhone)}</a>
+        </div>` : '';
+      // --- Final HTML ---
+      const siteHtml = `
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>${escapeHtml(title)}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="${escapeHtml(metaDesc)}">
+  <meta name="keywords" content="${escapeHtml(productName)}, jual, toko online, ${escapeHtml(storeName)}, marketplace, WhatsApp">
+  <meta property="og:title" content="${escapeHtml(title)}">
+  <meta property="og:description" content="${escapeHtml(metaDesc)}">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:image" content="${escapeHtml(images[0])}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ee5a24;
+      --primary2: #ff6b6b;
+      --accent: linear-gradient(90deg, #ee5a24 0%, #ff6b6b 100%);
+      --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --white: #fff;
+      --text: #222;
+      --border: #eaeaea;
+      --radius: 18px;
+      --shadow: 0 3px 16px rgba(44,44,84,.09), 0 1.5px 7px rgba(44,44,84,.04);
+      --max-width: 1020px;
+      --input-bg: #fafdff;
+      --input-focus: #e2e6ff;
+      --error: #ff6b6b;
+      --success: #43c465;
+      --muted: #888;
+    }
+    html,body{margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--gradient-bg);color:var(--text);}
+    .main-site-container{max-width:var(--max-width);margin:24px auto 0 auto;padding:0 7px;}
+    header{display:flex;align-items:center;gap:20px;margin-bottom:16px;}
+    .site-logo{background:var(--accent);border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;}
+    .site-logo i{color:#fff;font-size:2rem;}
+    .site-header-text{color:#fff;}
+    .site-header-text h1{margin:0;font-size:2.1rem;font-weight:700;}
+    .site-header-text h2{margin:3px 0 0 0;font-size:1.1rem;font-weight:400;opacity:.9;}
+    .site-header-text .store{font-weight:600;color:#ffd86b;}
+    .breadcrumb{margin-bottom:10px;font-size:.97em;display:flex;align-items:center;gap:6px;}
+    .breadcrumb a{color:#7a68ee;text-decoration:none;font-weight:600;}
+    .breadcrumb span{opacity:.65;}
+    .product-container{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+    .product-gallery{background:var(--white);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);position:sticky;top:90px;}
+    .main-image{width:100%;height:500px;object-fit:cover;border-radius:12px;box-shadow:0 2px 12px rgba(110,90,200,0.07);}
+    .thumbnails{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+    .thumb{width:100%;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;border:2.5px solid #f2f0fa;transition:border .12s;}
+    .thumb.active, .thumb:hover{border-color:var(--primary2);}
+    .product-info{background:var(--white);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
+    .product-title{font-size:2rem;font-weight:700;margin:0 0 6px 0;}
+    .product-price{font-size:1.32rem;font-weight:700;color:var(--primary);margin:0 0 10px 0;}
+    .store-info{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+    .store-info .fa-store{color:var(--primary2);}
+    .product-features{margin:7px 0 18px 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:12px;}
+    .product-features li{background:#f7f5ff;border-radius:8px;padding:6px 13px;font-size:.99em;display:flex;align-items:center;gap:7px;color:#6251a2;font-weight:600;}
+    .product-desc-section{background:var(--white);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin:30px 0 18px 0;}
+    .product-desc-title{font-size:1.13rem;font-weight:700;margin:0 0 7px 0;color:var(--primary);}
+    .product-desc{font-size:1.04rem;line-height:1.7;color:#444;}
+    .order-form-section{margin-top:22px;background:#f7f5ff;border-radius:12px;padding:22px;box-shadow:0 2px 8px rgba(110,90,200,.04);}
+    .order-form-title{font-size:1.1rem;font-weight:700;margin:0 0 10px 0;color:var(--primary);}
+    form.order-form{display:flex;flex-direction:column;gap:13px;}
+    .order-form .input-group{margin-bottom:0;}
+    .order-form label{font-size:.99em;font-weight:600;color:#555;display:flex;align-items:center;gap:6px;}
+    .order-form input,.order-form select,.order-form textarea{
+      font-size:1rem;border-radius:7px;border:1.5px solid var(--border);background:var(--input-bg);
+      padding:8px 10px;margin-top:3px;outline:none;transition:border-color .15s;background-clip:padding-box;
+      color:var(--text);font-family:inherit;width:100%;box-sizing:border-box;resize:none;
+    }
+    .order-form input:focus,.order-form select:focus,.order-form textarea:focus{border-color:var(--input-focus);background:#f3f7ff;}
+    .order-form .qty-group{display:flex;align-items:center;gap:8px;}
+    .order-form .qty-btn{background:var(--accent);color:#fff;border:none;width:32px;height:32px;border-radius:7px;font-size:1.2em;cursor:pointer;transition:background .12s;}
+    .order-form .qty-btn:active{background:linear-gradient(90deg,#ee5a24 60%, #f95e51 100%);}
+    .order-form .order-summary{background:#fff4ee;border-radius:10px;padding:12px 16px;margin-top:10px;}
+    .order-summary-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+    .order-summary-row:last-child{font-size:1.1em;font-weight:700;color:var(--primary2);}
+    .order-form .error-message{color:var(--error);font-size:.94em;margin-top:2px;}
+    .order-form .success-message{color:var(--success);font-size:.96em;margin-top:2px;}
+    .order-form .order-btn{margin-top:10px;width:100%;font-size:1.09rem;font-weight:700;padding:13px 0;border:none;border-radius:9px;background:var(--accent);color:#fff;cursor:pointer;box-shadow:0 2px 10px rgba(238,90,36,0.11);}
+    .order-form .order-btn:active{background:linear-gradient(90deg,#ee5a24 60%, #f95e51 100%);}
+    footer.site-footer{margin:30px 0 8px 0;text-align:center;color:#bcb3e5;font-size:.96em;}
+    footer.site-footer a{color:#fff;text-decoration:underline;font-weight:600;opacity:.78;}
+    @media (max-width:1024px){.main-site-container{max-width:96vw;}.product-container{gap:26px;}}
+    @media (max-width:768px){
+      .main-site-container{padding:0 2px;}
+      .product-container{grid-template-columns:1fr;gap:18px;}
+      .main-image{height:300px;}
+      .product-info,.product-gallery,.product-desc-section{padding:14px;}
+      header{flex-direction:column;gap:13px;}
+      .order-form-section{padding:14px;}
+    }
+    @media (max-width:480px){
+      .main-image{height:200px;}
+      .site-logo{width:38px;height:38px;}
+      .product-title{font-size:1.22rem;}
+    }
+    @media print{body,html{background:#fff!important;color:#222!important;}.product-info,.product-gallery,.product-desc-section{box-shadow:none!important;background:#fff!important;}.order-form-section{box-shadow:none!important;}.order-btn,.site-footer{display:none!important;}}
+  </style>
+</head>
+<body>
+  <div class="main-site-container">
+    <header>
+      <div class="site-logo"><i class="fa-solid fa-cart-shopping"></i></div>
+      <div class="site-header-text">
+        <h1>${escapeHtml(productName)}</h1>
+        <h2 class="store"><i class="fa-solid fa-store"></i> ${escapeHtml(storeName)}</h2>
+      </div>
+    </header>
+    ${breadcrumb}
+    <section class="product-container">
+      <!-- Left: Gallery -->
+      <div class="product-gallery">
+        <img src="${escapeHtml(images[0])}" alt="Gambar utama produk ${escapeHtml(productName)}" class="main-image" id="mainImage" />
+        <div class="thumbnails" id="galleryThumbs">${thumbnails}</div>
+      </div>
+      <!-- Right: Product Info & Order -->
+      <div class="product-info">
+        <div class="product-title">${escapeHtml(productName)}</div>
+        <div class="product-price">Rp ${price.toLocaleString('id-ID')}</div>
+        <div class="store-info">
+          <i class="fa-solid fa-store"></i> <span>${escapeHtml(storeName)}</span>
+          ${storeContact}
+        </div>
+        ${featuresHtml}
+        <div class="order-form-section">
+          <div class="order-form-title"><i class="fa-solid fa-cart-plus"></i> Pesan Sekarang</div>
+          <form class="order-form" id="orderForm" autocomplete="off" spellcheck="false" novalidate>
+            ${variantHtml}
+            <div class="input-group">
+              <label for="orderQty"><i class="fa-solid fa-sort-numeric-up-alt"></i> Jumlah</label>
+              <div class="qty-group">
+                <button type="button" class="qty-btn" id="qtyMinus"><i class="fa-solid fa-minus"></i></button>
+                <input id="orderQty" name="orderQty" type="number" min="1" max="100" value="1" style="width:54px;text-align:center;" required />
+                <button type="button" class="qty-btn" id="qtyPlus"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="customerName"><i class="fa-solid fa-user"></i> Nama Penerima *</label>
+              <input id="customerName" name="customerName" type="text" required minlength="2" maxlength="40" placeholder="Nama lengkap" />
+              <div class="error-message"></div>
+            </div>
+            <div class="input-group">
+              <label for="customerPhone"><i class="fa-solid fa-phone"></i> No. WhatsApp *</label>
+              <input id="customerPhone" name="customerPhone" type="tel" required pattern="^08[1-9][0-9]{8,11}$" maxlength="13" placeholder="081234567890" />
+              <div class="hint">Format: 08xxxxxxxxxx</div>
+              <div class="error-message"></div>
+            </div>
+            <div class="input-group">
+              <label for="customerEmail"><i class="fa-solid fa-envelope"></i> Email</label>
+              <input id="customerEmail" name="customerEmail" type="email" maxlength="50" placeholder="Opsional" />
+            </div>
+            <div class="input-group">
+              <label for="customerAddress"><i class="fa-solid fa-location-dot"></i> Alamat Lengkap *</label>
+              <textarea id="customerAddress" name="customerAddress" rows="2" required minlength="20" maxlength="130" placeholder="Nama jalan, RT/RW, patokan..."></textarea>
+              <div class="error-message"></div>
+            </div>
+            <div class="input-group">
+              <label for="province"><i class="fa-solid fa-map"></i> Provinsi *</label>
+              <select id="province" name="province" required>
+                <option value="" disabled selected>Pilih provinsi</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="city"><i class="fa-solid fa-city"></i> Kota/Kabupaten *</label>
+              <select id="city" name="city" required disabled>
+                <option value="" disabled selected>Pilih kota</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="district"><i class="fa-solid fa-location-crosshairs"></i> Kecamatan *</label>
+              <select id="district" name="district" required disabled>
+                <option value="" disabled selected>Pilih kecamatan</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="orderNotes"><i class="fa-solid fa-sticky-note"></i> Catatan Pesanan</label>
+              <textarea id="orderNotes" name="orderNotes" rows="2" maxlength="80" placeholder="Opsional: warna request, patokan, dll"></textarea>
+            </div>
+            <div class="order-summary" id="orderSummary">
+              <div class="order-summary-row"><span>Subtotal</span><span id="osSubtotal">Rp 0</span></div>
+              <div class="order-summary-row"><span>Kode Unik</span><span id="osUniqueCode">+Rp 0</span></div>
+              <div class="order-summary-row"><span>Total</span><span id="osTotal">Rp 0</span></div>
+            </div>
+            <div class="error-message" id="orderFormError"></div>
+            <button type="submit" class="order-btn" id="orderBtn"><i class="fa-brands fa-whatsapp"></i> Order via WhatsApp</button>
+            <div class="success-message" id="orderFormSuccess"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section class="product-desc-section">
+      <div class="product-desc-title"><i class="fa-solid fa-align-left"></i> Deskripsi Produk</div>
+      <div class="product-desc">${escapeHtml(description).replace(/\n/g,'<br>')}</div>
+    </section>
+    <footer class="site-footer">
+      Toko online by <a href="https://github.com/nexcoofficial" target="_blank" rel="noopener">NexcoOfficial</a> &copy; 2025
+    </footer>
+  </div>
+  <script>
+    // --- Region Data ---
+    const indonesiaRegions=${JSON.stringify(indonesiaRegions)};
+    // --- Gallery Logic ---
+    const thumbs = document.querySelectorAll('.thumb');
+    const mainImage = document.getElementById('mainImage');
+    thumbs.forEach((thumb,i)=>{
+      thumb.addEventListener('click',function(){
+        thumbs.forEach(t=>t.classList.remove('active'));
+        thumb.classList.add('active');
+        mainImage.src=thumb.src;
+      });
+      if(i===0) thumb.classList.add('active');
+    });
+    // --- Province/City/District Dropdowns ---
+    const provinceEl=document.getElementById('province');
+    const cityEl=document.getElementById('city');
+    const districtEl=document.getElementById('district');
+    function populateProvinces() {
+      let provinces=Object.keys(indonesiaRegions);
+      provinceEl.innerHTML='<option value="" disabled selected>Pilih provinsi</option>'+provinces.map(p=>\`<option value="\${p}">\${p}</option>\`).join('');
+      cityEl.innerHTML='<option value="" disabled selected>Pilih kota</option>'; cityEl.disabled=true;
+      districtEl.innerHTML='<option value="" disabled selected>Pilih kecamatan</option>'; districtEl.disabled=true;
+    }
+    provinceEl.addEventListener('change',function(){
+      let cities=Object.keys(indonesiaRegions[this.value]||{});
+      cityEl.innerHTML='<option value="" disabled selected>Pilih kota</option>'+cities.map(c=>\`<option value="\${c}">\${c}</option>\`).join('');
+      cityEl.disabled=false;
+      districtEl.innerHTML='<option value="" disabled selected>Pilih kecamatan</option>'; districtEl.disabled=true;
+    });
+    cityEl.addEventListener('change',function(){
+      let dists=indonesiaRegions[provinceEl.value][this.value]||[];
+      districtEl.innerHTML='<option value="" disabled selected>Pilih kecamatan</option>'+dists.map(d=>\`<option value="\${d}">\${d}</option>\`).join('');
+      districtEl.disabled=false;
+    });
+    populateProvinces();
+    // --- Quantity Buttons ---
+    const qtyInput=document.getElementById('orderQty');
+    document.getElementById('qtyMinus').onclick=()=>{qtyInput.value=Math.max(1,Number(qtyInput.value)-1);updateOrderSummary();};
+    document.getElementById('qtyPlus').onclick=()=>{qtyInput.value=Math.min(100,Number(qtyInput.value)+1);updateOrderSummary();};
+    qtyInput.addEventListener('input',updateOrderSummary);
+    // --- Order Summary Calculation ---
+    const price=${price};
+    let uniqueCode=Math.floor(1+Math.random()*999);
+    function updateOrderSummary(){
+      let qty=Number(qtyInput.value)||1;
+      let subtotal=qty*price;
+      document.getElementById('osSubtotal').textContent='Rp '+subtotal.toLocaleString('id-ID');
+      document.getElementById('osUniqueCode').textContent='+Rp '+uniqueCode;
+      document.getElementById('osTotal').textContent='Rp '+(subtotal+uniqueCode).toLocaleString('id-ID');
+    }
+    updateOrderSummary();
+    // --- WhatsApp Order ---
+    document.getElementById('orderForm').addEventListener('submit',function(e){
+      e.preventDefault();
+      if(!validateOrderForm()) return;
+      let msg=generateWhatsAppMessage();
+      let waUrl='https://wa.me/${whatsapp}?text='+encodeURIComponent(msg);
+      window.open(waUrl,'_blank');
+      document.getElementById('orderFormSuccess').textContent='Pesanan siap! WhatsApp telah dibuka.';
+      setTimeout(()=>{document.getElementById('orderFormSuccess').textContent='';},4000);
+    });
+    function validateOrderForm(){
+      let name=document.getElementById('customerName').value.trim();
+      let phone=document.getElementById('customerPhone').value.trim();
+      let addr=document.getElementById('customerAddress').value.trim();
+      let prov=provinceEl.value,city=cityEl.value,district=districtEl.value;
+      let err='';
+      if(name.length<2) err='Nama minimal 2 karakter';
+      else if(!/^08[1-9][0-9]{8,11}$/.test(phone)) err='Format nomor WA salah (08xxxxxxxxxx)';
+      else if(addr.length<20) err='Alamat minimal 20 karakter';
+      else if(!prov||!city||!district) err='Pilih provinsi, kota, kecamatan';
+      document.getElementById('orderFormError').textContent=err;
+      return !err;
+    }
+    function generateWhatsAppMessage(){
+      const qty=Number(qtyInput.value)||1;
+      const subtotal=qty*price;
+      const customerName=document.getElementById('customerName').value.trim();
+      const customerPhone=document.getElementById('customerPhone').value.trim();
+      const customerEmail=document.getElementById('customerEmail').value.trim();
+      const customerAddress=document.getElementById('customerAddress').value.trim();
+      const province=provinceEl.value;
+      const city=cityEl.value;
+      const district=districtEl.value;
+      const orderNotes=document.getElementById('orderNotes').value.trim();
+      let varStr='';
+      if(${hasVariants}){
+        let v=[];
+        if(${colors.length}>0) v.push('Warna: '+document.getElementById('orderColor').value);
+        if(${sizes.length}>0) v.push('Ukuran: '+document.getElementById('orderSize').value);
+        varStr='- Varian: '+v.join(', ');
+      }
+      return \`🛒 PESANAN ${escapeHtml(productName)}
+📋 Detail Pesanan:
+- Produk: ${escapeHtml(productName)}
+\${varStr?varStr+'\\n':''}- Jumlah: \${qty} pcs
+- Subtotal: Rp \${subtotal.toLocaleString('id-ID')}
+- Kode Unik: +Rp \${uniqueCode}
+- TOTAL: Rp \${(subtotal+uniqueCode).toLocaleString('id-ID')}
 
-        // Form Validation
-        function validateForm() {
-            let isValid = true;
-            
-            // Reset errors
-            document.querySelectorAll('.text-red-500').forEach(el => {
-                el.classList.add('hidden');
-            });
-            
-            // Product Name
-            const productName = document.getElementById('productName').value.trim();
-            if (productName.length < 2) {
-                document.getElementById('productNameError').classList.remove('hidden');
-                isValid = false;
-            }
-            
-            // Price
-            const price = parseInt(document.getElementById('price').value);
-            if (!price || price < 1000) {
-                document.getElementById('priceError').classList.remove('hidden');
-                isValid = false;
-            }
-            
-            // WhatsApp
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const whatsappPattern = /^62\d{10,13}$/;
-            if (!whatsappPattern.test(whatsapp)) {
-                document.getElementById('whatsappError').classList.remove('hidden');
-                isValid = false;
-            }
-            
-            // Description
-            const description = document.getElementById('description').value.trim();
-            if (description.length < 10) {
-                document.getElementById('descriptionError').classList.remove('hidden');
-                isValid = false;
-            }
-            
-            // Images
-            const images = [
-                document.getElementById('image1').value,
-                document.getElementById('image2').value,
-                document.getElementById('image3').value,
-                document.getElementById('image4').value
-            ].filter(img => img.trim() !== '');
-            
-            if (images.length < 4) {
-                document.getElementById('imageError').classList.remove('hidden');
-                isValid = false;
-            }
-            
-            return isValid;
-        }
+👤 Data Penerima:
+- Nama: \${customerName}
+- WhatsApp: \${customerPhone}
+\${customerEmail?'- Email: '+customerEmail+'\\n':''}- Alamat: \${customerAddress}
+- Wilayah: \${district}, \${city}, \${province}
+\${orderNotes?'- Catatan: '+orderNotes+'\\n':''}
+💳 Metode Pembayaran: Bank Transfer
 
-        // Generate Website
-        function generateWebsite(e) {
-            e.preventDefault();
-            
-            if (!validateForm()) return;
-            
-            loadingSpinner.style.display = 'flex';
-            
-            // Get form values
-            const productName = document.getElementById('productName').value.trim();
-            const price = parseInt(document.getElementById('price').value);
-            const whatsappNumber = document.getElementById('whatsapp').value.trim();
-            const description = document.getElementById('description').value.trim();
-            const storeName = document.getElementById('storeName').value.trim();
-            const storePhone = document.getElementById('storePhone').value.trim();
-            const features = document.getElementById('features').value.split(',').map(f => f.trim()).filter(f => f);
-            
-            // Get images
-            const images = [];
-            for (let i = 1; i <= 6; i++) {
-                const imgValue = document.getElementById('image' + i).value.trim();
-                if (imgValue) images.push(imgValue);
-            }
-            
-            // Get variants
-            const hasVariants = document.getElementById('hasVariants').checked;
-            const colors = hasVariants ? document.getElementById('colors').value.split(',').map(c => c.trim()).filter(c => c) : [];
-            const sizes = hasVariants ? document.getElementById('sizes').value.split(',').map(s => s.trim()).filter(s => s) : [];
-            
-            // Generate website HTML
-            const html
+Mohon konfirmasi pesanan ini. Terima kasih! 🙏\`;
+    }
+    // --- Utility (HTML escape) ---
+    function escapeHtml(s){
+      return s.replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+    }
+    // --- Variants: required? ---
+    if(${hasVariants}){
+      if(${colors.length}>0)
+        document.getElementById('orderColor').addEventListener('change',()=>{});
+      if(${sizes.length}>0)
+        document.getElementById('orderSize').addEventListener('change',()=>{});
+    }
+  </script>
+</body>
+</html>
+      `;
+      // --- Minify and return ---
+      return minifyHtml(siteHtml);
+    }
+    // --- Action Buttons ---
+    copyCodeBtn.onclick = function(){
+      const code = codeOutput.textContent;
+      navigator.clipboard.writeText(code).then(()=>{
+        copiedMessage.classList.add('show');
+        setTimeout(()=>copiedMessage.classList.remove('show'),1400);
+      });
+    }
+    downloadBtn.onclick = function(){
+      const blob = new Blob([codeOutput.textContent], {type:'text/html'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'website-jualan-'+Date.now()+'.html';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(()=>{document.body.removeChild(a); URL.revokeObjectURL(url);},70);
+    }
+    previewBtn.onclick = function(){
+      const win = window.open();
+      win.document.write(codeOutput.textContent);
+      win.document.close();
+    }
+    // --- Utility: HTML escape ---
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[m]));
+    }
+    // --- Focus code output on result show ---
+    codeOutput.addEventListener('focus', function(){
+      codeOutput.select && codeOutput.select();
+    });
+  </script>
 </body>
 </html>
