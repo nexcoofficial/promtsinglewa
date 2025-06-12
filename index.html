@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Website Jualan - Generator Toko Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#ee5a24',
+                        'primary-dark': '#d84d1b',
+                        'gradient-start': '#ee5a24',
+                        'gradient-end': '#ff6b6b',
+                    },
+                    fontFamily: {
+                        'sans': ['Nunito', 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/css">
+        .bg-gradient-custom {
+            background-image: linear-gradient(135deg, #ee5a24 0%, #ff6b6b 100%);
+        }
+        .bg-gradient-custom:hover {
+            background-image: linear-gradient(135deg, #d84d1b 0%, #f55e5e 100%);
+        }
+        .border-custom {
+            border-color: #ee5a24;
+        }
+        .gallery-main {
+            height: 500px;
+            object-fit: cover;
+        }
+        .thumb {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .thumb:hover, .thumb.active {
+            border-color: #ee5a24;
+        }
+        .price-tag {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #ee5a24;
+        }
+        .feature-badge {
+            background-color: rgba(238, 90, 36, 0.1);
+            color: #ee5a24;
+        }
+        .sticky-gallery {
+            position: sticky;
+            top: 100px;
+        }
+        .transition-custom {
+            transition: all 0.3s ease;
+        }
+        #loading-spinner {
+            display: none;
+        }
+        #result-section {
+            display: none;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(238, 90, 36, 0.7);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ee5a24;
+        }
+        @media (max-width: 768px) {
+            .gallery-main {
+                height: 300px;
+            }
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+            .sticky-gallery {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Generator Section -->
+    <div class="min-h-screen py-8 px-4">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="bg-gradient-custom text-white p-1 rounded-xl max-w-fit mx-auto mb-4">
+                <i class="fas fa-store text-3xl mx-4 my-3"></i>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Buat Website Jualan</h1>
+            <p class="text-gray-600 mt-2 max-w-2xl mx-auto">
+                Generator website toko online profesional dengan satu klik. Masukkan detail produk Anda dan dapatkan website siap pakai terintegrasi WhatsApp.
+            </p>
+        </header>
+        
+        <!-- Generator Form -->
+        <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="bg-gradient-custom text-white py-4 px-6">
+                <h2 class="text-xl font-bold"><i class="fas fa-pencil-alt mr-2"></i>Formulir Produk</h2>
+            </div>
+            
+            <form id="productForm" class="p-6">
+                <!-- Loading Indicator -->
+                <div id="loading-spinner" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div class="bg-white p-8 rounded-xl text-center">
+                        <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mx-auto"></div>
+                        <p class="mt-4 text-lg font-semibold">Membuat website...</p>
+                        <p class="text-gray-600">Silakan tunggu sebentar</p>
+                    </div>
+                </div>
+                
+                <!-- Section 1: Product Information -->
+                <div class="mb-10">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-primary text-white rounded-full h-8 w-8 flex items-center justify-center mr-2">1</span>
+                        Informasi Produk
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 mb-1" for="productName">Nama Produk *</label>
+                            <input type="text" id="productName" name="productName" required
+                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                   placeholder="Contoh: Smartwatch Terbaru Pro Max">
+                            <p class="text-red-500 text-sm mt-1 hidden" id="productNameError">Nama produk minimal 2 karakter</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 mb-1" for="price">Harga Produk (Rp) *</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
+                                <input type="number" id="price" name="price" required min="1000"
+                                       class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                       placeholder="Contoh: 350000">
+                            </div>
+                            <p class="text-red-500 text-sm mt-1 hidden" id="priceError">Masukkan harga yang valid</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 mb-1" for="whatsapp">Nomor WhatsApp *</label>
+                            <input type="text" id="whatsapp" name="whatsapp" required
+                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                   placeholder="Format: 6281xxxxxxxx">
+                            <p class="text-sm text-gray-500 mt-1">Contoh: 6281123456789</p>
+                            <p class="text-red-500 text-sm mt-1 hidden" id="whatsappError">Format nomor WhatsApp salah (6281xxxxxxxx)</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 mb-1" for="description">Deskripsi Produk *</label>
+                            <textarea id="description" name="description" rows="4" required
+                                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                      placeholder="Jelaskan produk Anda secara detail..."></textarea>
+                            <p class="text-red-500 text-sm mt-1 hidden" id="descriptionError">Deskripsi minimal 10 karakter</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 2: Product Images -->
+                <div class="mb-10">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-primary text-white rounded-full h-8 w-8 flex items-center justify-center mr-2">2</span>
+                        Gambar Produk
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-700 mb-1" for="image1">Gambar Utama *</label>
+                            <input type="url" id="image1" name="image1" required
+                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                   placeholder="URL gambar utama">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-1" for="image2">Gambar Sudut Alternatif *</label>
+                            <input type="url" id="image2" name="image2" required
+                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                   placeholder="URL gambar alternatif">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-1" for="image3">Gambar Detail Produk *</label>
+                            <input type="url" id="image3" name="image3" required
+                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                   placeholder="URL gambar detail">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-1" for="image4">Gambar Lifestyle *</label>
+                            <input type="url" id="image4" name="image4" required
+                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                   placeholder="URL gambar lifestyle">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-1" for="image5">Gambar Tambahan (Opsional)</label>
+                            <input type="url" id="image5" name="image5"
+                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                   placeholder="URL gambar tambahan">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-1" for="image6">Gambar Detail Tambahan (Opsional)</label>
+                            <input type="url" id="image6" name="image6"
+                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                   placeholder="URL gambar tambahan">
+                        </div>
+                    </div>
+                    <p id="imageError" class="text-red-500 text-sm mt-2 hidden">Minimal harus mengisi 4 gambar</p>
+                </div>
+                
+                <!-- Section 3: Product Variants -->
+                <div class="mb-10">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-primary text-white rounded-full h-8 w-8 flex items-center justify-center mr-2">3</span>
+                        Varian Produk
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="hasVariants" name="hasVariants" 
+                                   class="h-5 w-5 text-primary rounded focus:ring-primary">
+                            <label class="ml-2 text-gray-700" for="hasVariants">Produk ini memiliki varian</label>
+                        </div>
+                        
+                        <div id="variantOptions" class="hidden space-y-4 transition-custom">
+                            <div>
+                                <label class="block text-gray-700 mb-1" for="colors">Opsi Warna</label>
+                                <input type="text" id="colors" name="colors"
+                                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                       placeholder="Contoh: Merah, Biru, Hitam, Emas">
+                                <p class="text-sm text-gray-500 mt-1">Pisahkan dengan koma</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-700 mb-1" for="sizes">Opsi Ukuran</label>
+                                <input type="text" id="sizes" name="sizes"
+                                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                       placeholder="Contoh: S, M, L, XL">
+                                <p class="text-sm text-gray-500 mt-1">Pisahkan dengan koma</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 4: Store Information -->
+                <div class="mb-10">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-primary text-white rounded-full h-8 w-8 flex items-center justify-center mr-2">4</span>
+                        Informasi Toko
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 mb-1" for="storeName">Nama Toko/Merek *</label>
+                            <input type="text" id="storeName" name="storeName" required
+                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                   placeholder="Contoh: Toko Jaya Abadi">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 mb-1" for="storePhone">Nomor Telepon Toko (Opsional)</label>
+                            <input type="tel" id="storePhone" name="storePhone"
+                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                   placeholder="Contoh: 0211234567">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 mb-1" for="features">Fitur Produk *</label>
+                            <input type="text" id="features" name="features" required
+                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition"
+                                   placeholder="Contoh: Tahan Air, Baterai 30 Hari, GPS">
+                            <p class="text-sm text-gray-500 mt-1">Pisahkan dengan koma</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Generate Button -->
+                <div class="text-center mt-8">
+                    <button type="submit"
+                            class="bg-gradient-custom text-white font-bold py-4 px-8 rounded-full text-lg hover:shadow-xl transition-all duration-300">
+                        <i class="fas fa-bolt mr-2"></i>Generate Website
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Results Section -->
+    <div id="result-section" class="py-8 px-4 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <!-- Success Message -->
+            <div class="bg-green-50 rounded-xl p-6 mb-8 flex flex-col items-center text-center">
+                <div class="bg-green-100 rounded-full p-4 mb-4">
+                    <i class="fas fa-check-circle text-green-600 text-4xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800">✅ Website Berhasil Dibuat!</h2>
+                <p class="text-gray-600 mt-2 max-w-2xl">
+                    Kode HTML siap di-copy di bawah ini. Website Anda siap untuk jualan langsung!
+                </p>
+                <div class="mt-4">
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <button id="copyCodeBtn" class="bg-blue-100 text-blue-700 font-semibold py-2 px-6 rounded-full flex items-center hover:bg-blue-200 transition">
+                            <i class="far fa-copy mr-2"></i> Copy Code
+                        </button>
+                        <button id="downloadBtn" class="bg-green-100 text-green-700 font-semibold py-2 px-6 rounded-full flex items-center hover:bg-green-200 transition">
+                            <i class="fas fa-download mr-2"></i> Download HTML
+                        </button>
+                        <button id="previewBtn" class="bg-orange-100 text-orange-700 font-semibold py-2 px-6 rounded-full flex items-center hover:bg-orange-200 transition">
+                            <i class="fas fa-eye mr-2"></i> Preview Website
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Code Output -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="bg-gradient-custom text-white py-4 px-6">
+                    <h2 class="text-xl font-bold"><i class="fas fa-code mr-2"></i>Kode Website</h2>
+                </div>
+                
+                <div class="p-4 border-b">
+                    <p class="text-gray-600"><i class="fas fa-info-circle mr-2"></i>Copy seluruh kode di bawah dan simpan sebagai file .html</p>
+                </div>
+                
+                <div class="p-1 bg-gray-800">
+                    <textarea id="generatedCode" class="w-full h-64 font-mono text-sm bg-gray-900 text-gray-200 p-4 focus:outline-none border-0" readonly>
+                    </textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="py-6 text-center text-gray-600">
+        <p>© 2023 Generator Website Jualan. Dibuat dengan ❤️ untuk Indonesia</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // DOM Elements
+        const productForm = document.getElementById('productForm');
+        const hasVariants = document.getElementById('hasVariants');
+        const variantOptions = document.getElementById('variantOptions');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const resultSection = document.getElementById('result-section');
+        const generatedCode = document.getElementById('generatedCode');
+        const copyCodeBtn = document.getElementById('copyCodeBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const previewBtn = document.getElementById('previewBtn');
+
+        // Toggle Variant Options
+        hasVariants.addEventListener('change', function() {
+            variantOptions.classList.toggle('hidden', !this.checked);
+        });
+
+        // Indonesia Regions Data
+        const indonesiaRegions = {
+            "Jawa Barat": {
+                "Bandung": ["Cidadap", "Cicendo", "Coblong", "Bandung Wetan", "Sumur Bandung"],
+                "Bekasi": ["Bekasi Barat", "Bekasi Timur", "Bekasi Selatan", "Bekasi Utara"],
+                "Bogor": ["Bogor Tengah", "Bogor Utara", "Bogor Selatan", "Bogor Timur", "Bogor Barat"],
+                "Depok": ["Pancoran Mas", "Sukmajaya", "Sawangan", "Cipayung", "Beji"],
+                "Cimahi": ["Cimahi Selatan", "Cimahi Tengah", "Cimahi Utara"]
+            },
+            "DKI Jakarta": {
+                "Jakarta Pusat": ["Gambir", "Tanah Abang", "Menteng", "Senen", "Cempaka Putih"],
+                "Jakarta Selatan": ["Kebayoran Baru", "Tebet", "Setiabudi", "Mampang Prapatan", "Pasar Minggu"],
+                "Jakarta Timur": ["Matraman", "Pulogadung", "Jatinegara", "Duren Sawit", "Kramat Jati"],
+                "Jakarta Barat": ["Grogol Petamburan", "Taman Sari", "Tambora", "Kebon Jeruk", "Palmerah"],
+                "Jakarta Utara": ["Penjaringan", "Pademangan", "Tanjung Priok", "Koja", "Kelapa Gading"]
+            },
+            "Jawa Tengah": {
+                "Semarang": ["Semarang Tengah", "Semarang Utara", "Semarang Selatan", "Semarang Timur"],
+                "Solo": ["Laweyan", "Serengan", "Pasar Kliwon", "Jebres", "Banjarsari"],
+                "Yogyakarta": ["Gondokusuman", "Jetis", "Tegalrejo", "Umbulharjo", "Kotagede"]
+            },
+            "Jawa Timur": {
+                "Surabaya": ["Genteng", "Gubeng", "Tegalsari", "Wonokromo", "Sawahan"],
+                "Malang": ["Klojen", "Blimbing", "Kedungkandang", "Sukun", "Lowokwaru"],
+                "Sidoarjo": ["Sidoarjo", "Buduran", "Candi", "Porong", "Krembung"]
+            },
+            "Sumatera Utara": {
+                "Medan": ["Medan Kota", "Medan Barat", "Medan Timur", "Medan Utara", "Medan Selatan"],
+                "Binjai": ["Binjai Kota", "Binjai Barat", "Binjai Timur", "Binjai Utara", "Binjai Selatan"]
+            },
+            "Sumatera Selatan": {
+                "Palembang": ["Ilir Barat I", "Ilir Timur I", "Seberang Ulu I", "Kertapati", "Plaju"]
+            },
+            "Banten": {
+                "Tangerang": ["Tangerang Kota", "Cipondoh", "Karawaci", "Pinang", "Neglasari"],
+                "Serang": ["Serang Kota", "Kasemen", "Walantaka", "Curug", "Cipocok Jaya"]
+            },
+            "Kalimantan Timur": {
+                "Balikpapan": ["Balikpapan Kota", "Balikpapan Barat", "Balikpapan Timur", "Balikpapan Selatan"],
+                "Samarinda": ["Samarinda Kota", "Samarinda Ulu", "Samarinda Ilir", "Sungai Kunjang"]
+            },
+            "Sulawesi Selatan": {
+                "Makassar": ["Makassar", "Mariso", "Mamajang", "Tamalate", "Rappocini"]
+            },
+            "Bali": {
+                "Denpasar": ["Denpasar Barat", "Denpasar Timur", "Denpasar Selatan", "Denpasar Utara"],
+                "Badung": ["Mengwi", "Abiansemal", "Petang", "Kuta Utara", "Kuta Selatan"]
+            }
+        };
+        
+        // Format Rupiah
+        function formatRupiah(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Form Validation
+        function validateForm() {
+            let isValid = true;
+            
+            // Reset errors
+            document.querySelectorAll('.text-red-500').forEach(el => {
+                el.classList.add('hidden');
+            });
+            
+            // Product Name
+            const productName = document.getElementById('productName').value.trim();
+            if (productName.length < 2) {
+                document.getElementById('productNameError').classList.remove('hidden');
+                isValid = false;
+            }
+            
+            // Price
+            const price = parseInt(document.getElementById('price').value);
+            if (!price || price < 1000) {
+                document.getElementById('priceError').classList.remove('hidden');
+                isValid = false;
+            }
+            
+            // WhatsApp
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const whatsappPattern = /^62\d{10,13}$/;
+            if (!whatsappPattern.test(whatsapp)) {
+                document.getElementById('whatsappError').classList.remove('hidden');
+                isValid = false;
+            }
+            
+            // Description
+            const description = document.getElementById('description').value.trim();
+            if (description.length < 10) {
+                document.getElementById('descriptionError').classList.remove('hidden');
+                isValid = false;
+            }
+            
+            // Images
+            const images = [
+                document.getElementById('image1').value,
+                document.getElementById('image2').value,
+                document.getElementById('image3').value,
+                document.getElementById('image4').value
+            ].filter(img => img.trim() !== '');
+            
+            if (images.length < 4) {
+                document.getElementById('imageError').classList.remove('hidden');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        // Generate Website
+        function generateWebsite(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) return;
+            
+            loadingSpinner.style.display = 'flex';
+            
+            // Get form values
+            const productName = document.getElementById('productName').value.trim();
+            const price = parseInt(document.getElementById('price').value);
+            const whatsappNumber = document.getElementById('whatsapp').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const storeName = document.getElementById('storeName').value.trim();
+            const storePhone = document.getElementById('storePhone').value.trim();
+            const features = document.getElementById('features').value.split(',').map(f => f.trim()).filter(f => f);
+            
+            // Get images
+            const images = [];
+            for (let i = 1; i <= 6; i++) {
+                const imgValue = document.getElementById('image' + i).value.trim();
+                if (imgValue) images.push(imgValue);
+            }
+            
+            // Get variants
+            const hasVariants = document.getElementById('hasVariants').checked;
+            const colors = hasVariants ? document.getElementById('colors').value.split(',').map(c => c.trim()).filter(c => c) : [];
+            const sizes = hasVariants ? document.getElementById('sizes').value.split(',').map(s => s.trim()).filter(s => s) : [];
+            
+            // Generate website HTML
+            const html
+</body>
+</html>
