@@ -4,1057 +4,352 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generator Website Toko Online</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+        :root {
+            --primary: #2563eb;
+            --danger: #dc2626;
+            --success: #059669;
+            --bg: #f8fafc;
+            --shadow: 0 2px 12px rgba(37, 99, 235, 0.06);
+            --card: #ffffff;
+            --border: #e5e7eb;
+            --radius: 14px;
         }
-        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { width: 100%; min-height: 100vh; }
         body {
-            background: linear-gradient(135deg, #f0f7ff 0%, #e6f7ff 100%);
-            color: #1e293b;
+            font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+            background: var(--bg);
+            color: #222;
+            min-height: 100vh;
         }
-        
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .tab-active {
-            border-bottom: 3px solid #2563eb;
-            color: #2563eb;
-        }
-        
-        .thumbnail {
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-        
-        .thumbnail:hover {
-            transform: scale(1.05);
-            border-color: #2563eb;
-        }
-        
-        .thumbnail.active {
-            border-color: #2563eb;
-            transform: scale(1.05);
-        }
-        
-        .whatsapp-btn {
-            background: #25d366;
-            transition: all 0.3s ease;
-        }
-        
-        .whatsapp-btn:hover {
-            background: #128C7E;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
-        }
-        
-        .variant-chip {
-            display: inline-block;
-            background: #e0f2fe;
-            color: #0369a1;
-            border-radius: 20px;
-            padding: 4px 12px;
-            margin: 4px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .variant-chip:hover {
-            background: #bae6fd;
-        }
-        
-        .variant-chip.selected {
-            background: #2563eb;
-            color: white;
-        }
-        
-        .qty-btn {
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: #dbeafe;
-            color: #2563eb;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .qty-btn:hover {
-            background: #bfdbfe;
-            transform: scale(1.05);
-        }
-        
-        .payment-option {
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .payment-option:hover {
-            border-color: #2563eb;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.1);
-        }
-        
-        .manual-input {
-            animation: fadeIn 0.4s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .preview-container {
-            max-height: 500px;
-            overflow: auto;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            background: white;
-            padding: 20px;
-        }
-        
-        /* Custom scrollbar */
-        .preview-container::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .preview-container::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 4px;
-        }
-        
-        .preview-container::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        
-        .preview-container::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-    </style>
-</head>
-<body class="min-h-screen bg-gray-50">
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <!-- Header -->
-        <header class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">E-commerce Website Generator</h1>
-            <p class="text-lg text-gray-600">Buat toko online profesional dalam hitungan menit</p>
-            <div class="w-24 h-1 bg-blue-500 rounded-full mx-auto mt-4"></div>
-        </header>
-
-        <!-- Main Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Generator Form -->
-            <div class="lg:col-span-2">
-                <div class="card p-6 mb-8">
-                    <!-- Form Tabs -->
-                    <div class="flex border-b mb-6">
-                        <button class="px-4 py-2 font-medium tab-active" id="productTab">Produk</button>
-                        <button class="px-4 py-2 font-medium text-gray-500" id="storeTab">Toko</button>
-                        <button class="px-4 py-2 font-medium text-gray-500" id="previewTab">Preview</button>
-                    </div>
-                    
-                    <!-- Product Form -->
-                    <div id="productForm">
-                        <h2 class="text-xl font-bold text-gray-800 mb-6">Informasi Produk</h2>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Product Details -->
-                            <div>
-                                <div class="mb-5">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
-                                    <input type="text" id="productName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Jaket Premium Casual">
-                                </div>
-                                
-                                <div class="mb-5">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Harga (Rp)</label>
-                                    <input type="number" id="price" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: 299000">
-                                </div>
-                                
-                                <div class="mb-5">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Produk</label>
-                                    <textarea id="description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Deskripsi detail produk..."></textarea>
-                                </div>
-                                
-                                <div class="mb-5">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp</label>
-                                    <input type="text" id="whatsapp" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: 628123456789">
-                                </div>
-                            </div>
-                            
-                            <!-- Product Images -->
-                            <div>
-                                <div class="mb-5">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Gambar Produk</label>
-                                    <div class="space-y-3">
-                                        <div>
-                                            <label class="text-xs text-gray-500 mb-1 block">Gambar Utama (wajib)</label>
-                                            <input type="text" id="image1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="URL Gambar Utama">
-                                        </div>
-                                        
-                                        <div>
-                                            <label class="text-xs text-gray-500 mb-1 block">Gambar Tambahan (wajib)</label>
-                                            <input type="text" id="image2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="URL Gambar 2">
-                                        </div>
-                                        
-                                        <div>
-                                            <label class="text-xs text-gray-500 mb-1 block">Gambar Tambahan (wajib)</label>
-                                            <input type="text" id="image3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="URL Gambar 3">
-                                        </div>
-                                        
-                                        <div>
-                                            <label class="text-xs text-gray-500 mb-1 block">Gambar Tambahan (wajib)</label>
-                                            <input type="text" id="image4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="URL Gambar 4">
-                                        </div>
-                                        
-                                        <div>
-                                            <label class="text-xs text-gray-500 mb-1 block">Gambar Tambahan (opsional)</label>
-                                            <input type="text" id="image5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="URL Gambar 5">
-                                        </div>
-                                        
-                                        <div>
-                                            <label class="text-xs text-gray-500 mb-1 block">Gambar Tambahan (opsional)</label>
-                                            <input type="text" id="image6" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="URL Gambar 6">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <h3 class="text-lg font-bold text-gray-800 mt-8 mb-4">Varian Produk</h3>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <div class="mb-4">
-                                    <label class="flex items-center">
-                                        <input type="checkbox" id="hasVariants" class="mr-2">
-                                        <span class="text-gray-700">Produk memiliki varian?</span>
-                                    </label>
-                                </div>
-                                
-                                <div id="variantSection" class="hidden">
-                                    <div class="mb-4">
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Warna (pisahkan dengan koma)</label>
-                                        <input type="text" id="colors" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Brown, Black, Navy">
-                                    </div>
-                                    
-                                    <div class="mb-4">
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Ukuran (pisahkan dengan koma)</label>
-                                        <input type="text" id="sizes" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: S, M, L, XL">
-                                    </div>
-                                    
-                                    <div class="mb-4">
-                                        <label class="flex items-center">
-                                            <input type="checkbox" id="autoGenerateCombinations" class="mr-2" checked>
-                                            <span class="text-gray-700">Buat kombinasi otomatis?</span>
-                                        </label>
-                                    </div>
-                                    
-                                    <div class="mb-4">
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Varian Manual (opsional)</label>
-                                        <textarea id="manualVariantList" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Tulis varian manual, misal: Brown-S, Brown-M, Black-L"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                                    <h4 class="font-medium text-blue-800 mb-2">Cara Mengisi Varian:</h4>
-                                    <ul class="text-sm text-blue-700 space-y-1">
-                                        <li class="flex items-start">
-                                            <span class="text-blue-500 mr-2">•</span>
-                                            <span>Jika produk memiliki varian warna dan ukuran, centang "Produk memiliki varian"</span>
-                                        </li>
-                                        <li class="flex items-start">
-                                            <span class="text-blue-500 mr-2">•</span>
-                                            <span>Masukkan warna dan ukuran, pisahkan dengan koma</span>
-                                        </li>
-                                        <li class="flex items-start">
-                                            <span class="text-blue-500 mr-2">•</span>
-                                            <span>Centang "Buat kombinasi otomatis" untuk membuat semua kombinasi warna-ukuran</span>
-                                        </li>
-                                        <li class="flex items-start">
-                                            <span class="text-blue-500 mr-2">•</span>
-                                            <span>Jika ingin varian khusus, gunakan kolom varian manual</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="flex justify-between mt-8">
-                            <div></div>
-                            <button type="button" id="nextToStore" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                                Lanjut ke Informasi Toko <i class="fas fa-arrow-right ml-2"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Store Form -->
-                    <div id="storeForm" class="hidden">
-                        <h2 class="text-xl font-bold text-gray-800 mb-6">Informasi Toko</h2>
-                        
-                        <div class="grid grid-cols-1 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Toko</label>
-                                <input type="text" id="storeName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Toko Fashionku">
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon Toko (opsional)</label>
-                                <input type="text" id="storePhone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: 021123456">
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Fitur Produk (pisahkan dengan koma)</label>
-                                <textarea id="features" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Bahan premium, Desain modern, Tahan lama"></textarea>
-                            </div>
-                        </div>
-                        
-                        <div class="flex justify-between mt-8">
-                            <button type="button" id="backToProduct" class="px-6 py-3 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors">
-                                <i class="fas fa-arrow-left mr-2"></i> Kembali
-                            </button>
-                            <button type="button" id="generateBtn" class="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors">
-                                <i class="fas fa-code mr-2"></i> Generate Website
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Preview Section -->
-                    <div id="previewSection" class="hidden">
-                        <h2 class="text-xl font-bold text-gray-800 mb-4">Preview Website</h2>
-                        <p class="text-gray-600 mb-6">Website toko online Anda sudah siap. Salin kode di bawah untuk digunakan.</p>
-                        
-                        <div class="preview-container mb-6" id="result"></div>
-                        
-                        <div class="flex justify-between">
-                            <button type="button" id="backToStore" class="px-6 py-3 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors">
-                                <i class="fas fa-edit mr-2"></i> Edit Lagi
-                            </button>
-                            <button type="button" id="copyBtn" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                                <i class="fas fa-copy mr-2"></i> Salin Kode
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Preview -->
-            <div>
-                <div class="card p-6">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4">Preview Website</h2>
-                    <p class="text-gray-600 mb-4">Ini adalah tampilan website toko online yang akan dihasilkan.</p>
-                    
-                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 h-96 flex flex-col items-center justify-center text-gray-500">
-                        <i class="fas fa-store text-4xl mb-4"></i>
-                        <p class="text-center">Website preview akan muncul di sini setelah Anda mengisi formulir</p>
-                    </div>
-                    
-                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
-                        <h3 class="font-medium text-yellow-800 flex items-center">
-                            <i class="fas fa-info-circle mr-2"></i> Tips Pembuatan
-                        </h3>
-                        <ul class="text-sm text-yellow-700 mt-2 space-y-1">
-                            <li class="flex items-start">
-                                <span class="text-yellow-500 mr-2">•</span>
-                                <span>Pastikan semua URL gambar valid</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-yellow-500 mr-2">•</span>
-                                <span>Gunakan nomor WhatsApp dengan format internasional</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-yellow-500 mr-2">•</span>
-                                <span>Periksa kombinasi varian sebelum generate</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Tab navigation
-        const productTab = document.getElementById('productTab');
-        const storeTab = document.getElementById('storeTab');
-        const previewTab = document.getElementById('previewTab');
-        
-        const productForm = document.getElementById('productForm');
-        const storeForm = document.getElementById('storeForm');
-        const previewSection = document.getElementById('previewSection');
-        
-        const nextToStore = document.getElementById('nextToStore');
-        const backToProduct = document.getElementById('backToProduct');
-        const generateBtn = document.getElementById('generateBtn');
-        const backToStore = document.getElementById('backToStore');
-        const copyBtn = document.getElementById('copyBtn');
-        
-        // Toggle variant section
-        const hasVariants = document.getElementById('hasVariants');
-        const variantSection = document.getElementById('variantSection');
-        
-        hasVariants.addEventListener('change', () => {
-            if (hasVariants.checked) {
-                variantSection.classList.remove('hidden');
-            } else {
-                variantSection.classList.add('hidden');
-            }
-        });
-        
-        // Tab navigation functions
-        nextToStore.addEventListener('click', () => {
-            productForm.classList.add('hidden');
-            storeForm.classList.remove('hidden');
-            productTab.classList.remove('tab-active');
-            storeTab.classList.add('tab-active');
-        });
-        
-        backToProduct.addEventListener('click', () => {
-            storeForm.classList.add('hidden');
-            productForm.classList.remove('hidden');
-            storeTab.classList.remove('tab-active');
-            productTab.classList.add('tab-active');
-        });
-        
-        generateBtn.addEventListener('click', () => {
-            generateWebsite();
-            storeForm.classList.add('hidden');
-            previewSection.classList.remove('hidden');
-            storeTab.classList.remove('tab-active');
-            previewTab.classList.add('tab-active');
-        });
-        
-        backToStore.addEventListener('click', () => {
-            previewSection.classList.add('hidden');
-            storeForm.classList.remove('hidden');
-            previewTab.classList.remove('tab-active');
-            storeTab.classList.add('tab-active');
-        });
-        
-        copyBtn.addEventListener('click', () => {
-            const resultText = document.getElementById('result').innerText;
-            navigator.clipboard.writeText(resultText).then(() => {
-                alert('Kode website berhasil disalin!');
-            });
-        });
-        
-        // Generate website function
-        function generateWebsite() {
-            // Get form data
-            const productName = document.getElementById('productName').value || 'Nama Produk';
-            const price = document.getElementById('price').value || '299000';
-            const description = document.getElementById('description').value || 'Deskripsi produk yang menarik';
-            const whatsapp = document.getElementById('whatsapp').value || '628123456789';
-            
-            const image1 = document.getElementById('image1').value || 'https://via.placeholder.com/600x600?text=Gambar+Utama';
-            const image2 = document.getElementById('image2').value || 'https://via.placeholder.com/600x600?text=Gambar+2';
-            const image3 = document.getElementById('image3').value || 'https://via.placeholder.com/600x600?text=Gambar+3';
-            const image4 = document.getElementById('image4').value || 'https://via.placeholder.com/600x600?text=Gambar+4';
-            const image5 = document.getElementById('image5').value || '';
-            const image6 = document.getElementById('image6').value || '';
-            
-            const hasVariantsChecked = document.getElementById('hasVariants').checked;
-            const colors = document.getElementById('colors').value || '';
-            const sizes = document.getElementById('sizes').value || '';
-            const autoGenerate = document.getElementById('autoGenerateCombinations').checked;
-            const manualVariants = document.getElementById('manualVariantList').value || '';
-            
-            const storeName = document.getElementById('storeName').value || 'Nama Toko Saya';
-            const storePhone = document.getElementById('storePhone').value || '';
-            const features = document.getElementById('features').value || '';
-            
-            // Process variants
-            let variantCombinations = [];
-            if (hasVariantsChecked) {
-                if (autoGenerate && colors && sizes) {
-                    const colorList = colors.split(',').map(c => c.trim());
-                    const sizeList = sizes.split(',').map(s => s.trim());
-                    
-                    colorList.forEach(color => {
-                        sizeList.forEach(size => {
-                            variantCombinations.push(`${color}-${size}`);
-                        });
-                    });
-                } else if (manualVariants) {
-                    variantCombinations = manualVariants.split('\n')
-                        .map(v => v.trim())
-                        .filter(v => v !== '');
-                }
-            }
-            
-            // Generate the HTML code
-            const generatedHTML = `<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${productName} - ${storeName}</title>
-    <style>
-        /* Reset and base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f8fafc;
-            color: #1e293b;
-            line-height: 1.6;
-        }
-        
+        h1, h2, h3, h4 { font-weight: 700; letter-spacing: -.01em; }
         .container {
-            max-width: 1200px;
+            max-width: 880px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 32px 12px 64px 12px;
         }
-        
-        /* Header styles */
         header {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: var(--primary);
+            color: #fff;
+            padding: 0;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
         }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #2563eb;
-        }
-        
-        .contact {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 500;
-            color: #334155;
-        }
-        
-        /* Product section */
-        .product-section {
-            padding: 40px 0;
-        }
-        
-        .product-gallery {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-        
-        .main-image {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .thumbnails {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-        
-        .thumbnail {
-            width: 100%;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .thumbnail:hover, .thumbnail.active {
-            border-color: #2563eb;
-            transform: scale(1.05);
-        }
-        
-        .product-info {
-            padding: 20px;
-        }
-        
-        .product-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 10px;
-        }
-        
-        .product-price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #2563eb;
-            margin-bottom: 20px;
-        }
-        
-        .product-description {
-            color: #475569;
-            margin-bottom: 25px;
-            line-height: 1.8;
-        }
-        
-        .features {
-            background-color: #f0f9ff;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .features h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #2563eb;
-            margin-bottom: 10px;
-        }
-        
-        .features ul {
-            padding-left: 20px;
-        }
-        
-        .features li {
-            margin-bottom: 8px;
-            color: #475569;
-        }
-        
-        /* Order form */
-        #orderForm {
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            padding: 25px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: #334155;
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            border-color: #2563eb;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-        
-        .variant-selection {
-            margin-bottom: 20px;
-        }
-        
-        .variant-chips {
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-        
-        .variant-chip {
-            display: inline-block;
-            background-color: #e0f2fe;
-            color: #0369a1;
-            border-radius: 20px;
-            padding: 6px 14px;
-            margin: 5px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .variant-chip:hover {
-            background-color: #bae6fd;
-        }
-        
-        .variant-chip.selected {
-            background-color: #2563eb;
-            color: white;
-        }
-        
-        .quantity {
-            margin-bottom: 25px;
-        }
-        
-        .qty-controls {
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
-        }
-        
-        .qty-btn {
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background-color: #dbeafe;
-            color: #2563eb;
-            font-weight: bold;
-            font-size: 1.1rem;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s ease;
-        }
-        
-        .qty-btn:hover {
-            background-color: #bfdbfe;
-            transform: scale(1.05);
-        }
-        
-        #qty {
-            width: 70px;
-            text-align: center;
-            margin: 0 10px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            border: 2px solid #cbd5e1;
-        }
-        
-        .qty-info {
-            display: block;
-            margin-top: 6px;
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-        
-        .customer-notes {
-            background-color: #f0f9ff;
-            border-left: 4px solid #2563eb;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 20px 0;
-        }
-        
-        .customer-notes label {
-            color: #2563eb;
-            font-weight: 600;
-        }
-        
-        .notes-help {
-            display: block;
-            margin-top: 5px;
-            font-size: 0.85rem;
-            color: #64748b;
-        }
-        
-        .address-selectors {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin: 15px 0;
-        }
-        
-        .manual-input {
-            display: none;
-            margin-top: 10px;
-        }
-        
-        .order-summary {
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 25px 0;
-        }
-        
-        .summary-row {
+        .header-inner {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #e2e8f0;
+            align-items: center;
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 16px 12px;
         }
-        
-        .summary-row.total {
-            border-top: 2px solid #2563eb;
-            border-bottom: none;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: #1e40af;
-            padding-top: 15px;
-            margin-top: 10px;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -.01em;
         }
-        
-        .payment-methods {
-            margin-top: 20px;
-        }
-        
-        .payment-options {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .payment-option {
-            background-color: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .payment-option:hover {
-            border-color: #2563eb;
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.1);
-        }
-        
-        .payment-option img {
-            width: 50px;
-            height: 30px;
-            object-fit: contain;
-            margin-bottom: 10px;
-        }
-        
-        .whatsapp-btn {
-            background-color: #25d366;
-            color: white;
-            font-weight: 600;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 8px;
-            padding: 15px;
-            width: 100%;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .header-info {
+            font-size: 1rem;
             display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-info i {
+            background: #fff;
+            border-radius: 50%;
+            color: var(--primary);
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
             justify-content: center;
             align-items: center;
+            font-style: normal;
+            font-size: 1.3rem;
+        }
+        /* Card */
+        .card {
+            background: var(--card);
+            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            padding: 28px 22px 22px 22px;
+            margin-bottom: 30px;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 32px;
+        }
+        @media (max-width: 850px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+        .form-group {
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #222;
+        }
+        input[type="text"], input[type="number"], input[type="tel"], textarea, select {
+            padding: 11px 10px;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #fff;
+            transition: border 0.2s;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: 2px solid var(--primary);
+            border-color: var(--primary);
+        }
+        textarea {
+            min-height: 56px;
+            resize: vertical;
+        }
+        .checkbox-row {
+            display: flex;
+            align-items: center;
             gap: 10px;
+            margin-bottom: 6px;
+            margin-top: 7px;
         }
-        
-        .whatsapp-btn:hover {
-            background-color: #128C7E;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        .checkbox-row label {
+            margin-bottom: 0;
+            font-weight: 500;
+            color: #222;
         }
-        
-        /* Responsive design */
-        @media (min-width: 768px) {
-            .product-gallery {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .address-selectors {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        .gen-btn {
+            display: block;
+            width: 100%;
+            font-size: 1.15rem;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 17px 0;
+            font-weight: 700;
+            margin-top: 18px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px 0 rgba(37,99,235,.10);
+            transition: background .15s;
         }
-        
-        @media (max-width: 767px) {
-            .product-section > .container {
-                flex-direction: column;
-            }
-            
-            .thumbnails {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .payment-options {
-                grid-template-columns: 1fr;
-            }
+        .gen-btn:hover { background: #1749b4; }
+        .result-section {
+            margin-top: 26px;
+            display: none;
+        }
+        .result-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+        .result-actions {
+            display: flex;
+            gap: 13px;
+            margin-bottom: 10px;
+        }
+        .result-actions button {
+            background: var(--success);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 9px 17px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .15s;
+        }
+        .result-actions button:hover { background: #047857; }
+        .result-actions .download-btn { background: var(--primary); }
+        .result-actions .download-btn:hover { background: #1749b4; }
+        .result-box {
+            width: 100%;
+            min-height: 280px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 11px;
+            background: #f3f8fe;
+            font-family: 'Menlo', 'Consolas', monospace;
+            font-size: 0.98rem;
+            color: #222;
+            white-space: pre;
+            resize: vertical;
+        }
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+            margin: 30px 0 18px 0;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 10px 2px 50px 2px; }
+            .header-inner { flex-direction: column; gap: 9px; }
+            .card { padding: 15px 8px 16px 8px; }
+        }
+        /* Hide number arrows */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+        /* Checkbox style */
+        input[type="checkbox"] {
+            accent-color: var(--primary);
+            width: 17px; height: 17px;
+        }
+        .helper-text {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 2px;
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="container flex justify-between items-center">
-            <div class="logo">${storeName}</div>
-            <div class="contact">
-                <i class="fab fa-whatsapp text-green-500"></i>
-                <span>${whatsapp}</span>
+        <div class="header-inner">
+            <div class="logo">🛍️ Generator Website Toko Online</div>
+            <div class="header-info">
+                <i>📱</i>
+                <span>
+                    Powered by <b style="color: #fff;">nexcoAI</b>
+                </span>
             </div>
         </div>
     </header>
-    
-    <main class="product-section">
-        <div class="container grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Product Gallery -->
-            <div class="product-gallery">
-                <img id="mainImage" src="${image1}" alt="${productName}" class="main-image">
-                <div class="thumbnails">
-                    ${generateThumbnails([image1, image2, image3, image4, image5, image6])}
+    <div class="container">
+        <form id="generatorForm" autocomplete="off">
+            <div class="card">
+                <div class="card-title">1. Informasi Produk</div>
+                <div class="form-grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="productName">Nama Produk</label>
+                            <input type="text" id="productName" required placeholder="Contoh: Jaket Premium Casual">
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Harga (Rp)</label>
+                            <input type="number" id="price" required min="1" step="1" placeholder="Contoh: 185000">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Deskripsi</label>
+                            <textarea id="description" required placeholder="Tulis deskripsi produk..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="whatsapp">No. WhatsApp Toko</label>
+                            <input type="text" id="whatsapp" required placeholder="6281234567890">
+                            <span class="helper-text">Format: 628xxxx (diawali 62, tanpa + atau 0)</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="storeName">Nama Toko</label>
+                            <input type="text" id="storeName" required placeholder="Contoh: Fashion Store">
+                        </div>
+                        <div class="form-group">
+                            <label for="storePhone">No. Telepon Toko (opsional)</label>
+                            <input type="text" id="storePhone" placeholder="Contoh: 021-123456">
+                        </div>
+                        <div class="form-group">
+                            <label for="features">Fitur Produk (dipisah koma)</label>
+                            <textarea id="features" placeholder="Contoh: Bahan Premium, Kualitas Terjamin, Unisex"></textarea>
+                            <span class="helper-text">Contoh: "Bahan Premium, Unisex, Garansi 7 Hari"</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Product Info -->
-            <div class="product-info">
-                <h1 class="product-title">${productName}</h1>
-                <div class="product-price">Rp ${parseInt(price).toLocaleString('id-ID')}</div>
-                <p class="product-description">${description}</p>
-                
-                ${features ? `
-                <div class="features">
-                    <h3>Fitur Produk:</h3>
-                    <ul>
-                        ${features.split(',').map(f => `<li>${f.trim()}</li>`).join('')}
-                    </ul>
+            <div class="card">
+                <div class="card-title">2. Gambar Produk</div>
+                <div class="form-grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="image1">Gambar 1 (Utama) URL</label>
+                            <input type="text" id="image1" required placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label for="image2">Gambar 2 URL</label>
+                            <input type="text" id="image2" required placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label for="image3">Gambar 3 URL</label>
+                            <input type="text" id="image3" required placeholder="https://...">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="image4">Gambar 4 URL</label>
+                            <input type="text" id="image4" required placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label for="image5">Gambar 5 URL (opsional)</label>
+                            <input type="text" id="image5" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label for="image6">Gambar 6 URL (opsional)</label>
+                            <input type="text" id="image6" placeholder="https://...">
+                        </div>
+                    </div>
                 </div>
-                ` : ''}
-                
-                <form id="orderForm">
-                    ${hasVariantsChecked && variantCombinations.length > 0 ? `
-                    <div class="variant-selection">
-                        <label>Pilih Varian:</label>
-                        <div class="variant-chips">
-                            ${variantCombinations.map(v => `
-                                <span class="variant-chip" data-value="${v}">${v}</span>
-                            `).join('')}
-                        </div>
-                        <input type="hidden" id="selectedVariant">
-                    </div>
-                    ` : ''}
-                    
-                    <div class="quantity">
-                        <label>Jumlah Pesanan:</label>
-                        <div class="qty-controls">
-                            <button type="button" class="qty-btn" onclick="changeQty(-1)">-</button>
-                            <input type="number" id="qty" value="1" min="1" max="99" onchange="updateTotal()">
-                            <button type="button" class="qty-btn" onclick="changeQty(1)">+</button>
-                        </div>
-                        <small class="qty-info">Harga per pcs: Rp <span id="unitPrice">${parseInt(price).toLocaleString('id-ID')}</span></small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="customerName">Nama Lengkap:</label>
-                        <input type="text" id="customerName" placeholder="Nama Lengkap" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="customerPhone">No. WhatsApp:</label>
-                        <input type="tel" id="customerPhone" placeholder="No. WhatsApp" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="customerAddress">Alamat Lengkap:</label>
-                        <textarea id="customerAddress" placeholder="Alamat Lengkap" rows="3" required></textarea>
-                    </div>
-                    
-                    <div class="customer-notes">
-                        <label for="customerNotes">Catatan Tambahan (Opsional):</label>
-                        <textarea id="customerNotes" placeholder="Contoh: Saya pesan 3 pcs - 1 warna merah ukuran L, 2 warna hijau ukuran M dan XL. Atau catatan khusus lainnya..." rows="3"></textarea>
-                        <small class="notes-help">💡 Gunakan catatan ini jika memesan beberapa varian berbeda atau ada permintaan khusus</small>
-                    </div>
-                    
-                    <div class="address-selectors">
-                        <div class="form-group">
-                            <label for="province">Provinsi:</label>
-                            <select id="province" onchange="loadCities()" required>
-                                <option value="">Pilih Provinsi</option>
-                                ${generateProvinceOptions()}
-                                <option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>
-                            </select>
-                            <input type="text" id="manualProvince" class="manual-input" placeholder="Tulis Provinsi Manual" style="display: none;">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="city">Kota:</label>
-                            <select id="city" onchange="loadDistricts()" required>
-                                <option value="">Pilih Kota</option>
-                                <option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>
-                            </select>
-                            <input type="text" id="manualCity" class="manual-input" placeholder="Tulis Kota Manual" style="display: none;">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="district">Kecamatan:</label>
-                            <select id="district" onchange="handleDistrictChange()" required>
-                                <option value="">Pilih Kecamatan</option>
-                                <option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>
-                            </select>
-                            <input type="text" id="manualDistrict" class="manual-input" placeholder="Tulis Kecamatan Manual" style="display: none;">
-                        </div>
-                    </div>
-                    
-                    <div class="order-summary">
-                        <div class="summary-row">
-                            <span>Harga per pcs:</span>
-                            <span id="unitPriceDisplay">Rp ${parseInt(price).toLocaleString('id-ID')}</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Jumlah:</span>
-                            <span id="quantityDisplay">1 pcs</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Subtotal:</span>
-                            <span id="subtotal">Rp ${parseInt(price).toLocaleString('id-ID')}</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Kode Unik:</span>
-                            <span id="uniqueCode">+Rp 0</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>TOTAL PEMBAYARAN:</span>
-                            <span id="total">Rp ${parseInt(price).toLocaleString('id-ID')}</span>
-                        </div>
-                        
-                        <div class="payment-methods">
-                            <h4>Metode Pembayaran:</h4>
-                            <div class="payment-options">
-                                <div class="payment-option">
-                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='30' viewBox='0 0 50 30'%3E%3Crect width='50' height='30' rx='4' fill='%232563EB'/%3E%3Ctext x='25' y='18' text-anchor='middle' font-size='10' fill='white' font-weight='bold'%3EBANK%3C/text%3E%3C/svg%3E" alt="Bank Transfer">
-                                    <span>Transfer Bank</span>
-                                </div>
-                                <div class="payment-option">
-                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='30' viewBox='0 0 50 30'%3E%3Crect width='50' height='30' rx='4' fill='%2310B981'/%3E%3Ctext x='25' y='18' text-anchor='middle' font-size='10' fill='white' font-weight='bold'%3ECOD%3C/text%3E%3C/svg%3E" alt="Cash on Delivery">
-                                    <span>COD</span>
-                                </div>
-                                <div class="payment-option">
-                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='30' viewBox='0 0 50 30'%3E%3Crect width='50' height='30' rx='4' fill='%23EC4899'/%3E%3Ctext x='25' y='18' text-anchor='middle' font-size='9' fill='white' font-weight='bold'%3EE-WALLET%3C/text%3E%3C/svg%3E" alt="E-Wallet">
-                                    <span>E-Wallet</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button type="button" class="whatsapp-btn" onclick="submitOrder()">
-                        <i class="fab fa-whatsapp"></i> Pesan via WhatsApp
-                    </button>
-                </form>
             </div>
+            <div class="card">
+                <div class="card-title">3. Varian Produk</div>
+                <div class="form-grid">
+                    <div>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="hasVariants">
+                            <label for="hasVariants">Produk punya varian warna/ukuran?</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="colors">Warna (dipisah koma)</label>
+                            <input type="text" id="colors" placeholder="Contoh: Brown, Black, Navy">
+                            <span class="helper-text">Biarkan kosong jika tidak ada</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="sizes">Ukuran (dipisah koma)</label>
+                            <input type="text" id="sizes" placeholder="Contoh: S, M, L, XL, XXL">
+                            <span class="helper-text">Biarkan kosong jika tidak ada</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="autoGenerateCombinations">
+                            <label for="autoGenerateCombinations">Buat kombinasi otomatis (Warna-Ukuran)</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="manualVariantList">List Varian Manual (satu per baris)</label>
+                            <textarea id="manualVariantList" placeholder="Contoh: BROWN-S&#10;BROWN-M&#10;BLACK-L"></textarea>
+                            <span class="helper-text">Diisi jika ingin varian khusus/manual</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <button type="button" class="gen-btn" id="generateBtn">Generate Website</button>
+            </div>
+        </form>
+        <div class="result-section" id="resultSection">
+            <div class="result-label">Hasil HTML Website Toko Online</div>
+            <div class="result-actions">
+                <button id="copyBtn">Salin HTML</button>
+                <button class="download-btn" id="downloadBtn">Download HTML</button>
+            </div>
+            <textarea class="result-box" id="result" readonly spellcheck="false"></textarea>
+            <div class="helper-text" style="margin-top:10px;">Upload file HTML ke hosting atau buka langsung di browser untuk uji coba.</div>
         </div>
-    </main>
-    
+        <div class="footer">
+            &copy; 2025 <b>nexcoAI</b> · Generator Website Toko Online | Simple. Clean. Powerful.
+        </div>
+    </div>
     <script>
-        // Indonesia region data
+        // Indonesian address data
         const indonesiaData = {
             "Jawa Barat": {
                 "Bandung": ["Cidadap", "Cicendo", "Coblong", "Bandung Wetan"],
@@ -1103,200 +398,448 @@
                 "Makassar": ["Makassar", "Mariso", "Mamajang", "Tamalate"]
             }
         };
-        
-        // Store product info
-        const productName = "${productName}";
-        const productPrice = ${price};
-        const whatsappNumber = "${whatsapp}";
-        
-        // Image gallery
-        function changeMainImage(src) {
-            document.getElementById('mainImage').src = src;
-            
-            // Update active thumbnail
-            document.querySelectorAll('.thumbnail').forEach(thumb => {
-                thumb.classList.remove('active');
-                if (thumb.src === src) {
-                    thumb.classList.add('active');
-                }
-            });
-        }
-        
-        // Quantity management
-        function changeQty(delta) {
-            const qtyInput = document.getElementById('qty');
-            let newQty = parseInt(qtyInput.value) + delta;
-            if (newQty < 1) newQty = 1;
-            if (newQty > 99) newQty = 99;
-            qtyInput.value = newQty;
-            updateTotal();
-        }
-        
-        // Update total price
-        function updateTotal() {
-            const qty = parseInt(document.getElementById('qty').value);
-            const subtotal = productPrice * qty;
-            const uniqueCode = Math.floor(Math.random() * 999) + 1;
-            const total = subtotal + uniqueCode;
-            
-            document.getElementById('quantityDisplay').textContent = qty + ' pcs';
-            document.getElementById('subtotal').textContent = 'Rp ' + subtotal.toLocaleString('id-ID');
-            document.getElementById('uniqueCode').textContent = '+Rp ' + uniqueCode;
-            document.getElementById('total').textContent = 'Rp ' + total.toLocaleString('id-ID');
-            
-            // Store current order for WhatsApp message
-            window.currentOrder = {
-                unitPrice: productPrice,
-                quantity: qty,
-                subtotal: subtotal,
-                uniqueCode: uniqueCode,
-                total: total
-            };
-        }
-        
-        // Address dropdowns
-        function loadCities() {
-            const province = document.getElementById('province').value;
-            const citySelect = document.getElementById('city');
-            const manualProvince = document.getElementById('manualProvince');
-            
-            // Reset city dropdown
-            citySelect.innerHTML = '<option value="">Pilih Kota</option><option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
-            
-            if (province === 'manual') {
-                manualProvince.style.display = 'block';
-                manualProvince.required = true;
-                citySelect.disabled = true;
-            } else {
-                manualProvince.style.display = 'none';
-                manualProvince.required = false;
-                citySelect.disabled = false;
-                
-                if (province && indonesiaData[province]) {
-                    Object.keys(indonesiaData[province]).forEach(city => {
-                        const option = document.createElement('option');
-                        option.value = city;
-                        option.textContent = city;
-                        citySelect.appendChild(option);
+
+        // Handle variants logic
+        document.getElementById('hasVariants').addEventListener('change', function () {
+            let checked = this.checked;
+            document.getElementById('colors').disabled = !checked;
+            document.getElementById('sizes').disabled = !checked;
+            document.getElementById('autoGenerateCombinations').disabled = !checked;
+            document.getElementById('manualVariantList').disabled = !checked;
+        });
+        // Disable variants fields by default
+        document.getElementById('colors').disabled = true;
+        document.getElementById('sizes').disabled = true;
+        document.getElementById('autoGenerateCombinations').disabled = true;
+        document.getElementById('manualVariantList').disabled = true;
+
+        // Generate button logic
+        document.getElementById('generateBtn').addEventListener('click', function () {
+            // Gather form data
+            const getVal = id => (document.getElementById(id) ? document.getElementById(id).value.trim() : '');
+            const featuresArr = getVal('features').split(',').map(f => f.trim()).filter(Boolean);
+            const imagesArr = [
+                getVal('image1'), getVal('image2'), getVal('image3'), getVal('image4'),
+                getVal('image5'), getVal('image6')
+            ].filter(url => url !== '');
+            const hasVariants = document.getElementById('hasVariants').checked;
+            const autoGen = document.getElementById('autoGenerateCombinations').checked;
+            let colors = getVal('colors').split(',').map(c => c.trim()).filter(Boolean);
+            let sizes = getVal('sizes').split(',').map(s => s.trim()).filter(Boolean);
+            let variantList = getVal('manualVariantList');
+            let variantCombinations = [];
+            if (hasVariants) {
+                if (autoGen && colors.length && sizes.length) {
+                    colors.forEach(color => {
+                        sizes.forEach(size => {
+                            variantCombinations.push(`${color.toUpperCase()}-${size.toUpperCase()}`);
+                        });
                     });
+                } else if (variantList) {
+                    variantCombinations = variantList.replace(/\r\n/g, '\n').split('\n').map(x => x.trim()).filter(Boolean);
                 }
             }
-        }
-        
-        function loadDistricts() {
-            const province = document.getElementById('province').value;
-            const city = document.getElementById('city').value;
-            const districtSelect = document.getElementById('district');
-            const manualCity = document.getElementById('manualCity');
-            
-            // Reset district dropdown
-            districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option><option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
-            
-            if (city === 'manual') {
-                manualCity.style.display = 'block';
-                manualCity.required = true;
-                districtSelect.disabled = true;
-            } else {
-                manualCity.style.display = 'none';
-                manualCity.required = false;
-                districtSelect.disabled = false;
-                
-                if (province && city && indonesiaData[province] && indonesiaData[province][city]) {
-                    indonesiaData[province][city].forEach(district => {
-                        const option = document.createElement('option');
-                        option.value = district;
-                        option.textContent = district;
-                        districtSelect.appendChild(option);
-                    });
-                }
-            }
-        }
-        
-        function handleDistrictChange() {
-            const district = document.getElementById('district').value;
-            const manualDistrict = document.getElementById('manualDistrict');
-            
-            if (district === 'manual') {
-                manualDistrict.style.display = 'block';
-                manualDistrict.required = true;
-            } else {
-                manualDistrict.style.display = 'none';
-                manualDistrict.required = false;
-            }
-        }
-        
-        // Variant selection
-        function setupVariantChips() {
-            document.querySelectorAll('.variant-chip').forEach(chip => {
-                chip.addEventListener('click', () => {
-                    // Toggle selection
-                    document.querySelectorAll('.variant-chip').forEach(c => {
-                        c.classList.remove('selected');
-                    });
-                    chip.classList.add('selected');
-                    
-                    // Update hidden input
-                    document.getElementById('selectedVariant').value = chip.dataset.value;
-                    
-                    // Update order summary if needed
-                    updateTotal();
-                });
-            });
-        }
-        
-        // Form submission
-        function submitOrder() {
-            // Get variant data
-            let selectedVariant = '';
-            const variantInput = document.getElementById('selectedVariant');
-            if (variantInput && variantInput.value) {
-                selectedVariant = variantInput.value;
-            }
-            
-            // Get address data (dropdown or manual)
-            const province = document.getElementById('province').value === 'manual'
-                ? document.getElementById('manualProvince').value
-                : document.getElementById('province').value;
-            
-            const city = document.getElementById('city').value === 'manual'
-                ? document.getElementById('manualCity').value
-                : document.getElementById('city').value;
-            
-            const district = document.getElementById('district').value === 'manual'
-                ? document.getElementById('manualDistrict').value
-                : document.getElementById('district').value;
-            
-            // Get customer data
-            const customerName = document.getElementById('customerName').value;
-            const customerPhone = document.getElementById('customerPhone').value;
-            const customerAddress = document.getElementById('customerAddress').value;
-            const customerNotes = document.getElementById('customerNotes').value;
-            
-            // Validation
-            if (!customerName || !customerPhone || !customerAddress || !province || !city || !district) {
-                alert('Mohon lengkapi semua data yang diperlukan (nama, WhatsApp, alamat lengkap, provinsi, kota, kecamatan)');
+            // Check required
+            if (!getVal('productName') || !getVal('price') || !getVal('description') || !getVal('whatsapp') || !getVal('storeName')) {
+                alert("Isi semua data produk & toko dengan benar!");
                 return;
             }
-            
-            // Get order calculations
-            const order = window.currentOrder || {
-                unitPrice: productPrice,
-                quantity: parseInt(document.getElementById('qty').value),
-                subtotal: productPrice * parseInt(document.getElementById('qty').value),
-                uniqueCode: parseInt(document.getElementById('uniqueCode').textContent.replace(/[^\d]/g, '')),
-                total: parseInt(document.getElementById('total').textContent.replace(/[^\d]/g, ''))
+            if (imagesArr.length < 4) {
+                alert("Minimal 4 gambar produk wajib diisi!");
+                return;
+            }
+            // Prepare data
+            const formData = {
+                productName: getVal('productName'),
+                price: parseInt(getVal('price')),
+                description: getVal('description'),
+                whatsapp: getVal('whatsapp').replace(/\D/g, ''),
+                images: imagesArr,
+                hasVariants,
+                colors,
+                sizes,
+                autoGenerateCombinations: autoGen,
+                manualVariantList: variantList,
+                variantCombinations,
+                storeName: getVal('storeName'),
+                storePhone: getVal('storePhone'),
+                features: featuresArr
             };
-            
-            // Generate WhatsApp message
-            const message = \`🛒 PESANAN \${productName}
-            
+            // Generate HTML
+            const html = generateWebsite(formData);
+            document.getElementById('result').value = html;
+            document.getElementById('resultSection').style.display = 'block';
+        });
+
+        // Copy functionality
+        document.getElementById('copyBtn').addEventListener('click', function () {
+            const result = document.getElementById('result');
+            result.select();
+            result.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            this.textContent = "✅ Disalin!";
+            setTimeout(() => { this.textContent = "Salin HTML"; }, 1800);
+        });
+        // Download as HTML
+        document.getElementById('downloadBtn').addEventListener('click', function () {
+            const code = document.getElementById('result').value;
+            const blob = new Blob([code], { type: "text/html" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'toko-online.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        // Generate the variant selection HTML for the generated site
+        function generateVariantHTML(formData) {
+            if (!formData.hasVariants) return '';
+            if (formData.variantCombinations && formData.variantCombinations.length > 0) {
+                return `
+                <div class="variant-selection">
+                    <label>Pilih Varian:</label>
+                    <select id="variantSelect" required onchange="updateOrderSummary()">
+                        <option value="">-- Pilih Varian --</option>
+                        ${formData.variantCombinations.map(variant =>
+                            `<option value="${variant}">${variant}</option>`
+                        ).join('')}
+                    </select>
+                </div>`;
+            } else {
+                // Separate color/size
+                let html = `<div class="variant-selection">`;
+                if (formData.colors && formData.colors.length > 0) {
+                    html += `
+                    <div class="form-group">
+                        <label>Pilih Warna:</label>
+                        <select id="colorSelect" required onchange="updateOrderSummary()">
+                            <option value="">-- Pilih Warna --</option>
+                            ${formData.colors.map(color => `<option value="${color}">${color}</option>`).join('')}
+                        </select>
+                    </div>`;
+                }
+                if (formData.sizes && formData.sizes.length > 0) {
+                    html += `
+                    <div class="form-group">
+                        <label>Pilih Ukuran:</label>
+                        <select id="sizeSelect" required onchange="updateOrderSummary()">
+                            <option value="">-- Pilih Ukuran --</option>
+                            ${formData.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
+                        </select>
+                    </div>`;
+                }
+                html += `</div>`;
+                return html;
+            }
+        }
+
+        // Generate the complete HTML for the store
+        function generateWebsite(formData) {
+            // Sanitize all strings
+            function esc(str) {
+                return (str+"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+                    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+            }
+            const addressDataString = JSON.stringify(indonesiaData);
+            // Store features
+            let featuresHtml = '';
+            if (formData.features && formData.features.length) {
+                featuresHtml = `<ul class="feature-list">${formData.features.map(f => `<li>✔️ ${esc(f)}</li>`).join('')}</ul>`;
+            }
+            const paymentLogos = `
+                <div class="payment-methods">
+                    <h4>Metode Pembayaran:</h4>
+                    <div class="payment-options">
+                        <div class="payment-option">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='30' viewBox='0 0 50 30'%3E%3Crect width='50' height='30' rx='4' fill='%232563EB'/%3E%3Ctext x='25' y='18' text-anchor='middle' font-size='10' fill='white' font-weight='bold'%3EBANK%3C/text%3E%3C/svg%3E" alt="Bank Transfer">
+                            <span>Transfer Bank</span>
+                        </div>
+                        <div class="payment-option">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='30' viewBox='0 0 50 30'%3E%3Crect width='50' height='30' rx='4' fill='%2310B981'/%3E%3Ctext x='25' y='18' text-anchor='middle' font-size='10' fill='white' font-weight='bold'%3ECOD%3C/text%3E%3C/svg%3E" alt="Cash on Delivery">
+                            <span>COD</span>
+                        </div>
+                        <div class="payment-option">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='30' viewBox='0 0 50 30'%3E%3Crect width='50' height='30' rx='4' fill='%23EC4899'/%3E%3Ctext x='25' y='18' text-anchor='middle' font-size='9' fill='white' font-weight='bold'%3EE-WALLET%3C/text%3E%3C/svg%3E" alt="E-Wallet">
+                            <span>E-Wallet</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            // Gallery thumbnails
+            let thumbHtml = '';
+            for (let i = 0; i < formData.images.length; i++) {
+                thumbHtml += `<img src="${esc(formData.images[i])}" class="thumbnail" onclick="changeMainImage('${esc(formData.images[i])}')" alt="Thumbnail ${i+1}">`;
+            }
+            // Features CSS (inside generated output)
+            const generatedCss = `
+            <style>
+                body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background: #f8fafc;color: #222;margin:0;}
+                header { background: #2563eb; color: #fff; padding:0;margin-bottom: 0; }
+                .container { max-width: 1100px; margin:0 auto; padding:0 12px 30px 12px;}
+                .logo { font-size:1.4rem; font-weight:800; letter-spacing:-.01em; }
+                .contact { font-size:1.08rem; display:flex; align-items:center; gap:7px; }
+                .phone-icon { display:inline-block;vertical-align:middle; }
+                main.product-section {margin-top: 0;}
+                .product-section .container { display:grid; grid-template-columns:1fr 1fr; gap:36px; }
+                .product-gallery { padding: 0 0 10px 0; }
+                .main-image { width:100%; height:420px; object-fit:cover; border-radius:10px; box-shadow:0 3px 14px 0 #e5e7eb;}
+                .thumbnails { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:13px 0 0 0;}
+                .thumbnail { width:100%; height:75px; object-fit:cover; border-radius:6px; cursor:pointer;border:2px solid #fff; box-shadow:0 1px 5px 0 #e5e7eb;}
+                .thumbnail:hover { border:2px solid #2563eb; }
+                .product-info { background:#fff; border-radius:13px; box-shadow:0 4px 20px 0 #dbeafe; padding:28px 18px 18px 18px;}
+                .product-title { font-size:1.42rem; font-weight:800; color:#222; margin-bottom:6px; }
+                .price { font-size:1.28rem; color:#2563eb; font-weight:800; margin-bottom:7px; }
+                .desc { color:#444; margin-bottom: 12px; font-size:1.05rem;}
+                .feature-list { margin:0 0 17px 0; padding-left: 19px;}
+                .feature-list li { font-size:1rem; color:#059669; margin-bottom:2px;}
+                #orderForm {margin-top:7px;}
+                input, select, textarea, button {
+                    width: 100%; padding: 12px; margin-bottom: 10px;
+                    border: 1px solid #ddd; border-radius: 5px;
+                    font-size: 1rem;
+                }
+                select { cursor:pointer; }
+                button { cursor:pointer; }
+                .whatsapp-btn {
+                    background: #25d366; color: white; font-weight: bold;
+                    border: none; padding: 15px; border-radius: 5px; cursor: pointer;
+                    font-size: 1.13rem; margin-top: 10px;
+                    transition: background 0.15s;
+                }
+                .whatsapp-btn:hover { background: #1caf5a; }
+                .quantity { margin-bottom: 20px; }
+                .qty-controls {
+                    display: flex; align-items: center; gap: 10px; margin: 10px 0;
+                }
+                .qty-controls button {
+                    width: 36px; height: 36px; border-radius: 50%;
+                    background: #2563eb; color: white; border: none;
+                    font-size: 18px; font-weight: bold; cursor: pointer;
+                }
+                .qty-controls input {
+                    width: 50px; text-align: center; font-size: 16px; font-weight: bold;
+                    margin: 0; border: 2px solid #ddd;
+                }
+                .qty-info { color: #666; font-size: 14px; }
+                .customer-notes {
+                    margin: 20px 0; padding: 13px 9px; background: #f0f9ff; border-radius: 8px;
+                    border-left: 4px solid #3b82f6;
+                }
+                .customer-notes label {
+                    display: block; margin-bottom: 8px; font-weight: 600; color: #1e40af;
+                }
+                .customer-notes textarea {
+                    border-color: #93c5fd; background: white;
+                }
+                .notes-help {
+                    display: block; margin-top: 5px; color: #6366f1; font-size: 12px;
+                }
+                .order-summary {
+                    background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px;
+                    padding: 18px 15px; margin: 20px 0 0 0;
+                }
+                .summary-row {
+                    display: flex; justify-content: space-between; padding: 8px 0;
+                    border-bottom: 1px solid #e2e8f0;
+                }
+                .summary-row.total {
+                    border-top: 2px solid #3b82f6; border-bottom: none;
+                    font-size: 18px; font-weight: bold; color: #1e40af;
+                    margin-top: 10px; padding-top: 15px;
+                }
+                .payment-methods { margin: 20px 0 0 0; }
+                .payment-methods h4 { margin-bottom: 7px; font-size:1.07rem; }
+                .payment-options { display: flex; gap: 16px; }
+                .payment-option { display: flex; flex-direction: column; align-items: center; gap: 3px;}
+                .payment-option img { width: 50px; height: 30px; border-radius: 5px;}
+                /* Address */
+                input[id*="manual"] {
+                    border-color: #f59e0b; background-color: #fffbeb;
+                }
+                input[id*="manual"]:focus {
+                    border-color: #d97706; box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+                }
+                @media (max-width: 900px) {
+                    .product-section .container { grid-template-columns: 1fr; }
+                }
+                @media (max-width: 600px) {
+                    .product-info { padding: 10px 4px 13px 4px;}
+                }
+            </style>
+            `;
+            // JS for generated site
+            const generatedJs = `
+            <script>
+                // Address data
+                const indonesiaData = ${addressDataString};
+                // Store price, product, WA
+                const PRODUCT_PRICE = ${formData.price};
+                const productName = "${esc(formData.productName)}";
+                const whatsappNumber = "${esc(formData.whatsapp)}";
+                function changeMainImage(src) {
+                    document.getElementById('mainImage').src = src;
+                }
+                function changeQty(delta) {
+                    const qtyInput = document.getElementById('qty');
+                    let newQty = parseInt(qtyInput.value) + delta;
+                    if (newQty < 1) newQty = 1;
+                    if (newQty > 99) newQty = 99;
+                    qtyInput.value = newQty;
+                    updateTotal();
+                }
+                function updateTotal() {
+                    const qty = parseInt(document.getElementById('qty').value);
+                    const basePrice = PRODUCT_PRICE;
+                    const subtotal = basePrice * qty;
+                    // Kode unik harus tetap sama pada satu sesi order
+                    let uniqueCode = window.currentUniqueCode;
+                    if (!uniqueCode) {
+                        uniqueCode = Math.floor(Math.random() * 800) + 100;
+                        window.currentUniqueCode = uniqueCode;
+                    }
+                    const total = subtotal + uniqueCode;
+                    document.getElementById('unitPriceDisplay').textContent = 'Rp ' + basePrice.toLocaleString('id-ID');
+                    document.getElementById('quantityDisplay').textContent = qty + ' pcs';
+                    document.getElementById('subtotal').textContent = 'Rp ' + subtotal.toLocaleString('id-ID');
+                    document.getElementById('uniqueCode').textContent = '+Rp ' + uniqueCode;
+                    document.getElementById('total').textContent = 'Rp ' + total.toLocaleString('id-ID');
+                }
+                function loadCities() {
+                    const province = document.getElementById('province').value;
+                    const citySelect = document.getElementById('city');
+                    const manualProvince = document.getElementById('manualProvince');
+                    if (province === 'manual') {
+                        manualProvince.style.display = 'block';
+                        manualProvince.required = true;
+                        citySelect.disabled = true;
+                        citySelect.value = '';
+                        loadDistricts();
+                    } else {
+                        manualProvince.style.display = 'none';
+                        manualProvince.required = false;
+                        citySelect.disabled = false;
+                        // Populate cities
+                        citySelect.innerHTML = '<option value="">Pilih Kota</option><option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
+                        if (province && indonesiaData[province]) {
+                            Object.keys(indonesiaData[province]).forEach(city => {
+                                citySelect.innerHTML += '<option value="'+city+'">'+city+'</option>';
+                            });
+                        }
+                        loadDistricts();
+                    }
+                }
+                function loadDistricts() {
+                    const province = document.getElementById('province').value;
+                    const city = document.getElementById('city').value;
+                    const districtSelect = document.getElementById('district');
+                    const manualCity = document.getElementById('manualCity');
+                    if (city === 'manual') {
+                        manualCity.style.display = 'block';
+                        manualCity.required = true;
+                        districtSelect.disabled = true;
+                        districtSelect.value = '';
+                        handleDistrictChange();
+                    } else {
+                        manualCity.style.display = 'none';
+                        manualCity.required = false;
+                        districtSelect.disabled = false;
+                        // Populate districts
+                        districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option><option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
+                        if (province && city && indonesiaData[province] && indonesiaData[province][city]) {
+                            indonesiaData[province][city].forEach(district => {
+                                districtSelect.innerHTML += '<option value="'+district+'">'+district+'</option>';
+                            });
+                        }
+                        handleDistrictChange();
+                    }
+                }
+                function handleDistrictChange() {
+                    const district = document.getElementById('district').value;
+                    const manualDistrict = document.getElementById('manualDistrict');
+                    if (district === 'manual') {
+                        manualDistrict.style.display = 'block';
+                        manualDistrict.required = true;
+                    } else {
+                        manualDistrict.style.display = 'none';
+                        manualDistrict.required = false;
+                    }
+                }
+                function updateOrderSummary() {
+                    // Trigger recalc if needed
+                    updateTotal();
+                }
+                window.onload = function() {
+                    // Province options
+                    const provinceSelect = document.getElementById('province');
+                    provinceSelect.innerHTML = '<option value="">Pilih Provinsi</option>';
+                    Object.keys(indonesiaData).forEach(prov => {
+                        provinceSelect.innerHTML += '<option value="'+prov+'">'+prov+'</option>';
+                    });
+                    provinceSelect.innerHTML += '<option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
+                    // Hide manual address fields
+                    document.getElementById('manualProvince').style.display = 'none';
+                    document.getElementById('manualCity').style.display = 'none';
+                    document.getElementById('manualDistrict').style.display = 'none';
+                    // Set first image
+                    changeMainImage('${esc(formData.images[0])}');
+                    updateTotal();
+                };
+                // WhatsApp order submission
+                function submitOrder() {
+                    let selectedVariant = '';
+                    const variantSelect = document.getElementById('variantSelect');
+                    const colorSelect = document.getElementById('colorSelect');
+                    const sizeSelect = document.getElementById('sizeSelect');
+                    if (variantSelect && variantSelect.style.display !== 'none' && variantSelect.value) {
+                        selectedVariant = variantSelect.value;
+                    } else if (colorSelect && sizeSelect) {
+                        const color = colorSelect.value || '';
+                        const size = sizeSelect.value || '';
+                        if (color || size) {
+                            selectedVariant = [color, size].filter(v => v).join(' - ');
+                        }
+                    }
+                    // Address
+                    const province = document.getElementById('province').value === 'manual' 
+                        ? document.getElementById('manualProvince').value 
+                        : document.getElementById('province').value;
+                    const city = document.getElementById('city').value === 'manual' 
+                        ? document.getElementById('manualCity').value 
+                        : document.getElementById('city').value;
+                    const district = document.getElementById('district').value === 'manual' 
+                        ? document.getElementById('manualDistrict').value 
+                        : document.getElementById('district').value;
+                    // Validate
+                    const customerName = document.getElementById('customerName').value;
+                    const customerPhone = document.getElementById('customerPhone').value;
+                    const customerAddress = document.getElementById('customerAddress').value;
+                    const customerNotes = document.getElementById('customerNotes').value;
+                    if (!customerName || !customerPhone || !customerAddress || !province || !city || !district) {
+                        alert('Mohon lengkapi semua data yang diperlukan (nama, WhatsApp, alamat lengkap, provinsi, kota, kecamatan)');
+                        return;
+                    }
+                    // Calc
+                    const qty = parseInt(document.getElementById('qty').value);
+                    const basePrice = PRODUCT_PRICE;
+                    const subtotal = basePrice * qty;
+                    const uniqueCode = window.currentUniqueCode || Math.floor(Math.random() * 800) + 100;
+                    window.currentUniqueCode = uniqueCode;
+                    const total = subtotal + uniqueCode;
+                    // WhatsApp message
+                    const message =
+\`🛒 PESANAN \${productName}
+
 📋 DETAIL PESANAN:
-• Produk: \${productName} \${selectedVariant ? \`• Varian Dipilih: \${selectedVariant}\` : ''}
-• Harga Satuan: Rp \${order.unitPrice.toLocaleString('id-ID')}
-• Jumlah: \${order.quantity} pcs
-• Subtotal: Rp \${order.subtotal.toLocaleString('id-ID')}
-• Kode Unik: +Rp \${order.uniqueCode}
-• 💰 TOTAL PEMBAYARAN: Rp \${order.total.toLocaleString('id-ID')}
+• Produk: \${productName}
+\${selectedVariant ? '• Varian Dipilih: ' + selectedVariant : ''}
+• Harga Satuan: Rp \${basePrice.toLocaleString('id-ID')}
+• Jumlah: \${qty} pcs
+• Subtotal: Rp \${subtotal.toLocaleString('id-ID')}
+• Kode Unik: +Rp \${uniqueCode}
+• 💰 TOTAL PEMBAYARAN: Rp \${total.toLocaleString('id-ID')}
 
 👤 DATA PENERIMA:
 • Nama: \${customerName}
@@ -1304,51 +847,122 @@
 • Alamat: \${customerAddress}
 • Wilayah: \${district}, \${city}, \${province}
 
-\${customerNotes ? \`📝 CATATAN TAMBAHAN: 
+\${customerNotes ? \`📝 CATATAN TAMBAHAN:
 \${customerNotes}
-\` : ''}
-💳 METODE PEMBAYARAN:
+
+\` : ''}💳 METODE PEMBAYARAN: 
 • Transfer Bank (BCA, Mandiri, BRI, BNI)
 • COD (Cash on Delivery)
 • E-Wallet (GoPay, OVO, DANA)
 
 Mohon konfirmasi pesanan ini. Terima kasih! 🙏\`;
-            
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = \`https://wa.com/\${whatsappNumber}?text=\${encodedMessage}\`;
-            window.open(whatsappUrl, '_blank');
-        }
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set active thumbnail for main image
-            document.querySelector('.thumbnail').classList.add('active');
-            
-            // Update initial total
-            updateTotal();
-            
-            // Setup variant chips if available
-            if (document.querySelector('.variant-chip')) {
-                setupVariantChips();
-            }
-            
-            // Setup province options
-            loadProvinceOptions();
-        });
-        
-        // Load province options
-        function loadProvinceOptions() {
-            const provinceSelect = document.getElementById('province');
-            if (provinceSelect) {
-                provinceSelect.innerHTML = '<option value="">Pilih Provinsi</option>';
-                Object.keys(indonesiaData).forEach(province => {
-                    const option = document.createElement('option');
-                    option.value = province;
-                    option.textContent = province;
-                    provinceSelect.appendChild(option);
-                });
-                provinceSelect.innerHTML += '<option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
-            }
+                    const encodedMessage = encodeURIComponent(message);
+                    const whatsappUrl = \`https://wa.me/\${whatsappNumber}?text=\${encodedMessage}\`;
+                    window.open(whatsappUrl, '_blank');
+                }
+            <\/script>
+            `;
+            // HTML content
+            return `<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>${esc(formData.productName)} - ${esc(formData.storeName)}</title>
+    ${generatedCss}
+</head>
+<body>
+    <header>
+        <div class="container" style="display:flex;justify-content:space-between;align-items:center;padding:15px 0;">
+            <div class="logo">${esc(formData.storeName)}</div>
+            <div class="contact">
+                <span style="font-size:1.2rem;">📱</span>
+                <span style="margin-left:8px;">${esc(formData.whatsapp)}</span>
+            </div>
+        </div>
+    </header>
+    <main class="product-section">
+        <div class="container">
+            <div class="product-gallery">
+                <img src="${esc(formData.images[0])}" id="mainImage" alt="Gambar Utama" class="main-image">
+                <div class="thumbnails" style="margin-top:14px;">
+                    ${thumbHtml}
+                </div>
+            </div>
+            <div class="product-info">
+                <div class="product-title">${esc(formData.productName)}</div>
+                <div class="price">Rp ${formData.price.toLocaleString('id-ID')}</div>
+                <div class="desc">${esc(formData.description)}</div>
+                ${featuresHtml}
+                <form id="orderForm" autocomplete="off" onsubmit="return false;">
+                    ${generateVariantHTML(formData)}
+                    <div class="quantity">
+                        <label>Jumlah Pesanan:</label>
+                        <div class="qty-controls">
+                            <button type="button" onclick="changeQty(-1)">-</button>
+                            <input type="number" id="qty" value="1" min="1" max="99" onchange="updateTotal()">
+                            <button type="button" onclick="changeQty(1)">+</button>
+                        </div>
+                        <small class="qty-info">Harga per pcs: Rp <span id="unitPrice">${formData.price.toLocaleString('id-ID')}</span></small>
+                    </div>
+                    <input type="text" id="customerName" placeholder="Nama Lengkap" required>
+                    <input type="tel" id="customerPhone" placeholder="No. WhatsApp" required>
+                    <textarea id="customerAddress" placeholder="Alamat Lengkap" required></textarea>
+                    <div class="customer-notes">
+                        <label>Catatan Tambahan (Opsional):</label>
+                        <textarea id="customerNotes" placeholder="Contoh: Saya pesan 3 pcs - 1 warna merah ukuran L, 2 warna hijau ukuran M dan XL. Atau catatan khusus lainnya..." rows="3"></textarea>
+                        <small class="notes-help">💡 Gunakan catatan ini jika memesan beberapa varian berbeda atau ada permintaan khusus</small>
+                    </div>
+                    <select id="province" onchange="loadCities()" required>
+                        <option value="">Pilih Provinsi</option>
+                        <option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>
+                    </select>
+                    <select id="city" onchange="loadDistricts()" required>
+                        <option value="">Pilih Kota</option>
+                        <option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>
+                    </select>
+                    <select id="district" onchange="handleDistrictChange()" required>
+                        <option value="">Pilih Kecamatan</option>
+                        <option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>
+                    </select>
+                    <input type="text" id="manualProvince" placeholder="Tulis Provinsi Manual" style="display:none;">
+                    <input type="text" id="manualCity" placeholder="Tulis Kota Manual" style="display:none;">
+                    <input type="text" id="manualDistrict" placeholder="Tulis Kecamatan Manual" style="display:none;">
+                    <div class="order-summary">
+                        <div class="summary-row">
+                            <span>Harga per pcs:</span>
+                            <span id="unitPriceDisplay">Rp ${formData.price.toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Jumlah:</span>
+                            <span id="quantityDisplay">1 pcs</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">Rp ${formData.price.toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Kode Unik:</span>
+                            <span id="uniqueCode">+Rp 123</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>TOTAL PEMBAYARAN:</span>
+                            <span id="total">Rp ${formData.price.toLocaleString('id-ID')}</span>
+                        </div>
+                        ${paymentLogos}
+                    </div>
+                    <button type="button" onclick="submitOrder()" class="whatsapp-btn">
+                        📱 Pesan via WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer style="text-align:center; color:#7f8899; font-size:13px; margin:25px 0 15px 0;">&copy; 2025 ${esc(formData.storeName)}. Powered by nexcoAI.</footer>
+    ${generatedJs}
+</body>
+</html>
+            `;
         }
     </script>
 </body>
