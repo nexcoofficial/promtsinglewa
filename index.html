@@ -3,758 +3,1352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LuxuMart Pro - Premium E-commerce Generator</title>
+    <title>Generator Website Toko Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1e293b',
-                        secondary: '#f59e0b',
-                        accent: '#ec4899',
-                        platinum: '#e5e7eb',
-                        'pearl-white': '#fefefe',
-                        success: '#10b981',
-                        warning: '#f59e0b',
-                        error: '#ef4444',
-                        'luxury-gradient-1': '#667eea',
-                        'luxury-gradient-2': '#764ba2',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Poppins', 'sans-serif'],
-                        accent: ['Montserrat', 'sans-serif'],
-                    },
-                    borderRadius: {
-                        'xl': '1.25rem',
-                        '2xl': '2rem',
-                    },
-                    boxShadow: {
-                        'luxury': '0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 20px 25px -5px rgba(0, 0, 0, 0.05)',
-                        'inner-luxury': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
-                    },
-                    backgroundImage: {
-                        'gradient-premium-1': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                        'gradient-premium-2': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        .glass-morphism {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
-        .card-hover {
-            transition: all 0.3s ease-in-out;
+        
+        body {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f7ff 100%);
+            color: #1e293b;
         }
-        .card-hover:hover {
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2), 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
-        .glow {
-            box-shadow: 0 0 25px rgba(245, 158, 11, 0.4);
+        
+        .tab-active {
+            border-bottom: 3px solid #2563eb;
+            color: #2563eb;
         }
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
+        
+        .thumbnail {
+            transition: all 0.2s ease;
+            cursor: pointer;
         }
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        
+        .thumbnail:hover {
+            transform: scale(1.05);
+            border-color: #2563eb;
         }
-        .gradient-border {
-            position: relative;
-            background: #ffffff;
-            border-radius: 1.5rem;
+        
+        .thumbnail.active {
+            border-color: #2563eb;
+            transform: scale(1.05);
         }
-        .gradient-border::before {
-            content: '';
-            position: absolute;
-            top: -1px; left: -1px;
-            right: -1px; bottom: -1px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 1.5rem;
-            z-index: -1;
+        
+        .whatsapp-btn {
+            background: #25d366;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-btn:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+        
+        .variant-chip {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            border-radius: 20px;
+            padding: 4px 12px;
+            margin: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .variant-chip:hover {
+            background: #bae6fd;
+        }
+        
+        .variant-chip.selected {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .qty-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #dbeafe;
+            color: #2563eb;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .qty-btn:hover {
+            background: #bfdbfe;
+            transform: scale(1.05);
+        }
+        
+        .payment-option {
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-option:hover {
+            border-color: #2563eb;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.1);
+        }
+        
+        .manual-input {
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .preview-container {
+            max-height: 500px;
+            overflow: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            padding: 20px;
+        }
+        
+        /* Custom scrollbar */
+        .preview-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .preview-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        
+        .preview-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .preview-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-purple-50 font-sans">
-    <!-- Navigation -->
-    <nav class="glass-morphism fixed w-full z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex-shrink-0 flex items-center">
-                    <div class="h-10 w-10 rounded-full bg-gradient-premium-1 flex items-center justify-center">
-                        <span class="text-white font-bold text-xl">LM</span>
-                    </div>
-                    <span class="ml-3 text-xl font-bold bg-gradient-to-r from-luxury-gradient-1 to-luxury-gradient-2 bg-clip-text text-transparent">LuxuMart Pro</span>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-center space-x-8">
-                        <a href="#" class="text-primary font-medium hover:text-secondary">Dashboard</a>
-                        <a href="#" class="text-primary font-medium hover:text-secondary">Templates</a>
-                        <a href="#" class="text-primary font-medium hover:text-secondary">Analytics</a>
-                        <a href="#" class="text-primary font-medium hover:text-secondary">Support</a>
-                    </div>
-                </div>
-                <div class="flex items-center">
-                    <button class="mr-4 px-4 py-2 bg-white text-primary font-medium rounded-xl border border-platinum hover:shadow-lg transition-all">
-                        <i class="fas fa-user mr-2"></i>Sign In
-                    </button>
-                    <button class="px-6 py-2.5 bg-gradient-to-r from-luxury-gradient-1 to-luxury-gradient-2 text-white font-medium rounded-xl shadow-md hover:shadow-lg transition-all">
-                        Start Free Trial
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
+<body class="min-h-screen bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">E-commerce Website Generator</h1>
+            <p class="text-lg text-gray-600">Buat toko online profesional dalam hitungan menit</p>
+            <div class="w-24 h-1 bg-blue-500 rounded-full mx-auto mt-4"></div>
+        </header>
 
-    <!-- Main Content -->
-    <div class="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto">
-            <!-- Header Section -->
-            <div class="text-center mb-16">
-                <h1 class="text-4xl font-heading font-bold tracking-tight text-primary mb-4">
-                    Create Premium E-commerce Websites in Minutes
-                </h1>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-                    Professional templates optimized for Indonesian WhatsApp commerce with complete regional data
-                </p>
-                <div class="flex justify-center space-x-4">
-                    <button class="px-8 py-3.5 bg-gradient-to-r from-luxury-gradient-1 to-luxury-gradient-2 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all">
-                        Start Building <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                    <button class="px-8 py-3.5 bg-white border-2 border-primary text-primary font-bold rounded-xl hover:bg-gray-50 shadow-md transition-all">
-                        <i class="fas fa-play-circle mr-2"></i>Watch Demo
-                    </button>
-                </div>
-            </div>
-
-            <!-- Generator Features -->
-            <div class="mb-20">
-                <h2 class="text-3xl font-heading font-bold text-center text-primary mb-2">Premium Features</h2>
-                <p class="text-gray-600 text-center mb-10">Everything you need for premium Indonesian e-commerce</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Feature 1 -->
-                    <div class="glass-morphism p-6 rounded-2xl card-hover">
-                        <div class="w-14 h-14 rounded-xl bg-gradient-premium-1 flex items-center justify-center mb-4">
-                            <i class="fas fa-palette text-2xl text-white"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-primary mb-2">Luxury Design Templates</h3>
-                        <p class="text-gray-600 mb-4">10+ premium templates with customizable colors, fonts and layouts designed for maximum conversion.</p>
-                        <button class="text-secondary font-medium flex items-center">
-                            Explore Templates <i class="fas fa-arrow-right ml-2 text-sm"></i>
-                        </button>
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Generator Form -->
+            <div class="lg:col-span-2">
+                <div class="card p-6 mb-8">
+                    <!-- Form Tabs -->
+                    <div class="flex border-b mb-6">
+                        <button class="px-4 py-2 font-medium tab-active" id="productTab">Produk</button>
+                        <button class="px-4 py-2 font-medium text-gray-500" id="storeTab">Toko</button>
+                        <button class="px-4 py-2 font-medium text-gray-500" id="previewTab">Preview</button>
                     </div>
                     
-                    <!-- Feature 2 -->
-                    <div class="glass-morphism p-6 rounded-2xl card-hover">
-                        <div class="w-14 h-14 rounded-xl bg-gradient-premium-1 flex items-center justify-center mb-4">
-                            <i class="fas fa-map-marker-alt text-2xl text-white"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-primary mb-2">Complete Indonesian Regional Data</h3>
-                        <p class="text-gray-600 mb-4">All 34 provinces, 500+ cities and 7000+ districts with dynamic selection dropdowns.</p>
-                        <button class="text-secondary font-medium flex items-center">
-                            View Demo <i class="fas fa-arrow-right ml-2 text-sm"></i>
-                        </button>
-                    </div>
-                    
-                    <!-- Feature 3 -->
-                    <div class="glass-morphism p-6 rounded-2xl card-hover">
-                        <div class="w-14 h-14 rounded-xl bg-gradient-premium-1 flex items-center justify-center mb-4">
-                            <i class="fas fa-bolt text-2xl text-white"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-primary mb-2">WhatsApp Optimization</h3>
-                        <p class="text-gray-600 mb-4">Pre-built WhatsApp message templates with advanced order formatting and automation.</p>
-                        <button class="text-secondary font-medium flex items-center">
-                            See Templates <i class="fas fa-arrow-right ml-2 text-sm"></i>
-                        </button>
-                    </div>
-                    
-                    <!-- Feature 4 -->
-                    <div class="glass-morphism p-6 rounded-2xl card-hover">
-                        <div class="w-14 h-14 rounded-xl bg-gradient-premium-1 flex items-center justify-center mb-4">
-                            <i class="fas fa-lock text-2xl text-white"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-primary mb-2">Secure Payments</h3>
-                        <p class="text-gray-600 mb-4">All major Indonesian payment methods including bank transfers, e-wallets and COD with configurable fees.</p>
-                        <button class="text-secondary font-medium flex items-center">
-                            Payment Options <i class="fas fa-arrow-right ml-2 text-sm"></i>
-                        </button>
-                    </div>
-                    
-                    <!-- Feature 5 -->
-                    <div class="glass-morphism p-6 rounded-2xl card-hover">
-                        <div class="w-14 h-14 rounded-xl bg-gradient-premium-1 flex items-center justify-center mb-4">
-                            <i class="fas fa-chart-line text-2xl text-white"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-primary mb-2">Built-in Analytics</h3>
-                        <p class="text-gray-600 mb-4">Track conversions, page views, and user behavior with Google Analytics and Facebook Pixel integration.</p>
-                        <button class="text-secondary font-medium flex items-center">
-                            Analytics Preview <i class="fas fa-arrow-right ml-2 text-sm"></i>
-                        </button>
-                    </div>
-                    
-                    <!-- Feature 6 -->
-                    <div class="glass-morphism p-6 rounded-2xl card-hover">
-                        <div class="w-14 h-14 rounded-xl bg-gradient-premium-1 flex items-center justify-center mb-4">
-                            <i class="fas fa-mobile-alt text-2xl text-white"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-primary mb-2">Mobile-First Design</h3>
-                        <p class="text-gray-600 mb-4">Optimized for 95% of Indonesian e-commerce traffic with large buttons and simple navigation.</p>
-                        <button class="text-secondary font-medium flex items-center">
-                            Mobile Preview <i class="fas fa-arrow-right ml-2 text-sm"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- How It Works Section -->
-            <div class="mb-20">
-                <h2 class="text-3xl font-heading font-bold text-center text-primary mb-2">Create in 5 Simple Steps</h2>
-                <p class="text-gray-600 text-center mb-12">Build a premium e-commerce site in under 10 minutes</p>
-                
-                <div class="relative">
-                    <!-- Vertical Line -->
-                    <div class="hidden md:block absolute h-full left-1/2 transform -translate-x-1/2">
-                        <div class="border-l-2 border-dashed border-primary h-full left-1/2 absolute"></div>
-                    </div>
-                    
-                    <!-- Steps Container -->
-                    <div class="relative">
-                        <!-- Step 1 -->
-                        <div class="md:flex mb-16">
-                            <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
-                                <div class="inline-block text-center">
-                                    <div class="bg-gradient-premium-1 rounded-full w-12 h-12 flex items-center justify-center mb-4 mx-auto md:ml-auto">
-                                        <span class="text-white font-bold text-lg">1</span>
-                                    </div>
-                                    <h3 class="text-xl font-bold text-primary">Product Information</h3>
-                                    <p class="text-gray-600">Enter product details, pricing, and variants</p>
-                                </div>
-                            </div>
-                            <div class="md:w-1/2 md:pl-12 flex items-center">
-                                <div class="glass-morphism rounded-2xl p-6 w-full">
-                                    <div class="flex flex-wrap gap-4">
-                                        <div class="w-full">
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                                            <input type="text" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-secondary focus:ring-2 focus:ring-secondary focus:ring-opacity-50">
-                                        </div>
-                                        <div class="w-full md:w-5/12">
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Price</label>
-                                            <input type="number" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-secondary focus:ring-2 focus:ring-secondary focus:ring-opacity-50" placeholder="Rp 100.000">
-                                        </div>
-                                        <div class="w-full md:w-5/12">
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Compare Price</label>
-                                            <input type="number" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-secondary focus:ring-2 focus:ring-secondary focus:ring-opacity-50" placeholder="Rp 200.000">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Product Form -->
+                    <div id="productForm">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Informasi Produk</h2>
                         
-                        <!-- Step 2 -->
-                        <div class="md:flex mb-16">
-                            <div class="md:w-1/2 md:pr-12 flex items-center md:order-2">
-                                <div class="glass-morphism rounded-2xl p-6 w-full">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Product Images</label>
-                                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-secondary transition-colors cursor-pointer">
-                                        <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
-                                        <h4 class="font-medium text-gray-900">Upload Product Images</h4>
-                                        <p class="text-sm text-gray-500">Drag & drop or click to browse</p>
-                                        <p class="text-xs text-gray-500 mt-1">Recommended: 4-6 images (max 5MB each)</p>
-                                    </div>
-                                    <div class="flex justify-between mt-4">
-                                        <div class="text-sm text-gray-600 flex items-center">
-                                            <i class="fas fa-exclamation-circle text-amber-500 mr-1"></i> 4 images minimum
-                                        </div>
-                                        <div class="text-sm text-gray-600">
-                                            <i class="fas fa-check-circle text-emerald-500 mr-1"></i> WebP optimized
-                                        </div>
-                                    </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Product Details -->
+                            <div>
+                                <div class="mb-5">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
+                                    <input type="text" id="productName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Jaket Premium Casual">
+                                </div>
+                                
+                                <div class="mb-5">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Harga (Rp)</label>
+                                    <input type="number" id="price" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: 299000">
+                                </div>
+                                
+                                <div class="mb-5">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Produk</label>
+                                    <textarea id="description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Deskripsi detail produk..."></textarea>
+                                </div>
+                                
+                                <div class="mb-5">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp</label>
+                                    <input type="text" id="whatsapp" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: 628123456789">
                                 </div>
                             </div>
-                            <div class="md:w-1/2 md:pl-12 md:text-left mb-4 md:mb-0 md:order-1">
-                                <div class="inline-block text-center">
-                                    <div class="bg-gradient-premium-1 rounded-full w-12 h-12 flex items-center justify-center mb-4 mx-auto">
-                                        <span class="text-white font-bold text-lg">2</span>
-                                    </div>
-                                    <h3 class="text-xl font-bold text-primary">Product Gallery</h3>
-                                    <p class="text-gray-600">Create stunning image galleries</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Step 3 -->
-                        <div class="md:flex mb-16">
-                            <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
-                                <div class="inline-block text-center">
-                                    <div class="bg-gradient-premium-1 rounded-full w-12 h-12 flex items-center justify-center mb-4 mx-auto md:ml-auto">
-                                        <span class="text-white font-bold text-lg">3</span>
-                                    </div>
-                                    <h3 class="text-xl font-bold text-primary">Store Settings</h3>
-                                    <p class="text-gray-600">Add regional settings and payment</p>
-                                </div>
-                            </div>
-                            <div class="md:w-1/2 md:pl-12 flex items-center">
-                                <div class="glass-morphism rounded-2xl p-6 w-full">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Regional Data Settings</label>
-                                    
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
-                                            <select class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-secondary focus:ring-2 focus:ring-secondary focus:ring-opacity-50">
-                                                <option>Pilih Provinsi</option>
-                                                <option>DKI Jakarta</option>
-                                                <option>Jawa Barat</option>
-                                                <option>Jawa Tengah</option>
-                                                <option>Jawa Timur</option>
-                                                <option>Banten</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Kota/Kabupaten</label>
-                                            <select class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-secondary focus:ring-2 focus:ring-secondary focus:ring-opacity-50">
-                                                <option>Pilih Kota</option>
-                                                <option>Jakarta Barat</option>
-                                                <option>Jakarta Pusat</option>
-                                                <option>Jakarta Selatan</option>
-                                                <option>Jakarta Timur</option>
-                                                <option>Jakarta Utara</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                    <label class="block text-sm font-medium text-gray-700 mt-4 mb-1">Shipping Methods</label>
-                                    <div class="space-y-3">
-                                        <div class="flex items-center">
-                                            <input type="checkbox" class="h-5 w-5 text-secondary rounded-xl" checked>
-                                            <label class="ml-3 text-gray-700">JNE Regular</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input type="checkbox" class="h-5 w-5 text-secondary rounded-xl" checked>
-                                            <label class="ml-3 text-gray-700">J&T Express</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input type="checkbox" class="h-5 w-5 text-secondary rounded-xl">
-                                            <label class="ml-3 text-gray-700">SiCepat</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Templates Section -->
-            <div class="mb-20">
-                <h2 class="text-3xl font-heading font-bold text-center text-primary mb-2">Premium Templates</h2>
-                <p class="text-gray-600 text-center mb-12">10+ luxury-grade templates for every product category</p>
-                
-                <div class="overflow-x-auto pb-6 scrollbar-hide">
-                    <div class="flex space-x-6">
-                        <!-- Template 1 -->
-                        <div class="flex-shrink-0 w-80 bg-gradient-to-br from-luxury-gradient-1 to-luxury-gradient-2 rounded-2xl overflow-hidden shadow-xl">
-                            <div class="h-48 relative overflow-hidden">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-                                <img src="https://images.unsplash.com/photo-1616486029423-aaaed0b15b4d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bHV4dXJ5JTIwcHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60" alt="Minimalist Luxury Template" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-5 bg-white">
-                                <div class="flex justify-between items-start mb-3">
-                                    <h3 class="text-xl font-bold text-primary">Minimalist Luxury</h3>
-                                    <span class="bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-lg text-sm font-medium">Popular</span>
-                                </div>
-                                <p class="text-gray-600 mb-4">Clean design with gold accents perfect for luxury products.</p>
-                                <button class="w-full py-2.5 bg-primary text-white rounded-xl font-medium hover:bg-opacity-90 transition-colors">
-                                    Use This Template
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Template 2 -->
-                        <div class="flex-shrink-0 w-80 bg-gradient-to-br from-luxury-gradient-1 to-luxury-gradient-2 rounded-2xl overflow-hidden shadow-xl">
-                            <div class="h-48 relative overflow-hidden">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-                                <img src="https://images.unsplash.com/photo-1550345332-09e3ac987658?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZXJuJTIwZWxlY3Ryb25pY3N8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60" alt="Tech Professional" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-5 bg-white">
-                                <div class="flex justify-between items-start mb-3">
-                                    <h3 class="text-xl font-bold text-primary">Tech Professional</h3>
-                                    <span class="bg-indigo-100 text-indigo-800 px-2.5 py-0.5 rounded-lg text-sm font-medium">New</span>
-                                </div>
-                                <p class="text-gray-600 mb-4">Dark theme with cyan accents for electronics and gadgets.</p>
-                                <button class="w-full py-2.5 bg-primary text-white rounded-xl font-medium hover:bg-opacity-90 transition-colors">
-                                    Use This Template
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Template 3 -->
-                        <div class="flex-shrink-0 w-80 bg-gradient-to-br from-luxury-gradient-1 to-luxury-gradient-2 rounded-2xl overflow-hidden shadow-xl">
-                            <div class="h-48 relative overflow-hidden">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-                                <img src="https://images.unsplash.com/photo-1544441893-675973e31985?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmFzaGlvbiUyMGNsb3RoaW5nfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60" alt="Fashion Forward" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-5 bg-white">
-                                <h3 class="text-xl font-bold text-primary mb-3">Fashion Forward</h3>
-                                <p class="text-gray-600 mb-4">Soft pastels with bold CTA for fashion and accessories.</p>
-                                <button class="w-full py-2.5 bg-primary text-white rounded-xl font-medium hover:bg-opacity-90 transition-colors">
-                                    Use This Template
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Template 4 -->
-                        <div class="flex-shrink-0 w-80 bg-gradient-to-br from-luxury-gradient-1 to-luxury-gradient-2 rounded-2xl overflow-hidden shadow-xl">
-                            <div class="h-48 relative overflow-hidden">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-                                <img src="https://images.unsplash.com/photo-1595341888016-a392ef81b7de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGVhbHRoJTIwYmVhdXR5fGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60" alt="Health & Beauty" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-5 bg-white">
-                                <h3 class="text-xl font-bold text-primary mb-3">Health & Beauty</h3>
-                                <p class="text-gray-600 mb-4">Green with natural tones for skincare and wellness products.</p>
-                                <button class="w-full py-2.5 bg-primary text-white rounded-xl font-medium hover:bg-opacity-90 transition-colors">
-                                    Use This Template
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-8">
-                    <button class="px-6 py-2.5 bg-gray-50 border-2 border-primary text-primary font-medium rounded-xl hover:bg-white shadow transition-colors">
-                        View All Templates <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- WhatsApp Integration -->
-            <div class="glass-morphism rounded-3xl p-8 md:p-12 mb-20">
-                <div class="max-w-4xl mx-auto">
-                    <div class="md:flex items-center">
-                        <div class="md:w-1/2 mb-8 md:mb-0">
-                            <h2 class="text-3xl font-heading font-bold text-primary mb-4">WhatsApp Message Templates</h2>
-                            <p class="text-gray-600 mb-6">Pre-formatted WhatsApp messages with order details tailored for Indonesian customers. Automatically includes product info, pricing, shipping details and payment methods.</p>
                             
-                            <div class="space-y-4">
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <div class="bg-emerald-100 w-10 h-10 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-check-circle text-emerald-600"></i>
+                            <!-- Product Images -->
+                            <div>
+                                <div class="mb-5">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Gambar Produk</label>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="text-xs text-gray-500 mb-1 block">Gambar Utama (wajib)</label>
+                                            <input type="text" id="image1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="URL Gambar Utama">
                                         </div>
-                                    </div>
-                                    <div class="ml-4">
-                                        <h4 class="font-bold text-gray-900">Standard Order Template</h4>
-                                        <p class="text-gray-600">Complete order details with product variants</p>
-                                    </div>
-                                </div>
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <div class="bg-emerald-100 w-10 h-10 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-check-circle text-emerald-600"></i>
+                                        
+                                        <div>
+                                            <label class="text-xs text-gray-500 mb-1 block">Gambar Tambahan (wajib)</label>
+                                            <input type="text" id="image2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="URL Gambar 2">
                                         </div>
-                                    </div>
-                                    <div class="ml-4">
-                                        <h4 class="font-bold text-gray-900">Premium Order Template</h4>
-                                        <p class="text-gray-600">Luxury format with premium customer benefits</p>
-                                    </div>
-                                </div>
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <div class="bg-emerald-100 w-10 h-10 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-check-circle text-emerald-600"></i>
+                                        
+                                        <div>
+                                            <label class="text-xs text-gray-500 mb-1 block">Gambar Tambahan (wajib)</label>
+                                            <input type="text" id="image3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="URL Gambar 3">
                                         </div>
-                                    </div>
-                                    <div class="ml-4">
-                                        <h4 class="font-bold text-gray-900">Flash Sale Template</h4>
-                                        <p class="text-gray-600">Urgency-focused messaging for limited time offers</p>
+                                        
+                                        <div>
+                                            <label class="text-xs text-gray-500 mb-1 block">Gambar Tambahan (wajib)</label>
+                                            <input type="text" id="image4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="URL Gambar 4">
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="text-xs text-gray-500 mb-1 block">Gambar Tambahan (opsional)</label>
+                                            <input type="text" id="image5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="URL Gambar 5">
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="text-xs text-gray-500 mb-1 block">Gambar Tambahan (opsional)</label>
+                                            <input type="text" id="image6" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="URL Gambar 6">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="md:w-1/2">
-                            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-4 text-white max-w-xs mx-auto">
-                                <div class="mb-4 flex items-center">
-                                    <div class="w-8 h-8 rounded-full bg-green-600 border-2 border-white flex items-center justify-center">
-                                        <i class="fab fa-whatsapp"></i>
-                                    </div>
-                                    <div class="ml-3 font-medium">WhatsApp Order Confirmation</div>
+                        
+                        <h3 class="text-lg font-bold text-gray-800 mt-8 mb-4">Varian Produk</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <div class="mb-4">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="hasVariants" class="mr-2">
+                                        <span class="text-gray-700">Produk memiliki varian?</span>
+                                    </label>
                                 </div>
-                                <div class="bg-gray-800 rounded-xl p-4">
-                                    <p class="text-sm mb-1">🛍️ PESANAN Smart Watch Pro</p>
-                                    <p class="text-xs mb-3">
-                                        🎨 Varian: Hitam<br>
-                                        📦 Kuantitas: 1 pcs<br>
-                                        💰 Harga: Rp 550.000<br>
-                                        🚚 Ongkir: Rp 25.000<br>
-                                        💳 TOTAL: Rp 575.000
-                                    </p>
-                                    <p class="text-xs">
-                                        👤 Nama: Budi Santoso<br>
-                                        📱 WhatsApp: +62812•••1234<br>
-                                        📍 Alamat: Jl. Sudirman No.123, Jakarta Selatan
-                                    </p>
-                                    <div class="mt-3 pt-3 border-t border-gray-700 text-center">
-                                        <p class="text-xs">Terima kasih! 🙏</p>
+                                
+                                <div id="variantSection" class="hidden">
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Warna (pisahkan dengan koma)</label>
+                                        <input type="text" id="colors" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Brown, Black, Navy">
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Ukuran (pisahkan dengan koma)</label>
+                                        <input type="text" id="sizes" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: S, M, L, XL">
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="autoGenerateCombinations" class="mr-2" checked>
+                                            <span class="text-gray-700">Buat kombinasi otomatis?</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Varian Manual (opsional)</label>
+                                        <textarea id="manualVariantList" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Tulis varian manual, misal: Brown-S, Brown-M, Black-L"></textarea>
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div>
+                                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                    <h4 class="font-medium text-blue-800 mb-2">Cara Mengisi Varian:</h4>
+                                    <ul class="text-sm text-blue-700 space-y-1">
+                                        <li class="flex items-start">
+                                            <span class="text-blue-500 mr-2">•</span>
+                                            <span>Jika produk memiliki varian warna dan ukuran, centang "Produk memiliki varian"</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="text-blue-500 mr-2">•</span>
+                                            <span>Masukkan warna dan ukuran, pisahkan dengan koma</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="text-blue-500 mr-2">•</span>
+                                            <span>Centang "Buat kombinasi otomatis" untuk membuat semua kombinasi warna-ukuran</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="text-blue-500 mr-2">•</span>
+                                            <span>Jika ingin varian khusus, gunakan kolom varian manual</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between mt-8">
+                            <div></div>
+                            <button type="button" id="nextToStore" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                                Lanjut ke Informasi Toko <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Store Form -->
+                    <div id="storeForm" class="hidden">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Informasi Toko</h2>
+                        
+                        <div class="grid grid-cols-1 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Toko</label>
+                                <input type="text" id="storeName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Toko Fashionku">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon Toko (opsional)</label>
+                                <input type="text" id="storePhone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: 021123456">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Fitur Produk (pisahkan dengan koma)</label>
+                                <textarea id="features" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Bahan premium, Desain modern, Tahan lama"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between mt-8">
+                            <button type="button" id="backToProduct" class="px-6 py-3 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors">
+                                <i class="fas fa-arrow-left mr-2"></i> Kembali
+                            </button>
+                            <button type="button" id="generateBtn" class="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors">
+                                <i class="fas fa-code mr-2"></i> Generate Website
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Preview Section -->
+                    <div id="previewSection" class="hidden">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Preview Website</h2>
+                        <p class="text-gray-600 mb-6">Website toko online Anda sudah siap. Salin kode di bawah untuk digunakan.</p>
+                        
+                        <div class="preview-container mb-6" id="result"></div>
+                        
+                        <div class="flex justify-between">
+                            <button type="button" id="backToStore" class="px-6 py-3 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors">
+                                <i class="fas fa-edit mr-2"></i> Edit Lagi
+                            </button>
+                            <button type="button" id="copyBtn" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-copy mr-2"></i> Salin Kode
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Pricing Section -->
-            <div class="mb-20">
-                <h2 class="text-3xl font-heading font-bold text-center text-primary mb-2">Simple, Transparent Pricing</h2>
-                <p class="text-gray-600 text-center mb-12">No hidden fees. No complicated contracts.</p>
-                
-                <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                    <!-- Basic Plan -->
-                    <div class="glass-morphism p-8 rounded-2xl">
-                        <div class="text-center">
-                            <div class="bg-gradient-premium-1 rounded-xl p-4 mb-6">
-                                <h3 class="text-xl font-bold text-white">Basic</h3>
-                                <p class="text-gray-200">For startups and new businesses</p>
-                            </div>
-                            <div class="text-4xl font-bold text-primary mb-2">Rp 199.000</div>
-                            <div class="text-gray-600 mb-6">per bulan</div>
-                        </div>
-                        <div class="mt-6 space-y-4">
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>1 Premium Template</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>10 Product Galleries</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>Indonesian Regional Data</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>Basic WhatsApp Integration</span>
-                            </div>
-                            <div class="flex items-center text-gray-400">
-                                <i class="fas fa-times-circle mr-3"></i>
-                                <span>Priority Support</span>
-                            </div>
-                        </div>
-                        <button class="w-full py-3 bg-gray-100 text-primary font-medium rounded-xl hover:bg-gray-200 mt-8">
-                            Start Basic Plan
-                        </button>
+            
+            <!-- Preview -->
+            <div>
+                <div class="card p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Preview Website</h2>
+                    <p class="text-gray-600 mb-4">Ini adalah tampilan website toko online yang akan dihasilkan.</p>
+                    
+                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 h-96 flex flex-col items-center justify-center text-gray-500">
+                        <i class="fas fa-store text-4xl mb-4"></i>
+                        <p class="text-center">Website preview akan muncul di sini setelah Anda mengisi formulir</p>
                     </div>
                     
-                    <!-- Professional Plan (Featured) -->
-                    <div class="glass-morphism relative p-8 rounded-2xl border-2 border-secondary overflow-hidden">
-                        <div class="absolute -top-2 right-6 bg-secondary text-white text-xs font-bold py-1 px-3 rounded-full">
-                            MOST POPULAR
-                        </div>
-                        <div class="text-center">
-                            <div class="bg-gradient-premium-1 rounded-xl p-4 mb-6">
-                                <h3 class="text-xl font-bold text-white">Professional</h3>
-                                <p class="text-gray-200">For growing businesses</p>
-                            </div>
-                            <div class="text-4xl font-bold text-primary mb-2">Rp 349.000</div>
-                            <div class="text-gray-600 mb-6">per bulan</div>
-                        </div>
-                        <div class="mt-6 space-y-4">
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>5 Premium Templates</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>Unlimited Product Galleries</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>Advanced Regional Data</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>WhatsApp Templates</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>Analytics & Tracking</span>
-                            </div>
-                        </div>
-                        <button class="w-full py-3 bg-gradient-premium-1 text-white font-medium rounded-xl hover:opacity-90 mt-8">
-                            Start Professional Plan
-                        </button>
-                    </div>
-                    
-                    <!-- Business Plan -->
-                    <div class="glass-morphism p-8 rounded-2xl">
-                        <div class="text-center">
-                            <div class="bg-gradient-premium-1 rounded-xl p-4 mb-6">
-                                <h3 class="text-xl font-bold text-white">Business</h3>
-                                <p class="text-gray-200">For established businesses</p>
-                            </div>
-                            <div class="text-4xl font-bold text-primary mb-2">Rp 699.000</div>
-                            <div class="text-gray-600 mb-6">per bulan</div>
-                        </div>
-                        <div class="mt-6 space-y-4">
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>All Templates</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>Unlimited Galleries</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>Complete Regional Data</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>Custom WhatsApp Templates</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
-                                <span>White Label Solution</span>
-                            </div>
-                        </div>
-                        <button class="w-full py-3 bg-gray-100 text-primary font-medium rounded-xl hover:bg-gray-200 mt-8">
-                            Start Business Plan
-                        </button>
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
+                        <h3 class="font-medium text-yellow-800 flex items-center">
+                            <i class="fas fa-info-circle mr-2"></i> Tips Pembuatan
+                        </h3>
+                        <ul class="text-sm text-yellow-700 mt-2 space-y-1">
+                            <li class="flex items-start">
+                                <span class="text-yellow-500 mr-2">•</span>
+                                <span>Pastikan semua URL gambar valid</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-yellow-500 mr-2">•</span>
+                                <span>Gunakan nomor WhatsApp dengan format internasional</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-yellow-500 mr-2">•</span>
+                                <span>Periksa kombinasi varian sebelum generate</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-primary text-white pt-16 pb-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center">
-                        <div class="h-10 w-10 rounded-full bg-white flex items-center justify-center">
-                            <span class="text-luxury-gradient-1 font-bold text-xl">LM</span>
-                        </div>
-                        <span class="ml-3 text-xl font-bold text-white">LuxuMart Pro</span>
-                    </div>
-                    <p class="mt-4 text-gray-300">
-                        Premium e-commerce website builder for Indonesian entrepreneurs to succeed with WhatsApp commerce.
-                    </p>
-                    <div class="flex space-x-4 mt-6">
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="text-gray-300 hover:text-white">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="text-lg font-bold mb-4">Resources</h4>
-                    <ul class="space-y-3 text-gray-300">
-                        <li><a href="#" class="hover:text-white">Documentation</a></li>
-                        <li><a href="#" class="hover:text-white">Tutorials</a></li>
-                        <li><a href="#" class="hover:text-white">Blog</a></li>
-                        <li><a href="#" class="hover:text-white">Support Center</a></li>
-                        <li><a href="#" class="hover:text-white">FAQ</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-bold mb-4">Company</h4>
-                    <ul class="space-y-3 text-gray-300">
-                        <li><a href="#" class="hover:text-white">About Us</a></li>
-                        <li><a href="#" class="hover:text-white">Careers</a></li>
-                        <li><a href="#" class="hover:text-white">Contact</a></li>
-                        <li><a href="#" class="hover:text-white">Partners</a></li>
-                        <li><a href="#" class="hover:text-white">Affiliate Program</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-bold mb-4">Subscribe</h4>
-                    <p class="text-gray-300 mb-4">Get the latest tips and updates</p>
-                    <form>
-                        <div class="flex">
-                            <input type="email" placeholder="Email address" class="px-4 py-3 rounded-l-lg flex-grow focus:outline-none text-gray-800">
-                            <button class="bg-secondary text-white px-4 rounded-r-lg">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                        <div class="mt-3 text-xs text-gray-400">
-                            We respect your privacy. Unsubscribe anytime.
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <div class="text-gray-400 text-sm">
-                    © 2023 LuxuMart Pro. All rights reserved.
-                </div>
-                <div class="flex space-x-6 mt-4 md:mt-0">
-                    <a href="#" class="text-gray-400 hover:text-white text-sm">Terms</a>
-                    <a href="#" class="text-gray-400 hover:text-white text-sm">Privacy</a>
-                    <a href="#" class="text-gray-400 hover:text-white text-sm">Cookies</a>
-                </div>
+    <script>
+        // Tab navigation
+        const productTab = document.getElementById('productTab');
+        const storeTab = document.getElementById('storeTab');
+        const previewTab = document.getElementById('previewTab');
+        
+        const productForm = document.getElementById('productForm');
+        const storeForm = document.getElementById('storeForm');
+        const previewSection = document.getElementById('previewSection');
+        
+        const nextToStore = document.getElementById('nextToStore');
+        const backToProduct = document.getElementById('backToProduct');
+        const generateBtn = document.getElementById('generateBtn');
+        const backToStore = document.getElementById('backToStore');
+        const copyBtn = document.getElementById('copyBtn');
+        
+        // Toggle variant section
+        const hasVariants = document.getElementById('hasVariants');
+        const variantSection = document.getElementById('variantSection');
+        
+        hasVariants.addEventListener('change', () => {
+            if (hasVariants.checked) {
+                variantSection.classList.remove('hidden');
+            } else {
+                variantSection.classList.add('hidden');
+            }
+        });
+        
+        // Tab navigation functions
+        nextToStore.addEventListener('click', () => {
+            productForm.classList.add('hidden');
+            storeForm.classList.remove('hidden');
+            productTab.classList.remove('tab-active');
+            storeTab.classList.add('tab-active');
+        });
+        
+        backToProduct.addEventListener('click', () => {
+            storeForm.classList.add('hidden');
+            productForm.classList.remove('hidden');
+            storeTab.classList.remove('tab-active');
+            productTab.classList.add('tab-active');
+        });
+        
+        generateBtn.addEventListener('click', () => {
+            generateWebsite();
+            storeForm.classList.add('hidden');
+            previewSection.classList.remove('hidden');
+            storeTab.classList.remove('tab-active');
+            previewTab.classList.add('tab-active');
+        });
+        
+        backToStore.addEventListener('click', () => {
+            previewSection.classList.add('hidden');
+            storeForm.classList.remove('hidden');
+            previewTab.classList.remove('tab-active');
+            storeTab.classList.add('tab-active');
+        });
+        
+        copyBtn.addEventListener('click', () => {
+            const resultText = document.getElementById('result').innerText;
+            navigator.clipboard.writeText(resultText).then(() => {
+                alert('Kode website berhasil disalin!');
+            });
+        });
+        
+        // Generate website function
+        function generateWebsite() {
+            // Get form data
+            const productName = document.getElementById('productName').value || 'Nama Produk';
+            const price = document.getElementById('price').value || '299000';
+            const description = document.getElementById('description').value || 'Deskripsi produk yang menarik';
+            const whatsapp = document.getElementById('whatsapp').value || '628123456789';
+            
+            const image1 = document.getElementById('image1').value || 'https://via.placeholder.com/600x600?text=Gambar+Utama';
+            const image2 = document.getElementById('image2').value || 'https://via.placeholder.com/600x600?text=Gambar+2';
+            const image3 = document.getElementById('image3').value || 'https://via.placeholder.com/600x600?text=Gambar+3';
+            const image4 = document.getElementById('image4').value || 'https://via.placeholder.com/600x600?text=Gambar+4';
+            const image5 = document.getElementById('image5').value || '';
+            const image6 = document.getElementById('image6').value || '';
+            
+            const hasVariantsChecked = document.getElementById('hasVariants').checked;
+            const colors = document.getElementById('colors').value || '';
+            const sizes = document.getElementById('sizes').value || '';
+            const autoGenerate = document.getElementById('autoGenerateCombinations').checked;
+            const manualVariants = document.getElementById('manualVariantList').value || '';
+            
+            const storeName = document.getElementById('storeName').value || 'Nama Toko Saya';
+            const storePhone = document.getElementById('storePhone').value || '';
+            const features = document.getElementById('features').value || '';
+            
+            // Process variants
+            let variantCombinations = [];
+            if (hasVariantsChecked) {
+                if (autoGenerate && colors && sizes) {
+                    const colorList = colors.split(',').map(c => c.trim());
+                    const sizeList = sizes.split(',').map(s => s.trim());
+                    
+                    colorList.forEach(color => {
+                        sizeList.forEach(size => {
+                            variantCombinations.push(`${color}-${size}`);
+                        });
+                    });
+                } else if (manualVariants) {
+                    variantCombinations = manualVariants.split('\n')
+                        .map(v => v.trim())
+                        .filter(v => v !== '');
+                }
+            }
+            
+            // Generate the HTML code
+            const generatedHTML = `<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${productName} - ${storeName}</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        
+        .contact {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: #334155;
+        }
+        
+        /* Product section */
+        .product-section {
+            padding: 40px 0;
+        }
+        
+        .product-gallery {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .thumbnails {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .thumbnail {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .thumbnail:hover, .thumbnail.active {
+            border-color: #2563eb;
+            transform: scale(1.05);
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+        
+        .product-description {
+            color: #475569;
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+        
+        .features {
+            background-color: #f0f9ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .features h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+        
+        .features ul {
+            padding-left: 20px;
+        }
+        
+        .features li {
+            margin-bottom: 8px;
+            color: #475569;
+        }
+        
+        /* Order form */
+        #orderForm {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #2563eb;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .variant-selection {
+            margin-bottom: 20px;
+        }
+        
+        .variant-chips {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .variant-chip {
+            display: inline-block;
+            background-color: #e0f2fe;
+            color: #0369a1;
+            border-radius: 20px;
+            padding: 6px 14px;
+            margin: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .variant-chip:hover {
+            background-color: #bae6fd;
+        }
+        
+        .variant-chip.selected {
+            background-color: #2563eb;
+            color: white;
+        }
+        
+        .quantity {
+            margin-bottom: 25px;
+        }
+        
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .qty-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: #dbeafe;
+            color: #2563eb;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+        
+        .qty-btn:hover {
+            background-color: #bfdbfe;
+            transform: scale(1.05);
+        }
+        
+        #qty {
+            width: 70px;
+            text-align: center;
+            margin: 0 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 2px solid #cbd5e1;
+        }
+        
+        .qty-info {
+            display: block;
+            margin-top: 6px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .customer-notes {
+            background-color: #f0f9ff;
+            border-left: 4px solid #2563eb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .customer-notes label {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        
+        .notes-help {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        
+        .address-selectors {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .manual-input {
+            display: none;
+            margin-top: 10px;
+        }
+        
+        .order-summary {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .summary-row.total {
+            border-top: 2px solid #2563eb;
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1e40af;
+            padding-top: 15px;
+            margin-top: 10px;
+        }
+        
+        .payment-methods {
+            margin-top: 20px;
+        }
+        
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .payment-option {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-option:hover {
+            border-color: #2563eb;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.1);
+        }
+        
+        .payment-option img {
+            width: 50px;
+            height: 30px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        
+        .whatsapp-btn {
+            background-color: #25d366;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+        
+        /* Responsive design */
+        @media (min-width: 768px) {
+            .product-gallery {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .address-selectors {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .product-section > .container {
+                flex-direction: column;
+            }
+            
+            .thumbnails {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container flex justify-between items-center">
+            <div class="logo">${storeName}</div>
+            <div class="contact">
+                <i class="fab fa-whatsapp text-green-500"></i>
+                <span>${whatsapp}</span>
             </div>
         </div>
-    </footer>
-
+    </header>
+    
+    <main class="product-section">
+        <div class="container grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Product Gallery -->
+            <div class="product-gallery">
+                <img id="mainImage" src="${image1}" alt="${productName}" class="main-image">
+                <div class="thumbnails">
+                    ${generateThumbnails([image1, image2, image3, image4, image5, image6])}
+                </div>
+            </div>
+            
+            <!-- Product Info -->
+            <div class="product-info">
+                <h1 class="product-title">${productName}</h1>
+                <div class="product-price">Rp ${parseInt(price).toLocaleString('id-ID')}</div>
+                <p class="product-description">${description}</p>
+                
+                ${features ? `
+                <div class="features">
+                    <h3>Fitur Produk:</h3>
+                    <ul>
+                        ${features.split(',').map(f => `<li>${f.trim()}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+                
+                <form id="orderForm">
+                    ${hasVariantsChecked && variantCombinations.length > 0 ? `
+                    <div class="variant-selection">
+                        <label>Pilih Varian:</label>
+                        <div class="variant-chips">
+                            ${variantCombinations.map(v => `
+                                <span class="variant-chip" data-value="${v}">${v}</span>
+                            `).join('')}
+                        </div>
+                        <input type="hidden" id="selectedVariant">
+                    </div>
+                    ` : ''}
+                    
+                    <div class="quantity">
+                        <label>Jumlah Pesanan:</label>
+                        <div class="qty-controls">
+                            <button type="button" class="qty-btn" onclick="changeQty(-1)">-</button>
+                            <input type="number" id="qty" value="1" min="1" max="99" onchange="updateTotal()">
+                            <button type="button" class="qty-btn" onclick="changeQty(1)">+</button>
+                        </div>
+                        <small class="qty-info">Harga per pcs: Rp <span id="unitPrice">${parseInt(price).toLocaleString('id-ID')}</span></small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerName">Nama Lengkap:</label>
+                        <input type="text" id="customerName" placeholder="Nama Lengkap" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerPhone">No. WhatsApp:</label>
+                        <input type="tel" id="customerPhone" placeholder="No. WhatsApp" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerAddress">Alamat Lengkap:</label>
+                        <textarea id="customerAddress" placeholder="Alamat Lengkap" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="customer-notes">
+                        <label for="customerNotes">Catatan Tambahan (Opsional):</label>
+                        <textarea id="customerNotes" placeholder="Contoh: Saya pesan 3 pcs - 1 warna merah ukuran L, 2 warna hijau ukuran M dan XL. Atau catatan khusus lainnya..." rows="3"></textarea>
+                        <small class="notes-help">💡 Gunakan catatan ini jika memesan beberapa varian berbeda atau ada permintaan khusus</small>
+                    </div>
+                    
+                    <div class="address-selectors">
+                        <div class="form-group">
+                            <label for="province">Provinsi:</label>
+                            <select id="province" onchange="loadCities()" required>
+                                <option value="">Pilih Provinsi</option>
+                                ${generateProvinceOptions()}
+                                <option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>
+                            </select>
+                            <input type="text" id="manualProvince" class="manual-input" placeholder="Tulis Provinsi Manual" style="display: none;">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="city">Kota:</label>
+                            <select id="city" onchange="loadDistricts()" required>
+                                <option value="">Pilih Kota</option>
+                                <option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>
+                            </select>
+                            <input type="text" id="manualCity" class="manual-input" placeholder="Tulis Kota Manual" style="display: none;">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="district">Kecamatan:</label>
+                            <select id="district" onchange="handleDistrictChange()" required>
+                                <option value="">Pilih Kecamatan</option>
+                                <option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>
+                            </select>
+                            <input type="text" id="manualDistrict" class="manual-input" placeholder="Tulis Kecamatan Manual" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <div class="order-summary">
+                        <div class="summary-row">
+                            <span>Harga per pcs:</span>
+                            <span id="unitPriceDisplay">Rp ${parseInt(price).toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Jumlah:</span>
+                            <span id="quantityDisplay">1 pcs</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">Rp ${parseInt(price).toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Kode Unik:</span>
+                            <span id="uniqueCode">+Rp 0</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>TOTAL PEMBAYARAN:</span>
+                            <span id="total">Rp ${parseInt(price).toLocaleString('id-ID')}</span>
+                        </div>
+                        
+                        <div class="payment-methods">
+                            <h4>Metode Pembayaran:</h4>
+                            <div class="payment-options">
+                                <div class="payment-option">
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='30' viewBox='0 0 50 30'%3E%3Crect width='50' height='30' rx='4' fill='%232563EB'/%3E%3Ctext x='25' y='18' text-anchor='middle' font-size='10' fill='white' font-weight='bold'%3EBANK%3C/text%3E%3C/svg%3E" alt="Bank Transfer">
+                                    <span>Transfer Bank</span>
+                                </div>
+                                <div class="payment-option">
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='30' viewBox='0 0 50 30'%3E%3Crect width='50' height='30' rx='4' fill='%2310B981'/%3E%3Ctext x='25' y='18' text-anchor='middle' font-size='10' fill='white' font-weight='bold'%3ECOD%3C/text%3E%3C/svg%3E" alt="Cash on Delivery">
+                                    <span>COD</span>
+                                </div>
+                                <div class="payment-option">
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='30' viewBox='0 0 50 30'%3E%3Crect width='50' height='30' rx='4' fill='%23EC4899'/%3E%3Ctext x='25' y='18' text-anchor='middle' font-size='9' fill='white' font-weight='bold'%3EE-WALLET%3C/text%3E%3C/svg%3E" alt="E-Wallet">
+                                    <span>E-Wallet</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="whatsapp-btn" onclick="submitOrder()">
+                        <i class="fab fa-whatsapp"></i> Pesan via WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+    
     <script>
-        // Mobile menu toggle functionality
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
-
-        // Form step navigation
-        const steps = document.querySelectorAll('.step');
-        steps.forEach(step => {
-            step.addEventListener('click', function() {
-                // Update step navigation UI
-                document.querySelector('.step.bg-secondary').classList.remove('bg-secondary');
-                this.classList.add('bg-secondary');
-                
-                // Show current step form
-                const stepForms = document.querySelectorAll('[id^="step-"]');
-                stepForms.forEach(form => form.classList.add('hidden'));
-                const currentStep = this.dataset.step;
-                document.getElementById(`step-${currentStep}`).classList.remove('hidden');
-            });
-        });
-
-        // Image upload preview
-        const imageUpload = document.getElementById('image-upload');
-        if(imageUpload) {
-            imageUpload.addEventListener('change', function(e) {
-                const preview = document.getElementById('image-preview');
-                preview.innerHTML = '';
-                
-                for(let file of e.target.files) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.classList.add('h-32', 'object-cover', 'rounded-xl', 'border', 'border-gray-300');
-                        img.style.maxWidth = '100%';
-                        preview.appendChild(img);
-                    }
-                    reader.readAsDataURL(file);
+        // Indonesia region data
+        const indonesiaData = {
+            "Jawa Barat": {
+                "Bandung": ["Cidadap", "Cicendo", "Coblong", "Bandung Wetan"],
+                "Bekasi": ["Bekasi Barat", "Bekasi Timur", "Bekasi Selatan", "Bekasi Utara"],
+                "Bogor": ["Bogor Tengah", "Bogor Utara", "Bogor Selatan", "Bogor Timur"],
+                "Depok": ["Pancoran Mas", "Sukmajaya", "Sawangan", "Cipayung"],
+                "Cimahi": ["Cimahi Selatan", "Cimahi Tengah", "Cimahi Utara"]
+            },
+            "DKI Jakarta": {
+                "Jakarta Pusat": ["Gambir", "Tanah Abang", "Menteng", "Senen"],
+                "Jakarta Selatan": ["Kebayoran Baru", "Tebet", "Setiabudi", "Mampang Prapatan"],
+                "Jakarta Timur": ["Matraman", "Pulogadung", "Jatinegara", "Duren Sawit"],
+                "Jakarta Barat": ["Grogol Petamburan", "Taman Sari", "Tambora", "Kebon Jeruk"],
+                "Jakarta Utara": ["Penjaringan", "Pademangan", "Tanjung Priok", "Koja"]
+            },
+            "Jawa Tengah": {
+                "Semarang": ["Semarang Tengah", "Semarang Utara", "Semarang Selatan", "Semarang Timur"],
+                "Solo": ["Laweyan", "Serengan", "Pasar Kliwon", "Jebres"],
+                "Yogyakarta": ["Gondokusuman", "Jetis", "Tegalrejo", "Umbulharjo"]
+            },
+            "Jawa Timur": {
+                "Surabaya": ["Genteng", "Gubeng", "Tegalsari", "Wonokromo"],
+                "Malang": ["Klojen", "Blimbing", "Kedungkandang", "Sukun"],
+                "Sidoarjo": ["Sidoarjo", "Buduran", "Candi", "Porong"]
+            },
+            "Banten": {
+                "Tangerang": ["Tangerang Kota", "Cipondoh", "Karawaci", "Pinang"],
+                "Serang": ["Serang Kota", "Kasemen", "Walantaka", "Curug"]
+            },
+            "Bali": {
+                "Denpasar": ["Denpasar Barat", "Denpasar Selatan", "Denpasar Timur", "Denpasar Utara"],
+                "Badung": ["Mengwi", "Abiansemal", "Petang", "Kuta Utara"]
+            },
+            "Sumatera Utara": {
+                "Medan": ["Medan Kota", "Medan Barat", "Medan Timur", "Medan Utara"],
+                "Binjai": ["Binjai Kota", "Binjai Barat", "Binjai Timur", "Binjai Utara"]
+            },
+            "Sumatera Selatan": {
+                "Palembang": ["Ilir Barat I", "Ilir Timur I", "Seberang Ulu I", "Kertapati"]
+            },
+            "Kalimantan Timur": {
+                "Balikpapan": ["Balikpapan Kota", "Balikpapan Barat", "Balikpapan Timur", "Balikpapan Selatan"],
+                "Samarinda": ["Samarinda Kota", "Samarinda Ulu", "Samarinda Ilir", "Sungai Kunjang"]
+            },
+            "Sulawesi Selatan": {
+                "Makassar": ["Makassar", "Mariso", "Mamajang", "Tamalate"]
+            }
+        };
+        
+        // Store product info
+        const productName = "${productName}";
+        const productPrice = ${price};
+        const whatsappNumber = "${whatsapp}";
+        
+        // Image gallery
+        function changeMainImage(src) {
+            document.getElementById('mainImage').src = src;
+            
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+                if (thumb.src === src) {
+                    thumb.classList.add('active');
                 }
             });
+        }
+        
+        // Quantity management
+        function changeQty(delta) {
+            const qtyInput = document.getElementById('qty');
+            let newQty = parseInt(qtyInput.value) + delta;
+            if (newQty < 1) newQty = 1;
+            if (newQty > 99) newQty = 99;
+            qtyInput.value = newQty;
+            updateTotal();
+        }
+        
+        // Update total price
+        function updateTotal() {
+            const qty = parseInt(document.getElementById('qty').value);
+            const subtotal = productPrice * qty;
+            const uniqueCode = Math.floor(Math.random() * 999) + 1;
+            const total = subtotal + uniqueCode;
+            
+            document.getElementById('quantityDisplay').textContent = qty + ' pcs';
+            document.getElementById('subtotal').textContent = 'Rp ' + subtotal.toLocaleString('id-ID');
+            document.getElementById('uniqueCode').textContent = '+Rp ' + uniqueCode;
+            document.getElementById('total').textContent = 'Rp ' + total.toLocaleString('id-ID');
+            
+            // Store current order for WhatsApp message
+            window.currentOrder = {
+                unitPrice: productPrice,
+                quantity: qty,
+                subtotal: subtotal,
+                uniqueCode: uniqueCode,
+                total: total
+            };
+        }
+        
+        // Address dropdowns
+        function loadCities() {
+            const province = document.getElementById('province').value;
+            const citySelect = document.getElementById('city');
+            const manualProvince = document.getElementById('manualProvince');
+            
+            // Reset city dropdown
+            citySelect.innerHTML = '<option value="">Pilih Kota</option><option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
+            
+            if (province === 'manual') {
+                manualProvince.style.display = 'block';
+                manualProvince.required = true;
+                citySelect.disabled = true;
+            } else {
+                manualProvince.style.display = 'none';
+                manualProvince.required = false;
+                citySelect.disabled = false;
+                
+                if (province && indonesiaData[province]) {
+                    Object.keys(indonesiaData[province]).forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
+                    });
+                }
+            }
+        }
+        
+        function loadDistricts() {
+            const province = document.getElementById('province').value;
+            const city = document.getElementById('city').value;
+            const districtSelect = document.getElementById('district');
+            const manualCity = document.getElementById('manualCity');
+            
+            // Reset district dropdown
+            districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option><option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
+            
+            if (city === 'manual') {
+                manualCity.style.display = 'block';
+                manualCity.required = true;
+                districtSelect.disabled = true;
+            } else {
+                manualCity.style.display = 'none';
+                manualCity.required = false;
+                districtSelect.disabled = false;
+                
+                if (province && city && indonesiaData[province] && indonesiaData[province][city]) {
+                    indonesiaData[province][city].forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district;
+                        option.textContent = district;
+                        districtSelect.appendChild(option);
+                    });
+                }
+            }
+        }
+        
+        function handleDistrictChange() {
+            const district = document.getElementById('district').value;
+            const manualDistrict = document.getElementById('manualDistrict');
+            
+            if (district === 'manual') {
+                manualDistrict.style.display = 'block';
+                manualDistrict.required = true;
+            } else {
+                manualDistrict.style.display = 'none';
+                manualDistrict.required = false;
+            }
+        }
+        
+        // Variant selection
+        function setupVariantChips() {
+            document.querySelectorAll('.variant-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    // Toggle selection
+                    document.querySelectorAll('.variant-chip').forEach(c => {
+                        c.classList.remove('selected');
+                    });
+                    chip.classList.add('selected');
+                    
+                    // Update hidden input
+                    document.getElementById('selectedVariant').value = chip.dataset.value;
+                    
+                    // Update order summary if needed
+                    updateTotal();
+                });
+            });
+        }
+        
+        // Form submission
+        function submitOrder() {
+            // Get variant data
+            let selectedVariant = '';
+            const variantInput = document.getElementById('selectedVariant');
+            if (variantInput && variantInput.value) {
+                selectedVariant = variantInput.value;
+            }
+            
+            // Get address data (dropdown or manual)
+            const province = document.getElementById('province').value === 'manual'
+                ? document.getElementById('manualProvince').value
+                : document.getElementById('province').value;
+            
+            const city = document.getElementById('city').value === 'manual'
+                ? document.getElementById('manualCity').value
+                : document.getElementById('city').value;
+            
+            const district = document.getElementById('district').value === 'manual'
+                ? document.getElementById('manualDistrict').value
+                : document.getElementById('district').value;
+            
+            // Get customer data
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const customerAddress = document.getElementById('customerAddress').value;
+            const customerNotes = document.getElementById('customerNotes').value;
+            
+            // Validation
+            if (!customerName || !customerPhone || !customerAddress || !province || !city || !district) {
+                alert('Mohon lengkapi semua data yang diperlukan (nama, WhatsApp, alamat lengkap, provinsi, kota, kecamatan)');
+                return;
+            }
+            
+            // Get order calculations
+            const order = window.currentOrder || {
+                unitPrice: productPrice,
+                quantity: parseInt(document.getElementById('qty').value),
+                subtotal: productPrice * parseInt(document.getElementById('qty').value),
+                uniqueCode: parseInt(document.getElementById('uniqueCode').textContent.replace(/[^\d]/g, '')),
+                total: parseInt(document.getElementById('total').textContent.replace(/[^\d]/g, ''))
+            };
+            
+            // Generate WhatsApp message
+            const message = \`🛒 PESANAN \${productName}
+            
+📋 DETAIL PESANAN:
+• Produk: \${productName} \${selectedVariant ? \`• Varian Dipilih: \${selectedVariant}\` : ''}
+• Harga Satuan: Rp \${order.unitPrice.toLocaleString('id-ID')}
+• Jumlah: \${order.quantity} pcs
+• Subtotal: Rp \${order.subtotal.toLocaleString('id-ID')}
+• Kode Unik: +Rp \${order.uniqueCode}
+• 💰 TOTAL PEMBAYARAN: Rp \${order.total.toLocaleString('id-ID')}
+
+👤 DATA PENERIMA:
+• Nama: \${customerName}
+• WhatsApp: \${customerPhone}
+• Alamat: \${customerAddress}
+• Wilayah: \${district}, \${city}, \${province}
+
+\${customerNotes ? \`📝 CATATAN TAMBAHAN: 
+\${customerNotes}
+\` : ''}
+💳 METODE PEMBAYARAN:
+• Transfer Bank (BCA, Mandiri, BRI, BNI)
+• COD (Cash on Delivery)
+• E-Wallet (GoPay, OVO, DANA)
+
+Mohon konfirmasi pesanan ini. Terima kasih! 🙏\`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = \`https://wa.com/\${whatsappNumber}?text=\${encodedMessage}\`;
+            window.open(whatsappUrl, '_blank');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set active thumbnail for main image
+            document.querySelector('.thumbnail').classList.add('active');
+            
+            // Update initial total
+            updateTotal();
+            
+            // Setup variant chips if available
+            if (document.querySelector('.variant-chip')) {
+                setupVariantChips();
+            }
+            
+            // Setup province options
+            loadProvinceOptions();
+        });
+        
+        // Load province options
+        function loadProvinceOptions() {
+            const provinceSelect = document.getElementById('province');
+            if (provinceSelect) {
+                provinceSelect.innerHTML = '<option value="">Pilih Provinsi</option>';
+                Object.keys(indonesiaData).forEach(province => {
+                    const option = document.createElement('option');
+                    option.value = province;
+                    option.textContent = province;
+                    provinceSelect.appendChild(option);
+                });
+                provinceSelect.innerHTML += '<option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
+            }
         }
     </script>
 </body>
