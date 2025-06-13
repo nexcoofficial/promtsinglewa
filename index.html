@@ -67,7 +67,6 @@
             font-style: normal;
             font-size: 1.3rem;
         }
-        /* Card */
         .card {
             background: var(--card);
             box-shadow: var(--shadow);
@@ -81,7 +80,6 @@
             margin-bottom: 20px;
             color: var(--primary);
         }
-        /* Form Grid */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -327,6 +325,19 @@
         </div>
     </div>
     <script>
+        // Tarif ongkir flat per provinsi
+        const ongkirFlat = {
+            "Jawa Barat": { tf: 12000, cod: 18000 },
+            "DKI Jakarta": { tf: 15000, cod: 21000 },
+            "Jawa Tengah": { tf: 13000, cod: 19000 },
+            "Jawa Timur": { tf: 13000, cod: 19000 },
+            "Banten": { tf: 13000, cod: 19000 },
+            "Bali": { tf: 19000, cod: 25000 },
+            "Sumatera Utara": { tf: 25000, cod: 31000 },
+            "Sumatera Selatan": { tf: 25000, cod: 31000 },
+            "Kalimantan Timur": { tf: 35000, cod: 41000 },
+            "Sulawesi Selatan": { tf: 35000, cod: 41000 }
+        };
         // Indonesian address data
         const indonesiaData = {
             "Jawa Barat": {
@@ -399,7 +410,7 @@
             const hasVariants = document.getElementById('hasVariants').checked;
             const autoGen = document.getElementById('autoGenerateCombinations').checked;
             let colors = getVal('colors').split(',').map(c => c.trim()).filter(Boolean);
-            let sizes = getVal('sizes').split(',').map(s => s.trim()).filter(Boolean);
+            let sizes = getVal('sizes').split(',').map(c => c.trim()).filter(Boolean);
             let variantList = getVal('manualVariantList');
             let variantCombinations = [];
             if (hasVariants) {
@@ -509,6 +520,7 @@
                     .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
             }
             const addressDataString = JSON.stringify(indonesiaData);
+            const ongkirFlatString = JSON.stringify(ongkirFlat);
             let featuresHtml = '';
             if (formData.features && formData.features.length) {
                 featuresHtml = `<ul class="feature-list">${formData.features.map(f => `<li>✔️ ${esc(f)}</li>`).join('')}</ul>`;
@@ -667,6 +679,7 @@
             const generatedJs = `
             <script>
                 const indonesiaData = ${addressDataString};
+                const ongkirFlat = ${ongkirFlatString};
                 const PRODUCT_PRICE = ${formData.price};
                 const productName = "${esc(formData.productName)}";
                 const whatsappNumber = "${esc(formData.whatsapp)}";
@@ -705,6 +718,17 @@
                     qtyInput.value = newQty;
                     updateTotal();
                 }
+                let paymentMethod = 'tf';
+                function choosePayment(method) {
+                    paymentMethod = method;
+                    document.getElementById('btnTf').classList.toggle('active', method==='tf');
+                    document.getElementById('btnCod').classList.toggle('active', method==='cod');
+                    updateTotal();
+                }
+                function getOngkir(prov, method) {
+                    if (!prov || !ongkirFlat[prov]) return null;
+                    return ongkirFlat[prov][method];
+                }
                 function updateTotal() {
                     const qty = parseInt(document.getElementById('qty').value);
                     const basePrice = PRODUCT_PRICE;
@@ -714,7 +738,18 @@
                         uniqueCode = Math.floor(Math.random() * 800) + 100;
                         window.currentUniqueCode = uniqueCode;
                     }
-                    const total = subtotal + uniqueCode;
+                    // Ongkir logic
+                    const province = document.getElementById('province').value;
+                    let ongkir = getOngkir(province, paymentMethod);
+                    let ongkirText = '';
+                    if (ongkir === null || typeof ongkir === "undefined") {
+                        ongkirText = '<span style="color:#dc2626;">Ongkir akan diinformasikan admin</span>';
+                        ongkir = 0;
+                    } else {
+                        ongkirText = 'Rp ' + ongkir.toLocaleString('id-ID');
+                    }
+                    document.getElementById('ongkirRow').innerHTML = '<span>Ongkir:</span><span id="ongkirText">'+ongkirText+'</span>';
+                    const total = subtotal + uniqueCode + ongkir;
                     document.getElementById('unitPriceDisplay').textContent = 'Rp ' + basePrice.toLocaleString('id-ID');
                     document.getElementById('quantityDisplay').textContent = qty + ' pcs';
                     document.getElementById('subtotal').textContent = 'Rp ' + subtotal.toLocaleString('id-ID');
@@ -724,81 +759,45 @@
                 function loadCities() {
                     const province = document.getElementById('province').value;
                     const citySelect = document.getElementById('city');
-                    const manualProvince = document.getElementById('manualProvince');
-                    if (province === 'manual') {
-                        manualProvince.style.display = 'block';
-                        manualProvince.required = true;
-                        citySelect.disabled = true;
-                        citySelect.value = '';
-                        loadDistricts();
-                    } else {
-                        manualProvince.style.display = 'none';
-                        manualProvince.required = false;
+                    const districtSelect = document.getElementById('district');
+                    if (province && indonesiaData[province]) {
+                        citySelect.innerHTML = '<option value="">Pilih Kota</option>';
+                        Object.keys(indonesiaData[province]).forEach(city => {
+                            citySelect.innerHTML += '<option value="'+city+'">'+city+'</option>';
+                        });
                         citySelect.disabled = false;
-                        citySelect.innerHTML = '<option value="">Pilih Kota</option><option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
-                        if (province && indonesiaData[province]) {
-                            Object.keys(indonesiaData[province]).forEach(city => {
-                                citySelect.innerHTML += '<option value="'+city+'">'+city+'</option>';
-                            });
-                        }
-                        loadDistricts();
+                    } else {
+                        citySelect.innerHTML = '<option value="">Pilih Kota</option>';
+                        citySelect.disabled = true;
                     }
+                    loadDistricts();
+                    updateTotal();
                 }
                 function loadDistricts() {
                     const province = document.getElementById('province').value;
                     const city = document.getElementById('city').value;
                     const districtSelect = document.getElementById('district');
-                    const manualCity = document.getElementById('manualCity');
-                    if (city === 'manual') {
-                        manualCity.style.display = 'block';
-                        manualCity.required = true;
-                        districtSelect.disabled = true;
-                        districtSelect.value = '';
-                        handleDistrictChange();
-                    } else {
-                        manualCity.style.display = 'none';
-                        manualCity.required = false;
+                    if (province && city && indonesiaData[province] && indonesiaData[province][city]) {
+                        districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+                        indonesiaData[province][city].forEach(district => {
+                            districtSelect.innerHTML += '<option value="'+district+'">'+district+'</option>';
+                        });
                         districtSelect.disabled = false;
-                        districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option><option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
-                        if (province && city && indonesiaData[province] && indonesiaData[province][city]) {
-                            indonesiaData[province][city].forEach(district => {
-                                districtSelect.innerHTML += '<option value="'+district+'">'+district+'</option>';
-                            });
-                        }
-                        handleDistrictChange();
-                    }
-                }
-                function handleDistrictChange() {
-                    const district = document.getElementById('district').value;
-                    const manualDistrict = document.getElementById('manualDistrict');
-                    if (district === 'manual') {
-                        manualDistrict.style.display = 'block';
-                        manualDistrict.required = true;
                     } else {
-                        manualDistrict.style.display = 'none';
-                        manualDistrict.required = false;
+                        districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+                        districtSelect.disabled = true;
                     }
+                    updateTotal();
                 }
                 function updateOrderSummary() { updateTotal(); }
-
-                // Payment method
-                let paymentMethod = 'tf';
-                function choosePayment(method) {
-                    paymentMethod = method;
-                    document.getElementById('btnTf').classList.toggle('active', method==='tf');
-                    document.getElementById('btnCod').classList.toggle('active', method==='cod');
-                }
-
                 window.onload = function() {
                     const provinceSelect = document.getElementById('province');
                     provinceSelect.innerHTML = '<option value="">Pilih Provinsi</option>';
                     Object.keys(indonesiaData).forEach(prov => {
                         provinceSelect.innerHTML += '<option value="'+prov+'">'+prov+'</option>';
                     });
-                    provinceSelect.innerHTML += '<option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
-                    document.getElementById('manualProvince').style.display = 'none';
-                    document.getElementById('manualCity').style.display = 'none';
-                    document.getElementById('manualDistrict').style.display = 'none';
+                    document.getElementById('city').disabled = true;
+                    document.getElementById('district').disabled = true;
                     showGalleryImage(0);
                     let mainImg = document.getElementById('galleryMainImage');
                     mainImg.addEventListener('touchstart', galleryTouchStart, {passive:true});
@@ -806,7 +805,6 @@
                     updateTotal();
                     choosePayment('tf');
                 };
-
                 function submitOrder() {
                     let selectedVariant = '';
                     const variantSelect = document.getElementById('variantSelect');
@@ -821,21 +819,16 @@
                             selectedVariant = [color, size].filter(v => v).join(' - ');
                         }
                     }
-                    const province = document.getElementById('province').value === 'manual' 
-                        ? document.getElementById('manualProvince').value 
-                        : document.getElementById('province').value;
-                    const city = document.getElementById('city').value === 'manual' 
-                        ? document.getElementById('manualCity').value 
-                        : document.getElementById('city').value;
-                    const district = document.getElementById('district').value === 'manual' 
-                        ? document.getElementById('manualDistrict').value 
-                        : document.getElementById('district').value;
+                    const province = document.getElementById('province').value;
+                    const city = document.getElementById('city').value;
+                    const district = document.getElementById('district').value;
+                    const catatanWilayah = document.getElementById('catatanWilayah').value.trim();
                     const customerName = document.getElementById('customerName').value;
                     const customerPhone = document.getElementById('customerPhone').value;
                     const customerAddress = document.getElementById('customerAddress').value;
                     const customerNotes = document.getElementById('customerNotes').value;
-                    if (!customerName || !customerPhone || !customerAddress || !province || !city || !district) {
-                        alert('Mohon lengkapi semua data yang diperlukan (nama, WhatsApp, alamat lengkap, provinsi, kota, kecamatan)');
+                    if (!customerName || !customerPhone || !customerAddress) {
+                        alert('Mohon lengkapi semua data yang diperlukan (nama, WhatsApp, alamat lengkap)');
                         return;
                     }
                     if (!paymentMethod) {
@@ -847,10 +840,22 @@
                     const subtotal = basePrice * qty;
                     const uniqueCode = window.currentUniqueCode || Math.floor(Math.random() * 800) + 100;
                     window.currentUniqueCode = uniqueCode;
-                    const total = subtotal + uniqueCode;
+                    let ongkir = getOngkir(province, paymentMethod);
+                    let ongkirMsg = '';
+                    if (ongkir === null || typeof ongkir === "undefined") {
+                        ongkirMsg = "Ongkir akan diinformasikan admin";
+                        ongkir = 0;
+                    } else {
+                        ongkirMsg = "Rp " + ongkir.toLocaleString('id-ID');
+                    }
+                    const total = subtotal + uniqueCode + ongkir;
                     let paymentText = paymentMethod === 'tf'
                         ? 'Transfer Bank (BCA, Mandiri, BRI, BNI)'
                         : 'COD (Cash on Delivery)';
+                    let wilayahText = '';
+                    if (district || city || province) {
+                        wilayahText = (district ? district+', ' : '') + (city ? city+', ' : '') + (province ? province : '');
+                    }
                     const message =
 \`🛒 PESANAN \${productName}
 
@@ -861,14 +866,15 @@
 • Jumlah: \${qty} pcs
 • Subtotal: Rp \${subtotal.toLocaleString('id-ID')}
 • Kode Unik: +Rp \${uniqueCode}
+• Ongkir: \${ongkirMsg}
 • 💰 TOTAL PEMBAYARAN: Rp \${total.toLocaleString('id-ID')}
 
 👤 DATA PENERIMA:
 • Nama: \${customerName}
 • WhatsApp: \${customerPhone}
 • Alamat: \${customerAddress}
-• Wilayah: \${district}, \${city}, \${province}
-
+• Wilayah: \${wilayahText}
+\${catatanWilayah ? '• Catatan Wilayah: ' + catatanWilayah : ''}
 \${customerNotes ? \`📝 CATATAN TAMBAHAN:
 \${customerNotes}
 
@@ -938,26 +944,21 @@ Mohon konfirmasi pesanan ini. Terima kasih! 🙏\`;
                     <input type="text" id="customerName" placeholder="Nama Lengkap" required>
                     <input type="tel" id="customerPhone" placeholder="No. WhatsApp" required>
                     <textarea id="customerAddress" placeholder="Alamat Lengkap" required></textarea>
+                    <select id="province" onchange="loadCities()" required>
+                        <option value="">Pilih Provinsi</option>
+                    </select>
+                    <select id="city" onchange="loadDistricts()" required>
+                        <option value="">Pilih Kota</option>
+                    </select>
+                    <select id="district" required>
+                        <option value="">Pilih Kecamatan</option>
+                    </select>
+                    <textarea id="catatanWilayah" placeholder="Catatan Wilayah (Tulis manual jika wilayah tidak ada di list)" rows="2" style="margin-bottom:18px;"></textarea>
                     <div class="customer-notes">
                         <label>Catatan Tambahan (Opsional):</label>
                         <textarea id="customerNotes" placeholder="Contoh: Saya pesan 3 pcs - 1 warna merah ukuran L, 2 warna hijau ukuran M dan XL. Atau catatan khusus lainnya..." rows="3"></textarea>
                         <small class="notes-help">💡 Gunakan catatan ini jika memesan beberapa varian berbeda atau ada permintaan khusus</small>
                     </div>
-                    <select id="province" onchange="loadCities()" required>
-                        <option value="">Pilih Provinsi</option>
-                        <option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>
-                    </select>
-                    <select id="city" onchange="loadDistricts()" required>
-                        <option value="">Pilih Kota</option>
-                        <option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>
-                    </select>
-                    <select id="district" onchange="handleDistrictChange()" required>
-                        <option value="">Pilih Kecamatan</option>
-                        <option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>
-                    </select>
-                    <input type="text" id="manualProvince" placeholder="Tulis Provinsi Manual" style="display:none;">
-                    <input type="text" id="manualCity" placeholder="Tulis Kota Manual" style="display:none;">
-                    <input type="text" id="manualDistrict" placeholder="Tulis Kecamatan Manual" style="display:none;">
                     <div class="order-summary">
                         <div class="summary-row">
                             <span>Harga per pcs:</span>
@@ -970,6 +971,10 @@ Mohon konfirmasi pesanan ini. Terima kasih! 🙏\`;
                         <div class="summary-row">
                             <span>Subtotal:</span>
                             <span id="subtotal">Rp ${formData.price.toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="summary-row" id="ongkirRow">
+                            <span>Ongkir:</span>
+                            <span id="ongkirText">-</span>
                         </div>
                         <div class="summary-row">
                             <span>Kode Unik:</span>
