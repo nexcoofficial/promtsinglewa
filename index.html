@@ -268,35 +268,10 @@
             </div>
             <div class="card">
                 <div class="card-title">2. Gambar Produk</div>
-                <div class="form-grid">
-                    <div>
-                        <div class="form-group">
-                            <label for="image1">Gambar 1 (Utama) URL</label>
-                            <input type="text" id="image1" required placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label for="image2">Gambar 2 URL</label>
-                            <input type="text" id="image2" required placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label for="image3">Gambar 3 URL</label>
-                            <input type="text" id="image3" required placeholder="https://...">
-                        </div>
-                    </div>
-                    <div>
-                        <div class="form-group">
-                            <label for="image4">Gambar 4 URL</label>
-                            <input type="text" id="image4" required placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label for="image5">Gambar 5 URL (opsional)</label>
-                            <input type="text" id="image5" placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label for="image6">Gambar 6 URL (opsional)</label>
-                            <input type="text" id="image6" placeholder="https://...">
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="productImages">URL Gambar Produk (1 baris 1 gambar, atau dipisah koma)</label>
+                    <textarea id="productImages" required placeholder="https://...jpg&#10;https://...jpg"></textarea>
+                    <span class="helper-text">Paste satu atau banyak link gambar produk (wajib minimal 1, boleh sebanyak apapun)</span>
                 </div>
             </div>
             <div class="card">
@@ -418,10 +393,8 @@
             // Gather form data
             const getVal = id => (document.getElementById(id) ? document.getElementById(id).value.trim() : '');
             const featuresArr = getVal('features').split(',').map(f => f.trim()).filter(Boolean);
-            const imagesArr = [
-                getVal('image1'), getVal('image2'), getVal('image3'), getVal('image4'),
-                getVal('image5'), getVal('image6')
-            ].filter(url => url !== '');
+            // Image textarea: split by newline or comma
+            let imagesArr = getVal('productImages').split(/[\n,]/).map(x => x.trim()).filter(Boolean);
             const hasVariants = document.getElementById('hasVariants').checked;
             const autoGen = document.getElementById('autoGenerateCombinations').checked;
             let colors = getVal('colors').split(',').map(c => c.trim()).filter(Boolean);
@@ -444,8 +417,8 @@
                 alert("Isi semua data produk & toko dengan benar!");
                 return;
             }
-            if (imagesArr.length < 4) {
-                alert("Minimal 4 gambar produk wajib diisi!");
+            if (imagesArr.length < 1) {
+                alert("Minimal 1 gambar produk wajib diisi!");
                 return;
             }
             // Prepare data
@@ -536,7 +509,7 @@
             }
         }
 
-        // Generate the complete HTML for the store
+        // Generate the complete HTML for the store, with new gallery style
         function generateWebsite(formData) {
             // Sanitize all strings
             function esc(str) {
@@ -544,7 +517,6 @@
                     .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
             }
             const addressDataString = JSON.stringify(indonesiaData);
-            // Store features
             let featuresHtml = '';
             if (formData.features && formData.features.length) {
                 featuresHtml = `<ul class="feature-list">${formData.features.map(f => `<li>✔️ ${esc(f)}</li>`).join('')}</ul>`;
@@ -568,27 +540,44 @@
                     </div>
                 </div>
             `;
-            // Gallery thumbnails
-            let thumbHtml = '';
-            for (let i = 0; i < formData.images.length; i++) {
-                thumbHtml += `<img src="${esc(formData.images[i])}" class="thumbnail" onclick="changeMainImage('${esc(formData.images[i])}')" alt="Thumbnail ${i+1}">`;
-            }
             // Features CSS (inside generated output)
             const generatedCss = `
             <style>
                 body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background: #f8fafc;color: #222;margin:0;}
-                header { background: #2563eb; color: #fff; padding:0;margin-bottom: 0; }
+                header { background: #2563eb; color: #fff; margin-bottom:0; }
                 .container { max-width: 1100px; margin:0 auto; padding:0 12px 30px 12px;}
                 .logo { font-size:1.4rem; font-weight:800; letter-spacing:-.01em; }
                 .contact { font-size:1.08rem; display:flex; align-items:center; gap:7px; }
-                .phone-icon { display:inline-block;vertical-align:middle; }
                 main.product-section {margin-top: 0;}
                 .product-section .container { display:grid; grid-template-columns:1fr 1fr; gap:36px; }
-                .product-gallery { padding: 0 0 10px 0; }
-                .main-image { width:100%; height:420px; object-fit:cover; border-radius:10px; box-shadow:0 3px 14px 0 #e5e7eb;}
-                .thumbnails { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:13px 0 0 0;}
-                .thumbnail { width:100%; height:75px; object-fit:cover; border-radius:6px; cursor:pointer;border:2px solid #fff; box-shadow:0 1px 5px 0 #e5e7eb;}
-                .thumbnail:hover { border:2px solid #2563eb; }
+                /* Gallery Modern */
+                .gallery-outer { display:flex; flex-direction:column; align-items:center; width:100%; }
+                .gallery-mainbox {
+                    width:100%; max-width:440px; aspect-ratio:4/5; background:#fff;
+                    display:flex; align-items:center; justify-content:center;
+                    border-radius:12px; box-shadow:0 3px 14px 0 #e5e7eb;
+                    overflow:hidden; margin:0 auto;
+                }
+                .gallery-mainbox img {
+                    max-width:100%; max-height:100%; object-fit:contain; background:#fff;
+                    display:block; margin:0 auto;
+                    transition:opacity .18s;
+                }
+                .gallery-thumbs {
+                    display:flex; flex-direction:row; align-items:center;
+                    gap:10px; overflow-x:auto; margin: 14px 0 0 0;
+                    width:100%; max-width:440px; padding-bottom: 4px;
+                    scrollbar-width: thin; scrollbar-color: #2563eb #e5e7eb;
+                }
+                .gallery-thumbimg {
+                    width:70px; height:70px; object-fit:cover; border-radius:7px;
+                    border:2px solid #fff; box-shadow:0 1px 6px 0 #e5e7eb;
+                    cursor:pointer; background:#f3f4f6; transition:border .13s;
+                }
+                .gallery-thumbimg.active, .gallery-thumbimg:focus { border:2px solid #2563eb; }
+                /* Hide scroll on thumbs on mobile */
+                .gallery-thumbs::-webkit-scrollbar { height:6px; background:#e5e7eb; }
+                .gallery-thumbs::-webkit-scrollbar-thumb { background:#2563eb; border-radius:6px; }
                 .product-info { background:#fff; border-radius:13px; box-shadow:0 4px 20px 0 #dbeafe; padding:28px 18px 18px 18px;}
                 .product-title { font-size:1.42rem; font-weight:800; color:#222; margin-bottom:6px; }
                 .price { font-size:1.28rem; color:#2563eb; font-weight:800; margin-bottom:7px; }
@@ -664,9 +653,12 @@
                 }
                 @media (max-width: 900px) {
                     .product-section .container { grid-template-columns: 1fr; }
+                    .gallery-outer { max-width: 95vw;}
                 }
                 @media (max-width: 600px) {
                     .product-info { padding: 10px 4px 13px 4px;}
+                    .gallery-mainbox {max-width:99vw;}
+                    .gallery-thumbs {max-width:99vw;}
                 }
             </style>
             `;
@@ -679,9 +671,38 @@
                 const PRODUCT_PRICE = ${formData.price};
                 const productName = "${esc(formData.productName)}";
                 const whatsappNumber = "${esc(formData.whatsapp)}";
-                function changeMainImage(src) {
-                    document.getElementById('mainImage').src = src;
+                // Gallery logic
+                let galleryImages = ${JSON.stringify(formData.images)};
+                let galleryCurrent = 0;
+                function showGalleryImage(idx) {
+                    galleryCurrent = idx;
+                    let mainImg = document.getElementById('galleryMainImage');
+                    mainImg.src = galleryImages[idx];
+                    let thumbImgs = document.querySelectorAll('.gallery-thumbimg');
+                    thumbImgs.forEach((img, i) => {
+                        if(i === idx) img.classList.add('active');
+                        else img.classList.remove('active');
+                    });
                 }
+                function prevGalleryImage() {
+                    let idx = (galleryCurrent - 1 + galleryImages.length) % galleryImages.length;
+                    showGalleryImage(idx);
+                }
+                function nextGalleryImage() {
+                    let idx = (galleryCurrent + 1) % galleryImages.length;
+                    showGalleryImage(idx);
+                }
+                // Swipe for mobile
+                let startX = 0, endX = 0;
+                function galleryTouchStart(e) {
+                    startX = e.touches[0].clientX;
+                }
+                function galleryTouchEnd(e) {
+                    endX = e.changedTouches[0].clientX;
+                    if (endX - startX > 50) prevGalleryImage();
+                    else if (startX - endX > 50) nextGalleryImage();
+                }
+
                 function changeQty(delta) {
                     const qtyInput = document.getElementById('qty');
                     let newQty = parseInt(qtyInput.value) + delta;
@@ -694,7 +715,6 @@
                     const qty = parseInt(document.getElementById('qty').value);
                     const basePrice = PRODUCT_PRICE;
                     const subtotal = basePrice * qty;
-                    // Kode unik harus tetap sama pada satu sesi order
                     let uniqueCode = window.currentUniqueCode;
                     if (!uniqueCode) {
                         uniqueCode = Math.floor(Math.random() * 800) + 100;
@@ -721,7 +741,6 @@
                         manualProvince.style.display = 'none';
                         manualProvince.required = false;
                         citySelect.disabled = false;
-                        // Populate cities
                         citySelect.innerHTML = '<option value="">Pilih Kota</option><option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
                         if (province && indonesiaData[province]) {
                             Object.keys(indonesiaData[province]).forEach(city => {
@@ -746,7 +765,6 @@
                         manualCity.style.display = 'none';
                         manualCity.required = false;
                         districtSelect.disabled = false;
-                        // Populate districts
                         districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option><option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
                         if (province && city && indonesiaData[province] && indonesiaData[province][city]) {
                             indonesiaData[province][city].forEach(district => {
@@ -768,7 +786,6 @@
                     }
                 }
                 function updateOrderSummary() {
-                    // Trigger recalc if needed
                     updateTotal();
                 }
                 window.onload = function() {
@@ -783,8 +800,11 @@
                     document.getElementById('manualProvince').style.display = 'none';
                     document.getElementById('manualCity').style.display = 'none';
                     document.getElementById('manualDistrict').style.display = 'none';
-                    // Set first image
-                    changeMainImage('${esc(formData.images[0])}');
+                    // Gallery init
+                    showGalleryImage(0);
+                    let mainImg = document.getElementById('galleryMainImage');
+                    mainImg.addEventListener('touchstart', galleryTouchStart, {passive:true});
+                    mainImg.addEventListener('touchend', galleryTouchEnd, {passive:true});
                     updateTotal();
                 };
                 // WhatsApp order submission
@@ -862,6 +882,17 @@ Mohon konfirmasi pesanan ini. Terima kasih! 🙏\`;
                 }
             <\/script>
             `;
+            // Gallery HTML
+            const galleryHtml = `
+                <div class="gallery-outer">
+                    <div class="gallery-mainbox">
+                        <img src="${esc(formData.images[0])}" id="galleryMainImage" alt="Gambar Utama Produk">
+                    </div>
+                    <div class="gallery-thumbs">
+                        ${formData.images.map((src, idx) => `<img src="${esc(src)}" class="gallery-thumbimg${idx==0?' active':''}" onclick="showGalleryImage(${idx})" alt="Thumbnail ${idx+1}">`).join('')}
+                    </div>
+                </div>
+            `;
             // HTML content
             return `<!DOCTYPE html>
 <html lang="id">
@@ -883,11 +914,8 @@ Mohon konfirmasi pesanan ini. Terima kasih! 🙏\`;
     </header>
     <main class="product-section">
         <div class="container">
-            <div class="product-gallery">
-                <img src="${esc(formData.images[0])}" id="mainImage" alt="Gambar Utama" class="main-image">
-                <div class="thumbnails" style="margin-top:14px;">
-                    ${thumbHtml}
-                </div>
+            <div>
+                ${galleryHtml}
             </div>
             <div class="product-info">
                 <div class="product-title">${esc(formData.productName)}</div>
