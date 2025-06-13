@@ -197,11 +197,9 @@
             .header-inner { flex-direction: column; gap: 9px; }
             .card { padding: 15px 8px 16px 8px; }
         }
-        /* Hide number arrows */
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
-        /* Checkbox style */
         input[type="checkbox"] {
             accent-color: var(--primary);
             width: 17px; height: 17px;
@@ -267,11 +265,16 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-title">2. Gambar Produk</div>
+                <div class="card-title">2. Gambar Produk & GIF</div>
                 <div class="form-group">
                     <label for="productImages">URL Gambar Produk (1 baris 1 gambar, atau dipisah koma)</label>
                     <textarea id="productImages" required placeholder="https://...jpg&#10;https://...jpg"></textarea>
                     <span class="helper-text">Paste satu atau banyak link gambar produk (wajib minimal 1, boleh sebanyak apapun)</span>
+                </div>
+                <div class="form-group">
+                    <label for="productGif">URL GIF Produk (opsional)</label>
+                    <input type="text" id="productGif" placeholder="https://...gif">
+                    <span class="helper-text">Jika diisi, GIF akan muncul di galeri gambar</span>
                 </div>
             </div>
             <div class="card">
@@ -382,19 +385,17 @@
             document.getElementById('autoGenerateCombinations').disabled = !checked;
             document.getElementById('manualVariantList').disabled = !checked;
         });
-        // Disable variants fields by default
         document.getElementById('colors').disabled = true;
         document.getElementById('sizes').disabled = true;
         document.getElementById('autoGenerateCombinations').disabled = true;
         document.getElementById('manualVariantList').disabled = true;
 
-        // Generate button logic
         document.getElementById('generateBtn').addEventListener('click', function () {
-            // Gather form data
             const getVal = id => (document.getElementById(id) ? document.getElementById(id).value.trim() : '');
             const featuresArr = getVal('features').split(',').map(f => f.trim()).filter(Boolean);
-            // Image textarea: split by newline or comma
             let imagesArr = getVal('productImages').split(/[\n,]/).map(x => x.trim()).filter(Boolean);
+            const gifUrl = getVal('productGif');
+            if (gifUrl) imagesArr.push(gifUrl);
             const hasVariants = document.getElementById('hasVariants').checked;
             const autoGen = document.getElementById('autoGenerateCombinations').checked;
             let colors = getVal('colors').split(',').map(c => c.trim()).filter(Boolean);
@@ -412,7 +413,6 @@
                     variantCombinations = variantList.replace(/\r\n/g, '\n').split('\n').map(x => x.trim()).filter(Boolean);
                 }
             }
-            // Check required
             if (!getVal('productName') || !getVal('price') || !getVal('description') || !getVal('whatsapp') || !getVal('storeName')) {
                 alert("Isi semua data produk & toko dengan benar!");
                 return;
@@ -421,7 +421,6 @@
                 alert("Minimal 1 gambar produk wajib diisi!");
                 return;
             }
-            // Prepare data
             const formData = {
                 productName: getVal('productName'),
                 price: parseInt(getVal('price')),
@@ -438,13 +437,11 @@
                 storePhone: getVal('storePhone'),
                 features: featuresArr
             };
-            // Generate HTML
             const html = generateWebsite(formData);
             document.getElementById('result').value = html;
             document.getElementById('resultSection').style.display = 'block';
         });
 
-        // Copy functionality
         document.getElementById('copyBtn').addEventListener('click', function () {
             const result = document.getElementById('result');
             result.select();
@@ -453,7 +450,6 @@
             this.textContent = "✅ Disalin!";
             setTimeout(() => { this.textContent = "Salin HTML"; }, 1800);
         });
-        // Download as HTML
         document.getElementById('downloadBtn').addEventListener('click', function () {
             const code = document.getElementById('result').value;
             const blob = new Blob([code], { type: "text/html" });
@@ -467,7 +463,6 @@
             URL.revokeObjectURL(url);
         });
 
-        // Generate the variant selection HTML for the generated site
         function generateVariantHTML(formData) {
             if (!formData.hasVariants) return '';
             if (formData.variantCombinations && formData.variantCombinations.length > 0) {
@@ -482,7 +477,6 @@
                     </select>
                 </div>`;
             } else {
-                // Separate color/size
                 let html = `<div class="variant-selection">`;
                 if (formData.colors && formData.colors.length > 0) {
                     html += `
@@ -509,9 +503,7 @@
             }
         }
 
-        // Generate the complete HTML for the store, with new gallery style
         function generateWebsite(formData) {
-            // Sanitize all strings
             function esc(str) {
                 return (str+"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
                     .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
@@ -540,7 +532,7 @@
                     </div>
                 </div>
             `;
-            // Features CSS (inside generated output)
+            const galleryImgs = formData.images;
             const generatedCss = `
             <style>
                 body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background: #f8fafc;color: #222;margin:0;}
@@ -550,7 +542,6 @@
                 .contact { font-size:1.08rem; display:flex; align-items:center; gap:7px; }
                 main.product-section {margin-top: 0;}
                 .product-section .container { display:grid; grid-template-columns:1fr 1fr; gap:36px; }
-                /* Gallery Modern */
                 .gallery-outer { display:flex; flex-direction:column; align-items:center; width:100%; }
                 .gallery-mainbox {
                     width:100%; max-width:440px; aspect-ratio:4/5; background:#fff;
@@ -575,9 +566,6 @@
                     cursor:pointer; background:#f3f4f6; transition:border .13s;
                 }
                 .gallery-thumbimg.active, .gallery-thumbimg:focus { border:2px solid #2563eb; }
-                /* Hide scroll on thumbs on mobile */
-                .gallery-thumbs::-webkit-scrollbar { height:6px; background:#e5e7eb; }
-                .gallery-thumbs::-webkit-scrollbar-thumb { background:#2563eb; border-radius:6px; }
                 .product-info { background:#fff; border-radius:13px; box-shadow:0 4px 20px 0 #dbeafe; padding:28px 18px 18px 18px;}
                 .product-title { font-size:1.42rem; font-weight:800; color:#222; margin-bottom:6px; }
                 .price { font-size:1.28rem; color:#2563eb; font-weight:800; margin-bottom:7px; }
@@ -592,6 +580,21 @@
                 }
                 select { cursor:pointer; }
                 button { cursor:pointer; }
+                .payment-choice {
+                    display: flex; gap: 13px; margin: 18px 0 10px 0; justify-content:center;
+                }
+                .payment-btn {
+                    padding: 12px 22px; border-radius: 7px; font-size: 1.12rem; font-weight:700;
+                    border: none; outline: none; transition: background .13s, color .13s;
+                    cursor:pointer; background: #e5e7eb; color: #222; box-shadow:0 1px 4px 0 #e5e7eb;
+                }
+                .payment-btn.active, .payment-btn.selected, .payment-btn[data-method="tf"].active {
+                    background: #2563eb !important; color: #fff !important; box-shadow:0 2px 8px 0 #2563eb22;
+                }
+                .payment-btn[data-method="tf"] { background: #e5e7eb; color: #2563eb; border:2px solid #2563eb;}
+                .payment-btn[data-method="cod"] { background: #f3f4f6; color: #444; border:2px solid #e5e7eb; }
+                .payment-btn[data-method="tf"]:hover { background: #1749b4; color: #fff;}
+                .payment-btn[data-method="cod"]:hover { background: #ddd; color: #222;}
                 .whatsapp-btn {
                     background: #25d366; color: white; font-weight: bold;
                     border: none; padding: 15px; border-radius: 5px; cursor: pointer;
@@ -644,7 +647,6 @@
                 .payment-options { display: flex; gap: 16px; }
                 .payment-option { display: flex; flex-direction: column; align-items: center; gap: 3px;}
                 .payment-option img { width: 50px; height: 30px; border-radius: 5px;}
-                /* Address */
                 input[id*="manual"] {
                     border-color: #f59e0b; background-color: #fffbeb;
                 }
@@ -662,17 +664,13 @@
                 }
             </style>
             `;
-            // JS for generated site
             const generatedJs = `
             <script>
-                // Address data
                 const indonesiaData = ${addressDataString};
-                // Store price, product, WA
                 const PRODUCT_PRICE = ${formData.price};
                 const productName = "${esc(formData.productName)}";
                 const whatsappNumber = "${esc(formData.whatsapp)}";
-                // Gallery logic
-                let galleryImages = ${JSON.stringify(formData.images)};
+                let galleryImages = ${JSON.stringify(galleryImgs)};
                 let galleryCurrent = 0;
                 function showGalleryImage(idx) {
                     galleryCurrent = idx;
@@ -692,17 +690,13 @@
                     let idx = (galleryCurrent + 1) % galleryImages.length;
                     showGalleryImage(idx);
                 }
-                // Swipe for mobile
                 let startX = 0, endX = 0;
-                function galleryTouchStart(e) {
-                    startX = e.touches[0].clientX;
-                }
+                function galleryTouchStart(e) { startX = e.touches[0].clientX; }
                 function galleryTouchEnd(e) {
                     endX = e.changedTouches[0].clientX;
                     if (endX - startX > 50) prevGalleryImage();
                     else if (startX - endX > 50) nextGalleryImage();
                 }
-
                 function changeQty(delta) {
                     const qtyInput = document.getElementById('qty');
                     let newQty = parseInt(qtyInput.value) + delta;
@@ -785,29 +779,34 @@
                         manualDistrict.required = false;
                     }
                 }
-                function updateOrderSummary() {
-                    updateTotal();
+                function updateOrderSummary() { updateTotal(); }
+
+                // Payment method
+                let paymentMethod = 'tf';
+                function choosePayment(method) {
+                    paymentMethod = method;
+                    document.getElementById('btnTf').classList.toggle('active', method==='tf');
+                    document.getElementById('btnCod').classList.toggle('active', method==='cod');
                 }
+
                 window.onload = function() {
-                    // Province options
                     const provinceSelect = document.getElementById('province');
                     provinceSelect.innerHTML = '<option value="">Pilih Provinsi</option>';
                     Object.keys(indonesiaData).forEach(prov => {
                         provinceSelect.innerHTML += '<option value="'+prov+'">'+prov+'</option>';
                     });
                     provinceSelect.innerHTML += '<option value="manual">🖊️ Tulis Manual (Jika tidak ada di list)</option>';
-                    // Hide manual address fields
                     document.getElementById('manualProvince').style.display = 'none';
                     document.getElementById('manualCity').style.display = 'none';
                     document.getElementById('manualDistrict').style.display = 'none';
-                    // Gallery init
                     showGalleryImage(0);
                     let mainImg = document.getElementById('galleryMainImage');
                     mainImg.addEventListener('touchstart', galleryTouchStart, {passive:true});
                     mainImg.addEventListener('touchend', galleryTouchEnd, {passive:true});
                     updateTotal();
+                    choosePayment('tf');
                 };
-                // WhatsApp order submission
+
                 function submitOrder() {
                     let selectedVariant = '';
                     const variantSelect = document.getElementById('variantSelect');
@@ -822,7 +821,6 @@
                             selectedVariant = [color, size].filter(v => v).join(' - ');
                         }
                     }
-                    // Address
                     const province = document.getElementById('province').value === 'manual' 
                         ? document.getElementById('manualProvince').value 
                         : document.getElementById('province').value;
@@ -832,7 +830,6 @@
                     const district = document.getElementById('district').value === 'manual' 
                         ? document.getElementById('manualDistrict').value 
                         : document.getElementById('district').value;
-                    // Validate
                     const customerName = document.getElementById('customerName').value;
                     const customerPhone = document.getElementById('customerPhone').value;
                     const customerAddress = document.getElementById('customerAddress').value;
@@ -841,14 +838,19 @@
                         alert('Mohon lengkapi semua data yang diperlukan (nama, WhatsApp, alamat lengkap, provinsi, kota, kecamatan)');
                         return;
                     }
-                    // Calc
+                    if (!paymentMethod) {
+                        alert('Pilih metode pembayaran!');
+                        return;
+                    }
                     const qty = parseInt(document.getElementById('qty').value);
                     const basePrice = PRODUCT_PRICE;
                     const subtotal = basePrice * qty;
                     const uniqueCode = window.currentUniqueCode || Math.floor(Math.random() * 800) + 100;
                     window.currentUniqueCode = uniqueCode;
                     const total = subtotal + uniqueCode;
-                    // WhatsApp message
+                    let paymentText = paymentMethod === 'tf'
+                        ? 'Transfer Bank (BCA, Mandiri, BRI, BNI)'
+                        : 'COD (Cash on Delivery)';
                     const message =
 \`🛒 PESANAN \${productName}
 
@@ -871,9 +873,7 @@
 \${customerNotes}
 
 \` : ''}💳 METODE PEMBAYARAN: 
-• Transfer Bank (BCA, Mandiri, BRI, BNI)
-• COD (Cash on Delivery)
-• E-Wallet (GoPay, OVO, DANA)
+• \${paymentText}
 
 Mohon konfirmasi pesanan ini. Terima kasih! 🙏\`;
                     const encodedMessage = encodeURIComponent(message);
@@ -882,18 +882,16 @@ Mohon konfirmasi pesanan ini. Terima kasih! 🙏\`;
                 }
             <\/script>
             `;
-            // Gallery HTML
             const galleryHtml = `
                 <div class="gallery-outer">
                     <div class="gallery-mainbox">
-                        <img src="${esc(formData.images[0])}" id="galleryMainImage" alt="Gambar Utama Produk">
+                        <img src="${esc(galleryImgs[0])}" id="galleryMainImage" alt="Gambar Utama Produk">
                     </div>
                     <div class="gallery-thumbs">
-                        ${formData.images.map((src, idx) => `<img src="${esc(src)}" class="gallery-thumbimg${idx==0?' active':''}" onclick="showGalleryImage(${idx})" alt="Thumbnail ${idx+1}">`).join('')}
+                        ${galleryImgs.map((src, idx) => `<img src="${esc(src)}" class="gallery-thumbimg${idx==0?' active':''}" onclick="showGalleryImage(${idx})" alt="Thumbnail ${idx+1}">`).join('')}
                     </div>
                 </div>
             `;
-            // HTML content
             return `<!DOCTYPE html>
 <html lang="id">
 <head>
@@ -932,6 +930,10 @@ Mohon konfirmasi pesanan ini. Terima kasih! 🙏\`;
                             <button type="button" onclick="changeQty(1)">+</button>
                         </div>
                         <small class="qty-info">Harga per pcs: Rp <span id="unitPrice">${formData.price.toLocaleString('id-ID')}</span></small>
+                    </div>
+                    <div class="payment-choice">
+                      <button type="button" class="payment-btn" id="btnTf" data-method="tf" onclick="choosePayment('tf')">Transfer Bank</button>
+                      <button type="button" class="payment-btn" id="btnCod" data-method="cod" onclick="choosePayment('cod')">COD</button>
                     </div>
                     <input type="text" id="customerName" placeholder="Nama Lengkap" required>
                     <input type="tel" id="customerPhone" placeholder="No. WhatsApp" required>
